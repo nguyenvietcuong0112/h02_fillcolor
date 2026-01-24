@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <!-- Ultra Detailed Peacock - Every small detail on tail feathers is separate -->
+  
+  <!-- Body - Each Segment Separate -->
+  <path id="body_segment_1" d="M 200 200 Q 195 190 200 180 Q 205 190 200 200 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_2" d="M 200 180 Q 195 170 200 160 Q 205 170 200 180 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_3" d="M 200 200 Q 195 210 200 220 Q 205 210 200 200 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_4" d="M 200 220 Q 195 230 200 240 Q 205 230 200 220 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_5" d="M 200 240 Q 195 250 200 260 Q 205 250 200 240 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_6" d="M 200 260 Q 195 270 200 280 Q 205 270 200 260 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_7" d="M 200 280 Q 195 290 200 300 Q 205 290 200 280 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_8" d="M 200 300 Q 195 310 200 320 Q 205 310 200 300 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  
+  <!-- Body Feathers - Each Separate -->
+  <path id="body_feather_1_left" d="M 180 220 Q 185 215 190 220" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="body_feather_1_right" d="M 210 220 Q 215 215 220 220" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="body_feather_1_center" d="M 200 220 Q 195 210 200 220 Q 205 210 200 220" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="body_feather_2_left" d="M 175 250 Q 182 245 190 250" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="body_feather_2_right" d="M 225 250 Q 218 245 210 250" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="body_feather_2_center" d="M 200 250 Q 190 240 200 250 Q 210 240 200 250" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="body_feather_3_left" d="M 170 280 Q 180 275 190 280" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="body_feather_3_right" d="M 230 280 Q 220 275 210 280" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="body_feather_3_center" d="M 200 280 Q 190 270 200 280 Q 210 270 200 280" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Head -->
+  <path id="head" d="M 200 160 Q 195 150 200 140 Q 205 150 200 160 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="head_left" d="M 200 160 Q 195 155 195 150" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="head_right" d="M 200 160 Q 205 155 205 150" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="head_top" d="M 200 140 Q 198 145 200 150 Q 202 145 200 140" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Beak -->
+  <path id="beak_upper" d="M 200 140 Q 198 137 195 135" fill="none" stroke="black" stroke-width="2"/>
+  <path id="beak_lower" d="M 195 135 Q 197 133 200 140" fill="none" stroke="black" stroke-width="2"/>
+  <path id="beak_tip" d="M 195 135 Q 193 133 190 130 Q 193 133 195 135" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Eye -->
+  <path id="eye_outer" d="M 205 150 Q 207 148 209 150 Q 207 152 205 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="eye_inner" d="M 207 150 Q 206 149 205 150 Q 206 151 207 150 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="eye_pupil" d="M 207 150 Q 206.5 149.5 207 149 Q 207.5 149.5 207 150 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  
+  <!-- Crest - Each Feather Separate -->
+  <path id="crest_1_left" d="M 200 140 Q 197 130 195 120" fill="none" stroke="black" stroke-width="2"/>
+  <path id="crest_1_right" d="M 195 120 Q 196 115 195 110 Q 196 115 195 120" fill="none" stroke="black" stroke-width="2"/>
+  <path id="crest_1_tip" d="M 195 110 Q 194 108 193 106 Q 194 108 195 110" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="crest_2_right" d="M 200 140 Q 203 130 205 120" fill="none" stroke="black" stroke-width="2"/>
+  <path id="crest_2_left" d="M 205 120 Q 204 115 205 110 Q 204 115 205 120" fill="none" stroke="black" stroke-width="2"/>
+  <path id="crest_2_tip" d="M 205 110 Q 206 108 207 106 Q 206 108 205 110" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="crest_3" d="M 200 140 Q 200 127 200 115" fill="none" stroke="black" stroke-width="2"/>
+  <path id="crest_3_tip" d="M 200 115 Q 199 110 200 105 Q 201 110 200 115" fill="none" stroke="black" stroke-width="2"/>
+  <path id="crest_3_dot" d="M 200 100 Q 199 99 200 98 Q 201 99 200 100 Z" fill="none" stroke="black" stroke-width="1"/>
+  
+  <!-- Legs - Each Part Separate -->
+  <path id="leg_left_upper" d="M 190 320 Q 190 330 190 340" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="leg_left_lower" d="M 190 340 Q 190 350 190 360" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="leg_left_foot" d="M 190 360 Q 188 362 185 365 Q 188 362 190 360" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="foot_left_toe_1" d="M 185 365 Q 183 367 181 365" fill="none" stroke="black" stroke-width="2"/>
+  <path id="foot_left_toe_2" d="M 185 365 Q 183 363 181 365" fill="none" stroke="black" stroke-width="2"/>
+  <path id="foot_left_toe_3" d="M 185 365 Q 180 367 178 365 Q 180 363 185 365" fill="none" stroke="black" stroke-width="2"/>
+  
+  <path id="leg_right_upper" d="M 210 320 Q 210 330 210 340" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="leg_right_lower" d="M 210 340 Q 210 350 210 360" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="leg_right_foot" d="M 210 360 Q 212 362 215 365 Q 212 362 210 360" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="foot_right_toe_1" d="M 215 365 Q 217 367 219 365" fill="none" stroke="black" stroke-width="2"/>
+  <path id="foot_right_toe_2" d="M 215 365 Q 217 363 219 365" fill="none" stroke="black" stroke-width="2"/>
+  <path id="foot_right_toe_3" d="M 215 365 Q 220 367 222 365 Q 220 363 215 365" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Tail Feathers - Center -->
+  <path id="tail_center_1" d="M 200 320 Q 200 330 200 340" fill="none" stroke="black" stroke-width="2"/>
+  <path id="tail_center_2" d="M 200 340 Q 200 350 200 360" fill="none" stroke="black" stroke-width="2"/>
+  <path id="tail_center_3" d="M 200 360 Q 198 365 200 370 Q 202 365 200 360" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_center_4" d="M 200 370 Q 200 380 200 390" fill="none" stroke="black" stroke-width="2"/>
+  <path id="tail_center_5" d="M 200 390 Q 198 395 200 400 Q 202 395 200 390" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_center_6" d="M 200 400 Q 200 410 200 420" fill="none" stroke="black" stroke-width="2"/>
+  <path id="tail_center_7" d="M 200 420 Q 198 425 200 430 Q 202 425 200 420" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_center_8" d="M 200 430 Q 200 435 200 440" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Tail Feather Left 1 - Ultra Detailed -->
+  <path id="tail_left_1_main" d="M 200 320 Q 180 330 160 350 Q 150 370 140 380 Q 135 390 130 400 Q 128 405 130 410 Q 132 415 140 420 Q 150 425 160 430 Q 170 435 180 430 Q 190 425 200 420 Q 200 400 200 380" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Tail Left 1 - Sections -->
+  <path id="tail_left_1_section_1" d="M 200 320 Q 185 325 170 335 Q 165 340 160 350" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_1_section_2" d="M 160 350 Q 155 360 150 370 Q 148 375 145 380" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_1_section_3" d="M 145 380 Q 140 385 135 390 Q 133 395 130 400" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_1_section_4" d="M 130 400 Q 128 405 130 410 Q 132 415 135 418" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_1_section_5" d="M 135 418 Q 140 420 145 422 Q 150 424 155 425" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_1_section_6" d="M 155 425 Q 165 428 175 430 Q 185 432 195 428" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Tail Left 1 - Eye Pattern (Each Ring Separate) -->
+  <path id="tail_left_1_eye_outer" d="M 160 380 Q 170 375 180 380 Q 170 385 160 380 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_1_eye_mid" d="M 165 380 Q 170 377 175 380 Q 170 383 165 380 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_left_1_eye_inner" d="M 170 380 Q 171 379 172 380 Q 171 381 170 380 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_1_eye_center" d="M 170 380 Q 169.5 379.5 170 379 Q 170.5 379.5 170 380 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  
+  <!-- Tail Left 1 - Small Patterns -->
+  <path id="tail_left_1_pattern_1" d="M 150 360 Q 152 358 154 360 Q 152 362 150 360 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_left_1_pattern_1_dot" d="M 152 360 Q 151.5 359.5 152 359 Q 152.5 359.5 152 360 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  <path id="tail_left_1_pattern_2" d="M 155 400 Q 157 398 159 400 Q 157 402 155 400 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_left_1_pattern_2_dot" d="M 157 400 Q 156.5 399.5 157 399 Q 157.5 399.5 157 400 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  <path id="tail_left_1_pattern_3" d="M 160 420 Q 162 418 164 420 Q 162 422 160 420 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_left_1_pattern_3_dot" d="M 162 420 Q 161.5 419.5 162 419 Q 162.5 419.5 162 420 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  
+  <!-- Tail Left 1 - Border Details -->
+  <path id="tail_left_1_border_1" d="M 200 320 Q 190 322 180 325" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_1_border_2" d="M 180 325 Q 170 330 160 340" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_1_border_3" d="M 160 340 Q 155 350 150 360" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_1_border_4" d="M 150 360 Q 148 370 145 380" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_1_border_5" d="M 145 380 Q 140 390 135 400" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_1_border_6" d="M 135 400 Q 133 405 130 410" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_1_border_7" d="M 130 410 Q 135 415 140 420" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_1_border_8" d="M 140 420 Q 150 425 160 430" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_1_border_9" d="M 160 430 Q 175 432 190 428" fill="none" stroke="black" stroke-width="0.8"/>
+  
+  <!-- Tail Feather Left 2 - Similar Detail Level -->
+  <path id="tail_left_2_main" d="M 200 340 Q 185 350 170 370 Q 160 390 150 400 Q 145 410 140 420 Q 138 425 140 430 Q 142 435 150 440 Q 160 445 170 450 Q 180 455 190 450 Q 200 445 210 440 Q 210 420 210 400" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Tail Left 2 - Sections -->
+  <path id="tail_left_2_section_1" d="M 200 340 Q 190 345 180 355 Q 175 360 170 370" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_2_section_2" d="M 170 370 Q 165 380 160 390 Q 157 395 155 400" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_2_section_3" d="M 155 400 Q 150 405 145 410 Q 142 415 140 420" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_2_section_4" d="M 140 420 Q 138 425 140 430 Q 142 435 145 437" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_2_section_5" d="M 145 437 Q 150 440 155 442 Q 160 444 165 445" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_2_section_6" d="M 165 445 Q 175 448 185 450 Q 195 452 205 448" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Tail Left 2 - Eye Pattern -->
+  <path id="tail_left_2_eye_outer" d="M 170 400 Q 180 395 190 400 Q 180 405 170 400 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_2_eye_mid" d="M 175 400 Q 180 397 185 400 Q 180 403 175 400 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_left_2_eye_inner" d="M 180 400 Q 181 399 182 400 Q 181 401 180 400 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_2_eye_center" d="M 180 400 Q 179.5 399.5 180 399 Q 180.5 399.5 180 400 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  
+  <!-- Tail Left 2 - Small Patterns -->
+  <path id="tail_left_2_pattern_1" d="M 160 380 Q 162 378 164 380 Q 162 382 160 380 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_left_2_pattern_1_dot" d="M 162 380 Q 161.5 379.5 162 379 Q 162.5 379.5 162 380 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  <path id="tail_left_2_pattern_2" d="M 165 420 Q 167 418 169 420 Q 167 422 165 420 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_left_2_pattern_2_dot" d="M 167 420 Q 166.5 419.5 167 419 Q 167.5 419.5 167 420 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  
+  <!-- Tail Feather Left 3 -->
+  <path id="tail_left_3_main" d="M 200 360 Q 190 370 180 390 Q 175 410 170 420 Q 168 430 165 440 Q 163 445 165 450 Q 167 455 175 460 Q 185 465 195 470 Q 205 475 215 470 Q 225 465 230 460 Q 230 440 230 420" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Tail Left 3 - Eye Pattern -->
+  <path id="tail_left_3_eye_outer" d="M 190 420 Q 200 415 210 420 Q 200 425 190 420 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_left_3_eye_mid" d="M 195 420 Q 200 417 205 420 Q 200 423 195 420 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_left_3_eye_inner" d="M 200 420 Q 201 419 202 420 Q 201 421 200 420 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_left_3_eye_center" d="M 200 420 Q 199.5 419.5 200 419 Q 200.5 419.5 200 420 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  
+  <!-- Tail Left 3 - Patterns -->
+  <path id="tail_left_3_pattern_1" d="M 180 400 Q 182 398 184 400 Q 182 402 180 400 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_left_3_pattern_1_dot" d="M 182 400 Q 181.5 399.5 182 399 Q 182.5 399.5 182 400 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  <path id="tail_left_3_pattern_2" d="M 185 440 Q 187 438 189 440 Q 187 442 185 440 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_left_3_pattern_2_dot" d="M 187 440 Q 186.5 439.5 187 439 Q 187.5 439.5 187 440 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  
+  <!-- Tail Feather Right 1 - Mirror of Left 1 -->
+  <path id="tail_right_1_main" d="M 200 320 Q 220 330 240 350 Q 250 370 260 380 Q 265 390 270 400 Q 272 405 270 410 Q 268 415 260 420 Q 250 425 240 430 Q 230 435 220 430 Q 210 425 200 420 Q 200 400 200 380" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Tail Right 1 - Eye Pattern -->
+  <path id="tail_right_1_eye_outer" d="M 240 380 Q 230 375 220 380 Q 230 385 240 380 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_right_1_eye_mid" d="M 235 380 Q 230 377 225 380 Q 230 383 235 380 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_right_1_eye_inner" d="M 230 380 Q 229 379 228 380 Q 229 381 230 380 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_right_1_eye_center" d="M 230 380 Q 230.5 379.5 230 379 Q 229.5 379.5 230 380 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  
+  <!-- Tail Right 1 - Patterns -->
+  <path id="tail_right_1_pattern_1" d="M 250 360 Q 248 358 246 360 Q 248 362 250 360 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_right_1_pattern_1_dot" d="M 248 360 Q 248.5 359.5 248 359 Q 247.5 359.5 248 360 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  <path id="tail_right_1_pattern_2" d="M 245 400 Q 243 398 241 400 Q 243 402 245 400 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_right_1_pattern_2_dot" d="M 243 400 Q 243.5 399.5 243 399 Q 242.5 399.5 243 400 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  <path id="tail_right_1_pattern_3" d="M 240 420 Q 238 418 236 420 Q 238 422 240 420 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_right_1_pattern_3_dot" d="M 238 420 Q 238.5 419.5 238 419 Q 237.5 419.5 238 420 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  
+  <!-- Tail Feather Right 2 -->
+  <path id="tail_right_2_main" d="M 200 340 Q 215 350 230 370 Q 240 390 250 400 Q 255 410 260 420 Q 262 425 260 430 Q 258 435 250 440 Q 240 445 230 450 Q 220 455 210 450 Q 200 445 190 440 Q 190 420 190 400" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Tail Right 2 - Eye Pattern -->
+  <path id="tail_right_2_eye_outer" d="M 230 400 Q 220 395 210 400 Q 220 405 230 400 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_right_2_eye_mid" d="M 225 400 Q 220 397 215 400 Q 220 403 225 400 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_right_2_eye_inner" d="M 220 400 Q 219 399 218 400 Q 219 401 220 400 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_right_2_eye_center" d="M 220 400 Q 220.5 399.5 220 399 Q 219.5 399.5 220 400 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  
+  <!-- Tail Feather Right 3 -->
+  <path id="tail_right_3_main" d="M 200 360 Q 210 370 220 390 Q 225 410 230 420 Q 232 430 235 440 Q 237 445 235 450 Q 233 455 225 460 Q 215 465 205 470 Q 195 475 185 470 Q 175 465 170 460 Q 170 440 170 420" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Tail Right 3 - Eye Pattern -->
+  <path id="tail_right_3_eye_outer" d="M 210 420 Q 200 415 190 420 Q 200 425 210 420 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="tail_right_3_eye_mid" d="M 205 420 Q 200 417 195 420 Q 200 423 205 420 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="tail_right_3_eye_inner" d="M 200 420 Q 199 419 198 420 Q 199 421 200 420 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="tail_right_3_eye_center" d="M 200 420 Q 200.5 419.5 200 419 Q 199.5 419.5 200 420 Z" fill="none" stroke="black" stroke-width="0.6"/>
+  
+  <!-- Wing Left -->
+  <path id="wing_left_main" d="M 180 200 Q 150 210 140 240 Q 135 260 145 280 Q 155 300 180 290 Q 200 280 200 260" fill="none" stroke="black" stroke-width="2"/>
+  <path id="wing_left_feather_1" d="M 170 240 Q 168 245 165 250" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="wing_left_feather_2" d="M 165 250 Q 163 255 170 260" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="wing_left_feather_3" d="M 160 270 Q 158 275 155 280" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Wing Right -->
+  <path id="wing_right_main" d="M 220 200 Q 250 210 260 240 Q 265 260 255 280 Q 245 300 220 290 Q 200 280 200 260" fill="none" stroke="black" stroke-width="2"/>
+  <path id="wing_right_feather_1" d="M 230 240 Q 232 245 235 250" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="wing_right_feather_2" d="M 235 250 Q 237 255 230 260" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="wing_right_feather_3" d="M 240 270 Q 242 275 245 280" fill="none" stroke="black" stroke-width="1.5"/>
+</svg>

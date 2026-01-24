@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <!-- Very complex mandala with intricate patterns -->
+  <!-- Center -->
+  <path id="center" d="M 150 150 Q 155 150 155 145 Q 155 140 150 140 Q 145 140 145 145 Q 145 150 150 150 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Inner ring 1 -->
+  <path id="ring_1" d="M 150 130 Q 170 130 170 150 Q 170 170 150 170 Q 130 170 130 150 Q 130 130 150 130 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Inner patterns -->
+  <path id="pattern_1_1" d="M 150 130 L 160 140 L 150 150 L 140 140 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pattern_1_2" d="M 170 150 L 160 160 L 150 150 L 160 140 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pattern_1_3" d="M 150 170 L 140 160 L 150 150 L 160 160 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pattern_1_4" d="M 130 150 L 140 140 L 150 150 L 140 160 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Ring 2 -->
+  <path id="ring_2" d="M 150 110 Q 190 110 190 150 Q 190 190 150 190 Q 110 190 110 150 Q 110 110 150 110 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Petals ring 2 -->
+  <path id="petal_2_n" d="M 150 110 Q 165 100 180 110 Q 165 120 150 115 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_2_ne" d="M 190 150 Q 200 135 200 150 Q 200 165 190 160 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_2_e" d="M 190 150 Q 200 165 190 180 Q 180 165 185 150 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_2_se" d="M 190 190 Q 200 205 190 190 Q 180 185 185 190 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_2_s" d="M 150 190 Q 135 200 120 190 Q 135 180 150 185 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_2_sw" d="M 110 190 Q 100 175 110 190 Q 120 185 115 190 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_2_w" d="M 110 150 Q 100 135 110 120 Q 120 135 115 150 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_2_nw" d="M 110 110 Q 100 125 110 110 Q 120 115 115 110 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Ring 3 -->
+  <path id="ring_3" d="M 150 80 Q 220 80 220 150 Q 220 220 150 220 Q 80 220 80 150 Q 80 80 150 80 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Complex patterns ring 3 -->
+  <path id="pattern_3_1" d="M 150 80 L 190 120 L 150 160 L 110 120 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pattern_3_2" d="M 220 150 L 180 190 L 140 150 L 180 110 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pattern_3_3" d="M 150 220 L 110 180 L 150 140 L 190 180 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pattern_3_4" d="M 80 150 L 120 110 L 160 150 L 120 190 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Ring 4 outer -->
+  <path id="ring_4" d="M 150 50 Q 250 50 250 150 Q 250 250 150 250 Q 50 250 50 150 Q 50 50 150 50 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Outer decorative elements -->
+  <path id="decoration_n" d="M 150 50 L 150 20 L 165 20 L 165 50 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_n_detail" d="M 150 30 L 160 25 L 150 20 L 140 25 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="decoration_ne" d="M 250 150 L 280 150 L 280 165 L 250 165 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_ne_detail" d="M 265 150 L 275 155 L 265 160 L 255 155 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="decoration_e" d="M 250 150 L 280 150 L 280 135 L 250 135 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_e_detail" d="M 265 150 L 275 145 L 265 140 L 255 145 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="decoration_se" d="M 250 250 L 280 250 L 280 235 L 250 235 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_se_detail" d="M 265 250 L 275 245 L 265 240 L 255 245 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="decoration_s" d="M 150 250 L 150 280 L 135 280 L 135 250 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_s_detail" d="M 150 270 L 140 275 L 150 280 L 160 275 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="decoration_sw" d="M 50 250 L 20 250 L 20 235 L 50 235 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_sw_detail" d="M 35 250 L 25 245 L 35 240 L 45 245 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="decoration_w" d="M 50 150 L 20 150 L 20 165 L 50 165 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_w_detail" d="M 35 150 L 25 155 L 35 160 L 45 155 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <path id="decoration_nw" d="M 50 50 L 20 50 L 20 65 L 50 65 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_nw_detail" d="M 35 50 L 25 55 L 35 60 L 45 55 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Additional inner details -->
+  <path id="detail_center_1" d="M 150 145 Q 152 147 150 149 Q 148 147 150 145 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="detail_center_2" d="M 150 151 Q 152 153 150 155 Q 148 153 150 151 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="detail_center_3" d="M 145 150 Q 147 152 145 154 Q 143 152 145 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="detail_center_4" d="M 155 150 Q 157 152 155 154 Q 153 152 155 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
+</svg>

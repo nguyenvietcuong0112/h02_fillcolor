@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <!-- Complex mandala with many patterns -->
+  <!-- Center circle -->
+  <path id="center" d="M 150 150 Q 160 150 160 140 Q 160 130 150 130 Q 140 130 140 140 Q 140 150 150 150 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Inner ring -->
+  <path id="ring_1" d="M 150 120 Q 180 120 180 150 Q 180 180 150 180 Q 120 180 120 150 Q 120 120 150 120 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Petals in ring 1 -->
+  <path id="petal_1_n" d="M 150 120 Q 160 110 170 120 Q 160 130 150 125 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_1_ne" d="M 180 150 Q 190 140 190 150 Q 190 160 180 155 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_1_e" d="M 180 150 Q 190 160 180 170 Q 170 160 175 150 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_1_se" d="M 180 180 Q 190 190 180 190 Q 170 185 175 180 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_1_s" d="M 150 180 Q 140 190 130 180 Q 140 170 150 175 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_1_sw" d="M 120 180 Q 110 170 120 170 Q 130 175 125 180 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_1_w" d="M 120 150 Q 110 140 120 130 Q 130 140 125 150 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_1_nw" d="M 120 120 Q 110 130 120 130 Q 130 125 125 120 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Second ring -->
+  <path id="ring_2" d="M 150 90 Q 210 90 210 150 Q 210 210 150 210 Q 90 210 90 150 Q 90 90 150 90 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Decorative patterns in ring 2 -->
+  <path id="pattern_2_1" d="M 150 90 L 170 110 L 150 130 L 130 110 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pattern_2_2" d="M 210 150 L 190 170 L 170 150 L 190 130 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pattern_2_3" d="M 150 210 L 130 190 L 150 170 L 170 190 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pattern_2_4" d="M 90 150 L 110 130 L 130 150 L 110 170 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Third ring -->
+  <path id="ring_3" d="M 150 60 Q 240 60 240 150 Q 240 240 150 240 Q 60 240 60 150 Q 60 60 150 60 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Outer decorative elements -->
+  <path id="decoration_n" d="M 150 60 L 150 30 L 160 30 L 160 60 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_ne" d="M 240 150 L 270 150 L 270 160 L 240 160 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_e" d="M 240 150 L 270 150 L 270 140 L 240 140 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_se" d="M 240 240 L 270 240 L 270 230 L 240 230 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_s" d="M 150 240 L 150 270 L 140 270 L 140 240 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_sw" d="M 60 240 L 30 240 L 30 230 L 60 230 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_w" d="M 60 150 L 30 150 L 30 160 L 60 160 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="decoration_nw" d="M 60 60 L 30 60 L 30 70 L 60 70 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Inner details -->
+  <path id="detail_1" d="M 150 140 Q 155 145 150 150 Q 145 145 150 140 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="detail_2" d="M 150 150 Q 155 155 150 160 Q 145 155 150 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="detail_3" d="M 140 150 Q 145 155 140 160 Q 135 155 140 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="detail_4" d="M 160 150 Q 165 155 160 160 Q 155 155 160 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
+</svg>

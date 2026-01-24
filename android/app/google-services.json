@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "860737213691",
+    "project_id": "h02-colorfill",
+    "storage_bucket": "h02-colorfill.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860737213691:android:95dab32e46724802cbcc5e",
+        "android_client_info": {
+          "package_name": "com.fillcolor.coloringbook.paint.colorart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpDuhEJ_yxP0BHdIn16kBSvicq-Gu8Ae8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

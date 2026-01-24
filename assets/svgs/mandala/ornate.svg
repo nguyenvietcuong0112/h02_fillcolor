@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <!-- Ornate Mandala with intricate patterns -->
+  
+  <!-- Outer Circle -->
+  <path id="outer_circle" d="M 200 50 Q 250 50 300 100 Q 350 150 350 200 Q 350 250 300 300 Q 250 350 200 350 Q 150 350 100 300 Q 50 250 50 200 Q 50 150 100 100 Q 150 50 200 50 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Outer Petals -->
+  <path id="petal_outer_1" d="M 200 50 Q 220 60 230 80 Q 240 100 230 120 Q 220 140 200 130 Q 180 120 170 100 Q 160 80 170 60 Q 180 50 200 50" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="petal_outer_2" d="M 350 200 Q 340 220 320 230 Q 300 240 280 230 Q 260 220 250 200 Q 260 180 280 170 Q 300 160 320 170 Q 340 180 350 200" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="petal_outer_3" d="M 200 350 Q 180 340 170 320 Q 160 300 170 280 Q 180 260 200 270 Q 220 280 230 300 Q 240 320 230 340 Q 220 350 200 350" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="petal_outer_4" d="M 50 200 Q 60 180 80 170 Q 100 160 120 170 Q 140 180 150 200 Q 140 220 120 230 Q 100 240 80 230 Q 60 220 50 200" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Second Circle -->
+  <path id="circle_2" d="M 200 80 Q 230 80 260 110 Q 290 140 290 200 Q 290 260 260 290 Q 230 320 200 320 Q 170 320 140 290 Q 110 260 110 200 Q 110 140 140 110 Q 170 80 200 80 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Inner Petals Layer 1 -->
+  <path id="petal_inner_1_1" d="M 200 80 Q 215 90 220 110 Q 225 130 220 150 Q 215 170 200 160 Q 185 150 180 130 Q 175 110 180 90 Q 185 80 200 80" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="petal_inner_1_2" d="M 290 200 Q 280 215 260 220 Q 240 225 220 220 Q 200 215 190 200 Q 200 185 220 180 Q 240 175 260 180 Q 280 185 290 200" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="petal_inner_1_3" d="M 200 320 Q 185 310 180 290 Q 175 270 180 250 Q 185 230 200 240 Q 215 250 220 270 Q 225 290 220 310 Q 215 320 200 320" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="petal_inner_1_4" d="M 110 200 Q 120 185 140 180 Q 160 175 180 180 Q 200 185 210 200 Q 200 215 180 220 Q 160 225 140 220 Q 120 215 110 200" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Third Circle -->
+  <path id="circle_3" d="M 200 110 Q 220 110 240 130 Q 260 150 260 200 Q 260 250 240 270 Q 220 290 200 290 Q 180 290 160 270 Q 140 250 140 200 Q 140 150 160 130 Q 180 110 200 110 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Inner Petals Layer 2 -->
+  <path id="petal_inner_2_1" d="M 200 110 Q 210 115 215 130 Q 220 145 215 160 Q 210 175 200 170 Q 190 165 185 150 Q 180 135 185 120 Q 190 110 200 110" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="petal_inner_2_2" d="M 260 200 Q 255 210 240 215 Q 225 220 210 215 Q 195 210 190 200 Q 195 190 210 185 Q 225 180 240 185 Q 255 190 260 200" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="petal_inner_2_3" d="M 200 290 Q 190 285 185 270 Q 180 255 185 240 Q 190 225 200 230 Q 210 235 215 250 Q 220 265 215 280 Q 210 290 200 290" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="petal_inner_2_4" d="M 140 200 Q 145 190 160 185 Q 175 180 190 185 Q 205 190 210 200 Q 205 210 190 215 Q 175 220 160 215 Q 145 210 140 200" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Center Circle -->
+  <path id="center_circle" d="M 200 140 Q 215 140 230 155 Q 245 170 245 200 Q 245 230 230 245 Q 215 260 200 260 Q 185 260 170 245 Q 155 230 155 200 Q 155 170 170 155 Q 185 140 200 140 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Center Patterns -->
+  <path id="center_pattern_1" d="M 200 140 Q 210 145 215 155 Q 220 165 215 175 Q 210 185 200 180 Q 190 175 185 165 Q 180 155 185 145 Q 190 140 200 140" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="center_pattern_2" d="M 245 200 Q 240 210 230 215 Q 220 220 210 215 Q 200 210 195 200 Q 200 190 210 185 Q 220 180 230 185 Q 240 190 245 200" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="center_pattern_3" d="M 200 260 Q 190 255 185 245 Q 180 235 185 225 Q 190 215 200 220 Q 210 225 215 235 Q 220 245 215 255 Q 210 260 200 260" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="center_pattern_4" d="M 155 200 Q 160 190 170 185 Q 180 180 190 185 Q 200 190 205 200 Q 200 210 190 215 Q 180 220 170 215 Q 160 210 155 200" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Inner Core -->
+  <path id="inner_core" d="M 200 170 Q 210 170 220 180 Q 230 190 230 200 Q 230 210 220 220 Q 210 230 200 230 Q 190 230 180 220 Q 170 210 170 200 Q 170 190 180 180 Q 190 170 200 170 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Core Details -->
+  <path id="core_detail_1" d="M 200 170 Q 205 175 207 180 Q 209 185 207 190 Q 205 195 200 190 Q 195 185 193 180 Q 191 175 193 170 Q 195 170 200 170" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="core_detail_2" d="M 230 200 Q 225 205 220 207 Q 215 209 210 207 Q 205 205 200 200 Q 205 195 210 193 Q 215 191 220 193 Q 225 195 230 200" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="core_detail_3" d="M 200 230 Q 195 225 193 220 Q 191 215 193 210 Q 195 205 200 210 Q 205 215 207 220 Q 209 225 207 230 Q 205 230 200 230" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="core_detail_4" d="M 170 200 Q 175 195 180 193 Q 185 191 190 193 Q 195 195 200 200 Q 195 205 190 207 Q 185 209 180 207 Q 175 205 170 200" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Decorative Elements Between Layers -->
+  <path id="decor_1" d="M 200 100 Q 205 105 200 110 Q 195 105 200 100" fill="none" stroke="black" stroke-width="1"/>
+  <path id="decor_2" d="M 300 200 Q 295 205 290 200 Q 295 195 300 200" fill="none" stroke="black" stroke-width="1"/>
+  <path id="decor_3" d="M 200 300 Q 195 295 200 290 Q 205 295 200 300" fill="none" stroke="black" stroke-width="1"/>
+  <path id="decor_4" d="M 100 200 Q 105 195 110 200 Q 105 205 100 200" fill="none" stroke="black" stroke-width="1"/>
+  
+  <!-- Additional Ornamental Patterns -->
+  <path id="ornament_1" d="M 250 150 Q 260 140 270 150 Q 260 160 250 150" fill="none" stroke="black" stroke-width="1"/>
+  <path id="ornament_2" d="M 350 200 Q 340 210 330 200 Q 340 190 350 200" fill="none" stroke="black" stroke-width="1"/>
+  <path id="ornament_3" d="M 250 250 Q 260 260 270 250 Q 260 240 250 250" fill="none" stroke="black" stroke-width="1"/>
+  <path id="ornament_4" d="M 150 250 Q 140 240 130 250 Q 140 260 150 250" fill="none" stroke="black" stroke-width="1"/>
+  <path id="ornament_5" d="M 50 200 Q 60 190 70 200 Q 60 210 50 200" fill="none" stroke="black" stroke-width="1"/>
+  <path id="ornament_6" d="M 150 150 Q 140 160 130 150 Q 140 140 150 150" fill="none" stroke="black" stroke-width="1"/>
+</svg>
+

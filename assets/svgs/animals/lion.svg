@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <!-- Complex lion with mane and details -->
+  <!-- Mane outer -->
+  <path id="mane_outer" d="M 150 60 Q 200 50 240 70 Q 260 90 250 120 Q 240 150 220 170 Q 200 180 150 175 Q 100 180 80 170 Q 60 150 50 120 Q 40 90 60 70 Q 100 50 150 60 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Mane inner layers -->
+  <path id="mane_layer_1" d="M 150 70 Q 190 65 220 80 Q 235 95 230 115 Q 225 135 210 145 Q 195 150 150 148 Q 105 150 90 145 Q 75 135 70 115 Q 65 95 80 80 Q 110 65 150 70 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="mane_layer_2" d="M 150 80 Q 180 78 200 90 Q 210 100 208 115 Q 206 130 195 138 Q 185 142 150 140 Q 115 142 105 138 Q 94 130 92 115 Q 90 100 100 90 Q 120 78 150 80 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Head -->
+  <path id="head" d="M 150 100 Q 180 95 200 110 Q 210 125 205 145 Q 200 165 180 175 Q 160 180 150 175 Q 140 180 120 175 Q 100 165 95 145 Q 90 125 100 110 Q 120 95 150 100 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Ears -->
+  <path id="ear_left" d="M 120 110 L 110 85 L 130 100 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="ear_right" d="M 180 110 L 190 85 L 170 100 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="ear_left_inner" d="M 120 105 L 115 92 L 125 100 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="ear_right_inner" d="M 180 105 L 185 92 L 175 100 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Eyes -->
+  <path id="eye_left" d="M 135 125 Q 145 120 155 125 Q 145 130 135 125 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="eye_right" d="M 145 125 Q 155 120 165 125 Q 155 130 145 125 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pupil_left" d="M 140 125 Q 145 123 150 125 Q 145 127 140 125 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="pupil_right" d="M 150 125 Q 155 123 160 125 Q 155 127 150 125 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Nose -->
+  <path id="nose" d="M 150 140 Q 160 145 150 150 Q 140 145 150 140 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="nostril_left" d="M 145 143 Q 147 145 145 147 Q 143 145 145 143 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="nostril_right" d="M 155 143 Q 157 145 155 147 Q 153 145 155 143 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Mouth -->
+  <path id="mouth" d="M 150 150 Q 140 160 130 155 Q 125 153 130 150 Q 140 145 150 150 Q 160 145 170 150 Q 175 153 170 155 Q 160 160 150 150 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Body -->
+  <path id="body" d="M 150 175 Q 120 185 100 210 Q 85 235 95 255 Q 105 275 130 280 Q 150 282 170 280 Q 195 275 205 255 Q 215 235 200 210 Q 180 185 150 175 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Chest -->
+  <path id="chest" d="M 150 185 Q 140 195 135 210 Q 140 225 150 235 Q 160 225 165 210 Q 160 195 150 185 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Front legs -->
+  <path id="leg_front_left" d="M 120 220 L 110 270 L 125 270 L 135 220 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="leg_front_right" d="M 180 220 L 170 270 L 185 270 L 195 220 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="paw_front_left" d="M 110 270 Q 115 280 110 290 Q 105 280 110 270 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="paw_front_right" d="M 185 270 Q 190 280 185 290 Q 180 280 185 270 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Back legs -->
+  <path id="leg_back_left" d="M 105 250 L 95 290 L 110 290 L 120 250 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="leg_back_right" d="M 195 250 L 185 290 L 200 290 L 210 250 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="paw_back_left" d="M 95 290 Q 100 300 95 310 Q 90 300 95 290 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="paw_back_right" d="M 200 290 Q 205 300 200 310 Q 195 300 200 290 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Tail -->
+  <path id="tail" d="M 150 280 Q 140 285 130 295 Q 120 305 110 315 Q 115 310 125 300 Q 135 290 150 285 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="tail_tip" d="M 110 315 Q 105 320 100 315 Q 105 310 110 315 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="tail_tuft" d="M 110 315 Q 115 318 110 321 Q 105 318 110 315 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Mane details -->
+  <path id="mane_detail_1" d="M 200 90 Q 210 100 200 110 Q 190 100 200 90 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="mane_detail_2" d="M 100 90 Q 90 100 100 110 Q 110 100 100 90 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="mane_detail_3" d="M 230 120 Q 240 130 230 140 Q 220 130 230 120 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="mane_detail_4" d="M 70 120 Q 60 130 70 140 Q 80 130 70 120 Z" fill="none" stroke="black" stroke-width="1.5"/>
+</svg>

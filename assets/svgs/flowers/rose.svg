@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <!-- Complex rose with many petals -->
+  <!-- Outer petals -->
+  <path id="petal_outer_1" d="M 150 100 Q 130 80 110 90 Q 100 100 105 115 Q 110 130 125 135 Q 140 130 150 120 Q 160 130 175 135 Q 190 130 195 115 Q 200 100 190 90 Q 170 80 150 100 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_outer_2" d="M 150 90 Q 170 70 190 80 Q 200 90 195 105 Q 190 120 175 125 Q 160 120 150 110 Q 140 120 125 125 Q 110 120 105 105 Q 100 90 110 80 Q 130 70 150 90 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_outer_3" d="M 150 110 Q 140 90 120 95 Q 110 105 115 120 Q 120 135 135 140 Q 150 135 165 140 Q 180 135 185 120 Q 190 105 180 95 Q 160 90 150 110 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_outer_4" d="M 150 100 Q 160 80 180 85 Q 190 95 185 110 Q 180 125 165 130 Q 150 125 135 130 Q 120 125 115 110 Q 110 95 120 85 Q 140 80 150 100 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Middle petals -->
+  <path id="petal_middle_1" d="M 150 110 Q 140 100 135 110 Q 130 120 135 130 Q 140 140 150 135 Q 160 140 165 130 Q 170 120 165 110 Q 160 100 150 110 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_middle_2" d="M 150 105 Q 160 95 165 105 Q 170 115 165 125 Q 160 135 150 130 Q 140 135 135 125 Q 130 115 135 105 Q 140 95 150 105 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_middle_3" d="M 150 115 Q 145 105 140 115 Q 135 125 140 135 Q 145 145 150 140 Q 155 145 160 135 Q 165 125 160 115 Q 155 105 150 115 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Inner petals -->
+  <path id="petal_inner_1" d="M 150 120 Q 145 115 142 120 Q 140 125 142 130 Q 145 135 150 132 Q 155 135 158 130 Q 160 125 158 120 Q 155 115 150 120 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="petal_inner_2" d="M 150 118 Q 155 113 158 118 Q 160 123 158 128 Q 155 133 150 130 Q 145 133 142 128 Q 140 123 142 118 Q 145 113 150 118 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Center -->
+  <path id="center" d="M 150 125 Q 148 123 146 125 Q 144 127 146 129 Q 148 131 150 129 Q 152 131 154 129 Q 156 127 154 125 Q 152 123 150 125 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="center_dot" d="M 150 127 Q 151 128 150 129 Q 149 128 150 127 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Sepals -->
+  <path id="sepal_1" d="M 150 150 Q 145 155 140 150 Q 135 145 140 140 Q 145 135 150 140 Q 155 135 160 140 Q 165 145 160 150 Q 155 155 150 150 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="sepal_2" d="M 150 152 Q 142 158 135 152 Q 130 148 135 143 Q 142 137 150 143 Q 158 137 165 143 Q 170 148 165 152 Q 158 158 150 152 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="sepal_3" d="M 150 148 Q 158 142 165 148 Q 170 152 165 157 Q 158 163 150 157 Q 142 163 135 157 Q 130 152 135 148 Q 142 142 150 148 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Stem -->
+  <path id="stem" d="M 150 160 L 150 250 L 155 250 L 155 160 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Leaves -->
+  <path id="leaf_1" d="M 150 180 Q 140 185 135 180 Q 130 175 135 170 Q 140 165 150 170 Q 160 165 165 170 Q 170 175 165 180 Q 160 185 150 180 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="leaf_1_vein" d="M 150 180 L 145 175" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="leaf_2" d="M 150 210 Q 160 215 165 210 Q 170 205 165 200 Q 160 195 150 200 Q 140 195 135 200 Q 130 205 135 210 Q 140 215 150 210 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="leaf_2_vein" d="M 150 210 L 160 205" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="leaf_3" d="M 150 230 Q 145 235 140 230 Q 135 225 140 220 Q 145 215 150 220 Q 155 215 160 220 Q 165 225 160 230 Q 155 235 150 230 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="leaf_3_vein" d="M 150 230 L 145 225" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Thorns -->
+  <path id="thorn_1" d="M 152 175 L 154 180 L 152 182 L 150 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="thorn_2" d="M 148 195 L 150 200 L 148 202 L 146 200 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="thorn_3" d="M 152 215 L 154 220 L 152 222 L 150 220 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="thorn_4" d="M 148 235 L 150 240 L 148 242 L 146 240 Z" fill="none" stroke="black" stroke-width="1.5"/>
+</svg>

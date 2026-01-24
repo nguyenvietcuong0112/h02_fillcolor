@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <!-- Ultra Detailed Butterfly - Every small detail is a separate fillable path -->
+  
+  <!-- Left Upper Wing - Main Shape -->
+  <path id="wing_left_upper_main" d="M 100 150 Q 50 100 30 150 Q 20 200 50 220 Q 80 240 120 200 Q 140 180 120 160 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Left Upper Wing - Pattern Sections (each is fillable) -->
+  <path id="wing_left_upper_section_1" d="M 100 150 Q 80 140 60 150 Q 50 160 50 180 Q 50 200 70 220 Q 90 240 120 200 Q 140 180 120 160 Q 110 150 100 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="wing_left_upper_section_2" d="M 60 150 Q 50 160 50 180 Q 50 200 70 220 Q 80 230 90 220 Q 100 210 100 190 Q 100 170 80 160 Q 70 155 60 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="wing_left_upper_section_3" d="M 50 180 Q 50 200 70 220 Q 85 225 90 220 Q 95 215 95 200 Q 95 185 80 180 Q 70 178 60 180 Q 55 180 50 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Left Upper Wing - Small Decorative Circles -->
+  <path id="wing_left_upper_circle_1" d="M 70 160 Q 72 158 74 160 Q 72 162 70 160 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_circle_2" d="M 65 175 Q 67 173 69 175 Q 67 177 65 175 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_circle_3" d="M 60 190 Q 62 188 64 190 Q 62 192 60 190 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_circle_4" d="M 75 185 Q 77 183 79 185 Q 77 187 75 185 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_circle_5" d="M 80 200 Q 82 198 84 200 Q 82 202 80 200 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_circle_6" d="M 90 195 Q 92 193 94 195 Q 92 197 90 195 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_circle_7" d="M 95 210 Q 97 208 99 210 Q 97 212 95 210 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_circle_8" d="M 85 215 Q 87 213 89 215 Q 87 217 85 215 Z" fill="none" stroke="black" stroke-width="1"/>
+  
+  <!-- Left Upper Wing - Small Pattern Dots -->
+  <path id="wing_left_upper_dot_1" d="M 72 165 Q 73 164 74 165 Q 73 166 72 165 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="wing_left_upper_dot_2" d="M 68 180 Q 69 179 70 180 Q 69 181 68 180 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="wing_left_upper_dot_3" d="M 78 175 Q 79 174 80 175 Q 79 176 78 175 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="wing_left_upper_dot_4" d="M 73 195 Q 74 194 75 195 Q 74 196 73 195 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="wing_left_upper_dot_5" d="M 88 205 Q 89 204 90 205 Q 89 206 88 205 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  
+  <!-- Left Upper Wing - Border Lines (each segment fillable) -->
+  <path id="wing_left_upper_border_1" d="M 100 150 Q 90 145 80 150" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_border_2" d="M 80 150 Q 70 155 60 160" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_border_3" d="M 60 160 Q 55 170 50 180" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_border_4" d="M 50 180 Q 55 190 60 200" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_border_5" d="M 60 200 Q 70 210 80 220" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_upper_border_6" d="M 80 220 Q 95 215 110 205" fill="none" stroke="black" stroke-width="1"/>
+  
+  <!-- Left Lower Wing - Main Shape -->
+  <path id="wing_left_lower_main" d="M 100 200 Q 60 240 40 280 Q 30 300 50 310 Q 70 320 100 280 Q 120 250 110 220 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Left Lower Wing - Pattern Sections -->
+  <path id="wing_left_lower_section_1" d="M 100 200 Q 80 220 60 240 Q 50 260 50 280 Q 50 300 70 310 Q 90 320 110 300 Q 120 280 110 260 Q 110 240 110 220 Q 105 210 100 200 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="wing_left_lower_section_2" d="M 60 240 Q 50 260 50 280 Q 50 300 70 310 Q 80 315 90 310 Q 100 305 100 285 Q 100 265 90 255 Q 80 250 70 245 Q 65 242 60 240 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Left Lower Wing - Small Circles -->
+  <path id="wing_left_lower_circle_1" d="M 70 250 Q 72 248 74 250 Q 72 252 70 250 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_lower_circle_2" d="M 65 270 Q 67 268 69 270 Q 67 272 65 270 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_lower_circle_3" d="M 75 265 Q 77 263 79 265 Q 77 267 75 265 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_lower_circle_4" d="M 60 290 Q 62 288 64 290 Q 62 292 60 290 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_left_lower_circle_5" d="M 80 295 Q 82 293 84 295 Q 82 297 80 295 Z" fill="none" stroke="black" stroke-width="1"/>
+  
+  <!-- Right Upper Wing - Main Shape -->
+  <path id="wing_right_upper_main" d="M 300 150 Q 350 100 370 150 Q 380 200 350 220 Q 320 240 280 200 Q 260 180 280 160 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Right Upper Wing - Pattern Sections -->
+  <path id="wing_right_upper_section_1" d="M 300 150 Q 320 140 340 150 Q 350 160 350 180 Q 350 200 330 220 Q 310 240 280 200 Q 260 180 280 160 Q 290 150 300 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="wing_right_upper_section_2" d="M 340 150 Q 350 160 350 180 Q 350 200 330 220 Q 320 230 310 220 Q 300 210 300 190 Q 300 170 320 160 Q 330 155 340 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="wing_right_upper_section_3" d="M 350 180 Q 350 200 330 220 Q 315 225 310 220 Q 305 215 305 200 Q 305 185 320 180 Q 330 178 340 180 Q 345 180 350 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Right Upper Wing - Small Decorative Circles -->
+  <path id="wing_right_upper_circle_1" d="M 330 160 Q 328 158 326 160 Q 328 162 330 160 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_upper_circle_2" d="M 335 175 Q 333 173 331 175 Q 333 177 335 175 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_upper_circle_3" d="M 340 190 Q 338 188 336 190 Q 338 192 340 190 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_upper_circle_4" d="M 325 185 Q 323 183 321 185 Q 323 187 325 185 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_upper_circle_5" d="M 320 200 Q 318 198 316 200 Q 318 202 320 200 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_upper_circle_6" d="M 310 195 Q 308 193 306 195 Q 308 197 310 195 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_upper_circle_7" d="M 305 210 Q 303 208 301 210 Q 303 212 305 210 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_upper_circle_8" d="M 315 215 Q 313 213 311 215 Q 313 217 315 215 Z" fill="none" stroke="black" stroke-width="1"/>
+  
+  <!-- Right Upper Wing - Small Pattern Dots -->
+  <path id="wing_right_upper_dot_1" d="M 328 165 Q 327 164 326 165 Q 327 166 328 165 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="wing_right_upper_dot_2" d="M 332 180 Q 331 179 330 180 Q 331 181 332 180 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="wing_right_upper_dot_3" d="M 322 175 Q 321 174 320 175 Q 321 176 322 175 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="wing_right_upper_dot_4" d="M 327 195 Q 326 194 325 195 Q 326 196 327 195 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  <path id="wing_right_upper_dot_5" d="M 312 205 Q 311 204 310 205 Q 311 206 312 205 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  
+  <!-- Right Lower Wing - Main Shape -->
+  <path id="wing_right_lower_main" d="M 300 200 Q 340 240 360 280 Q 370 300 350 310 Q 330 320 300 280 Q 280 250 290 220 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Right Lower Wing - Pattern Sections -->
+  <path id="wing_right_lower_section_1" d="M 300 200 Q 320 220 340 240 Q 350 260 350 280 Q 350 300 330 310 Q 310 320 290 300 Q 280 280 290 260 Q 290 240 290 220 Q 295 210 300 200 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="wing_right_lower_section_2" d="M 340 240 Q 350 260 350 280 Q 350 300 330 310 Q 320 315 310 310 Q 300 305 300 285 Q 300 265 310 255 Q 320 250 330 245 Q 335 242 340 240 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Right Lower Wing - Small Circles -->
+  <path id="wing_right_lower_circle_1" d="M 330 250 Q 328 248 326 250 Q 328 252 330 250 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_lower_circle_2" d="M 335 270 Q 333 268 331 270 Q 333 272 335 270 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_lower_circle_3" d="M 325 265 Q 323 263 321 265 Q 323 267 325 265 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_lower_circle_4" d="M 340 290 Q 338 288 336 290 Q 338 292 340 290 Z" fill="none" stroke="black" stroke-width="1"/>
+  <path id="wing_right_lower_circle_5" d="M 320 295 Q 318 293 316 295 Q 318 297 320 295 Z" fill="none" stroke="black" stroke-width="1"/>
+  
+  <!-- Body - Each Segment Fillable -->
+  <path id="body_segment_1" d="M 200 120 Q 195 125 200 130 Q 205 125 200 120 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_2" d="M 200 130 Q 195 135 200 140 Q 205 135 200 130 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_3" d="M 200 140 Q 195 145 200 150 Q 205 145 200 140 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_4" d="M 200 150 Q 195 155 200 160 Q 205 155 200 150 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_5" d="M 200 160 Q 195 165 200 170 Q 205 165 200 160 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_6" d="M 200 170 Q 195 175 200 180 Q 205 175 200 170 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_7" d="M 200 180 Q 195 185 200 190 Q 205 185 200 180 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_8" d="M 200 190 Q 195 195 200 200 Q 205 195 200 190 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_9" d="M 200 200 Q 195 205 200 210 Q 205 205 200 200 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_10" d="M 200 210 Q 195 215 200 220 Q 205 215 200 210 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_11" d="M 200 220 Q 195 225 200 230 Q 205 225 200 220 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_12" d="M 200 230 Q 195 235 200 240 Q 205 235 200 230 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_13" d="M 200 240 Q 195 245 200 250 Q 205 245 200 240 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_14" d="M 200 250 Q 195 255 200 260 Q 205 255 200 250 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_15" d="M 200 260 Q 195 265 200 270 Q 205 265 200 260 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  <path id="body_segment_16" d="M 200 270 Q 195 275 200 280 Q 205 275 200 270 Z" fill="none" stroke="black" stroke-width="2.5"/>
+  
+  <!-- Body Connecting Lines -->
+  <path id="body_line_1" d="M 190 140 Q 200 150 210 140" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="body_line_2" d="M 190 180 Q 200 190 210 180" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="body_line_3" d="M 190 220 Q 200 230 210 220" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="body_line_4" d="M 190 260 Q 200 270 210 260" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Head -->
+  <path id="head" d="M 200 120 Q 195 110 200 100 Q 205 110 200 120 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="head_left" d="M 200 120 Q 195 115 195 110 Q 195 115 200 120" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="head_right" d="M 200 120 Q 205 115 205 110 Q 205 115 200 120" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="head_top" d="M 200 100 Q 198 105 200 110 Q 202 105 200 100" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Antenna Left -->
+  <path id="antenna_left_base" d="M 195 100 Q 193 95 190 90" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="antenna_left_mid" d="M 190 90 Q 188 88 185 85" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="antenna_left_tip" d="M 185 85 Q 183 83 185 81 Q 187 83 185 85" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="antenna_left_dot" d="M 187 83 Q 186 82 185 83 Q 186 84 187 83 Z" fill="none" stroke="black" stroke-width="0.8"/>
+  
+  <!-- Antenna Right -->
+  <path id="antenna_right_base" d="M 205 100 Q 207 95 210 90" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="antenna_right_mid" d="M 210 90 Q 212 88 215 85" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="antenna_right_tip" d="M 215 85 Q 217 83 215 81 Q 213 83 215 85" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="antenna_right_dot" d="M 213 83 Q 214 82 215 83 Q 214 84 213 83 Z" fill="none" stroke="black" stroke-width="0.8"/>
+</svg>

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <!-- Complex dog with many fillable regions -->
+  <!-- Head -->
+  <path id="head" d="M 150 70 Q 180 60 200 75 Q 210 90 205 110 Q 200 130 180 140 Q 160 145 150 140 Q 140 145 120 140 Q 100 130 95 110 Q 90 90 100 75 Q 120 60 150 70 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Snout -->
+  <path id="snout" d="M 150 120 Q 170 125 180 120 Q 185 115 180 110 Q 175 105 170 110 Q 160 115 150 115 Q 140 115 130 110 Q 125 105 120 110 Q 115 115 120 120 Q 130 125 150 120 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Ears -->
+  <path id="ear_left" d="M 120 85 L 105 50 L 130 70 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="ear_right" d="M 180 85 L 195 50 L 170 70 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="ear_left_inner" d="M 120 80 L 112 60 L 125 72 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="ear_right_inner" d="M 180 80 L 188 60 L 175 72 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Eyes -->
+  <path id="eye_left" d="M 130 95 Q 138 90 145 95 Q 138 100 130 95 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="eye_right" d="M 155 95 Q 163 90 170 95 Q 163 100 155 95 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="pupil_left" d="M 137 95 Q 140 93 143 95 Q 140 97 137 95 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="pupil_right" d="M 162 95 Q 165 93 168 95 Q 165 97 162 95 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Nose -->
+  <path id="nose" d="M 150 115 Q 160 120 150 125 Q 140 120 150 115 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="nostril_left" d="M 145 118 Q 147 120 145 122 Q 143 120 145 118 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="nostril_right" d="M 155 118 Q 157 120 155 122 Q 153 120 155 118 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Mouth -->
+  <path id="mouth" d="M 150 125 Q 140 135 130 130 Q 125 128 130 125 Q 140 120 150 125 Q 160 120 170 125 Q 175 128 170 130 Q 160 135 150 125 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="tongue" d="M 150 130 Q 145 140 150 145 Q 155 140 150 130 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Body -->
+  <path id="body" d="M 150 140 Q 130 150 115 170 Q 100 190 105 210 Q 110 230 130 245 Q 150 250 170 245 Q 190 230 195 210 Q 200 190 185 170 Q 170 150 150 140 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Chest -->
+  <path id="chest" d="M 150 150 Q 140 160 135 170 Q 140 180 150 190 Q 160 180 165 170 Q 160 160 150 150 Z" fill="none" stroke="black" stroke-width="2"/>
+  
+  <!-- Collar -->
+  <path id="collar" d="M 130 145 Q 150 140 170 145 Q 175 147 170 150 Q 150 155 130 150 Q 125 147 130 145 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="collar_tag" d="M 150 147 Q 155 150 150 153 Q 145 150 150 147 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Front Legs -->
+  <path id="leg_front_left" d="M 130 200 L 120 250 L 135 250 L 145 200 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="leg_front_right" d="M 170 200 L 160 250 L 175 250 L 185 200 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="paw_front_left" d="M 120 250 Q 125 260 120 270 Q 115 260 120 250 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="paw_front_right" d="M 175 250 Q 180 260 175 270 Q 170 260 175 250 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="toe_front_left_1" d="M 122 265 Q 124 270 122 275 Q 120 270 122 265 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="toe_front_left_2" d="M 125 265 Q 127 270 125 275 Q 123 270 125 265 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="toe_front_left_3" d="M 128 265 Q 130 270 128 275 Q 126 270 128 265 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="toe_front_right_1" d="M 172 265 Q 174 270 172 275 Q 170 270 172 265 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="toe_front_right_2" d="M 175 265 Q 177 270 175 275 Q 173 270 175 265 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="toe_front_right_3" d="M 178 265 Q 180 270 178 275 Q 176 270 178 265 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Back Legs -->
+  <path id="leg_back_left" d="M 110 220 L 100 270 L 115 270 L 125 220 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="leg_back_right" d="M 190 220 L 180 270 L 195 270 L 205 220 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="paw_back_left" d="M 100 270 Q 105 280 100 290 Q 95 280 100 270 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="paw_back_right" d="M 195 270 Q 200 280 195 290 Q 190 280 195 270 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="toe_back_left_1" d="M 102 285 Q 104 290 102 295 Q 100 290 102 285 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="toe_back_left_2" d="M 105 285 Q 107 290 105 295 Q 103 290 105 285 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="toe_back_left_3" d="M 108 285 Q 110 290 108 295 Q 106 290 108 285 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="toe_back_right_1" d="M 192 285 Q 194 290 192 295 Q 190 290 192 285 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="toe_back_right_2" d="M 195 285 Q 197 290 195 295 Q 193 290 195 285 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  <path id="toe_back_right_3" d="M 198 285 Q 200 290 198 295 Q 196 290 198 285 Z" fill="none" stroke="black" stroke-width="1.5"/>
+  
+  <!-- Tail -->
+  <path id="tail" d="M 150 245 Q 140 250 130 260 Q 120 270 110 280 Q 115 275 125 265 Q 135 255 150 250 Z" fill="none" stroke="black" stroke-width="2"/>
+  <path id="tail_tip" d="M 110 280 Q 105 285 100 280 Q 105 275 110 280 Z" fill="none" stroke="black" stroke-width="2"/>
+</svg>
