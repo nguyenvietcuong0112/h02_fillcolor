@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/coloring_image_model.dart';
 import '../../data/models/svg_path_data.dart';
@@ -11,6 +12,7 @@ import 'engine/fill_engine.dart';
 import 'engine/brush_engine.dart';
 import 'engine/undo_redo_manager.dart';
 import 'engine/optimized_undo_redo.dart';
+import 'services/coloring_storage_service.dart';
 
 /// Controller for coloring screen
 class ColoringController extends StateNotifier<ColoringState> {
@@ -18,7 +20,7 @@ class ColoringController extends StateNotifier<ColoringState> {
   FillEngine? _fillEngine;
   BrushEngine? _brushEngine;
   UndoRedoManager? _undoRedoManager;
-  SvgPathData? _activeBrushPath;
+  SvgPathData? _activeBrushPath; // Unused field restored check
   OptimizedUndoRedoManager? _optimizedUndoRedo;
   final Map<String, SvgPathData> _pathsMap = {};
 
@@ -26,7 +28,7 @@ class ColoringController extends StateNotifier<ColoringState> {
       : super(
           ColoringState(
             image: _image,
-            mode: ColoringMode.fill,
+            mode: ColoringMode.fill, // Default, sẽ được set lại trong initState của screen
             selectedColor: Color(AppConstants.defaultColors[0]),
             brushSize: AppConstants.defaultBrushSize,
             svgPaths: [],
@@ -48,7 +50,10 @@ class ColoringController extends StateNotifier<ColoringState> {
       }
 
       _fillEngine = FillEngine(_pathsMap);
-      _brushEngine = BrushEngine();
+      _brushEngine = BrushEngine(); // No dependencies needed for simple stoke storage, 
+      // but logic might need to check locks? 
+      // Check locks happens in controller before calling startStroke, so engine can be simple.
+      // Restoring to simple constructor.
       _undoRedoManager = UndoRedoManager(maxSteps: AppConstants.maxUndoRedoSteps);
       _optimizedUndoRedo = OptimizedUndoRedoManager(maxSteps: AppConstants.maxUndoRedoSteps);
 
@@ -56,6 +61,10 @@ class ColoringController extends StateNotifier<ColoringState> {
         svgPaths: paths,
         isLoading: false,
       );
+
+      // Load data của mode hiện tại ngay sau khi parse SVG xong
+      // Để khi vào màn hình, data đã được load sẵn
+      await _loadSavedDataForMode(state.mode);
 
       AnalyticsService.instance.logColoringStarted(_image.id);
     } catch (e) {
@@ -66,12 +75,74 @@ class ColoringController extends StateNotifier<ColoringState> {
     }
   }
 
+
   /// Set coloring mode
+  /// Khi đổi mode, clear data của mode cũ và load data của mode mới
+  /// Nếu mode đã đúng, vẫn load data để đảm bảo data được refresh khi quay lại màn hình
   void setMode(ColoringMode mode) {
-    if (_brushEngine != null && state.mode == ColoringMode.brush) {
-      _brushEngine!.completeStroke();
+    final isModeChanged = state.mode != mode;
+    
+    // Complete current mode's work nếu đổi mode
+    if (isModeChanged && _brushEngine != null && state.mode == ColoringMode.brush) {
+      _brushEngine!.endStroke();
     }
-    state = state.copyWith(mode: mode);
+    
+    // Save current mode's data trước khi switch (chỉ khi đổi mode)
+    if (isModeChanged) {
+      if (state.mode == ColoringMode.fill) {
+        ColoringStorageService.saveFillData(_image, state.filledPaths);
+      } else if (state.mode == ColoringMode.brush) {
+        ColoringStorageService.saveBrushData(_image, state.brushStrokes);
+      }
+    }
+    
+    // Switch mode (nếu đổi)
+    if (isModeChanged) {
+      state = state.copyWith(mode: mode);
+    }
+    
+    // Luôn load data của mode hiện tại để đảm bảo data được refresh
+    // Điều này đảm bảo khi quay lại màn hình, data mới nhất được load
+    _loadSavedDataForMode(mode);
+  }
+  
+  /// Load saved data cho một mode cụ thể
+  Future<void> _loadSavedDataForMode(ColoringMode mode) async {
+    if (mode == ColoringMode.fill) {
+      // Load fill data, clear brush
+      final savedFills = await ColoringStorageService.loadFillData(_image);
+      if (savedFills.isNotEmpty && _fillEngine != null) {
+        for (final entry in savedFills.entries) {
+          _fillEngine!.setFillColor(entry.key, entry.value);
+        }
+        state = state.copyWith(filledPaths: savedFills);
+      } else {
+        state = state.copyWith(filledPaths: {});
+      }
+      
+      // Clear brush data
+      if (_brushEngine != null) {
+        _brushEngine!.endStroke();
+      }
+      state = state.copyWith(brushStrokes: []);
+    } else if (mode == ColoringMode.brush) {
+      // Load brush data, clear fill
+      final savedStrokes = await ColoringStorageService.loadBrushData(_image);
+      if (savedStrokes.isNotEmpty && _brushEngine != null) {
+        for (final stroke in savedStrokes) {
+          _brushEngine!.addStroke(stroke);
+        }
+        state = state.copyWith(brushStrokes: savedStrokes);
+      } else {
+        state = state.copyWith(brushStrokes: []);
+      }
+      
+      // Clear fill data
+      if (_fillEngine != null) {
+        _fillEngine!.clearAllFills();
+      }
+      state = state.copyWith(filledPaths: {});
+    }
   }
 
   /// Set selected color
@@ -97,7 +168,14 @@ class ColoringController extends StateNotifier<ColoringState> {
       _undoRedoManager?.addFillAction({filledPath.id: state.selectedColor});
       _optimizedUndoRedo?.addFillAction({filledPath.id: state.selectedColor});
       state = state.copyWith(filledPaths: newFills);
+      
+      // Auto-save fill data
+      ColoringStorageService.saveFillData(_image, newFills);
+      
       _updateUndoRedoState();
+
+      // Haptic feedback
+      HapticFeedback.mediumImpact();
     }
   }
 
@@ -106,21 +184,26 @@ class ColoringController extends StateNotifier<ColoringState> {
     if (state.mode != ColoringMode.brush || _brushEngine == null) return;
 
     // Lock brush to the region (SVG path) at the first touch point
+    // This implements "Stay inside the lines"
     _activeBrushPath = _fillEngine?.findPathAtPoint(point);
     if (_activeBrushPath == null) {
       // If user starts outside any region, ignore this stroke
       return;
     }
 
+    if (_activeBrushPath!.isLocked) return; // Don't draw on locked paths
+
     if (!_activeBrushPath!.containsPoint(point)) return;
 
-    _brushEngine!.addPointToStroke(
+    _brushEngine!.startStroke(
       point,
       state.selectedColor,
       state.brushSize,
       1.0,
       pathId: _activeBrushPath!.id,
     );
+    // Haptic feedback
+    HapticFeedback.selectionClick();
   }
 
   /// Handle pan update for brush mode
@@ -129,31 +212,29 @@ class ColoringController extends StateNotifier<ColoringState> {
 
     // If no active region (started outside), ignore
     if (_activeBrushPath == null) return;
-
-    // Only draw inside the locked region, even if finger moves outside on screen
-    if (!_activeBrushPath!.containsPoint(point)) {
-      return;
-    }
-
-    _brushEngine!.addPointToStroke(
-      point,
-      state.selectedColor,
-      state.brushSize,
-      1.0,
-      pathId: _activeBrushPath!.id,
-    );
+    
+    // We allow dragging outside, but the stroke only shows inside due to Painter clipping.
+    // So we just add points.
+    _brushEngine!.addPointToStroke(point);
+    
     state = state.copyWith(brushStrokes: _brushEngine!.getStrokes());
   }
 
   /// Handle pan end for brush mode
   void handlePanEnd() {
     if (state.mode != ColoringMode.brush || _brushEngine == null) return;
-    _brushEngine!.completeStroke();
+    
+    _brushEngine!.endStroke();
+    
     final strokes = _brushEngine!.getStrokes();
     if (strokes.isNotEmpty) {
       _undoRedoManager?.addBrushAction(strokes.last);
     }
     state = state.copyWith(brushStrokes: strokes);
+    
+    // Auto-save brush data
+    ColoringStorageService.saveBrushData(_image, strokes);
+    
     _updateUndoRedoState();
 
     // Reset active region for next stroke
@@ -214,19 +295,24 @@ class ColoringController extends StateNotifier<ColoringState> {
     _updateUndoRedoState();
   }
 
-  /// Clear all
+  /// Clear all - chỉ clear data của mode hiện tại
   void clearAll() {
-    if (_fillEngine != null) {
-      final previousFills = _fillEngine!.clearAllFills();
-      _undoRedoManager?.addClearAllAction(previousFills);
+    if (state.mode == ColoringMode.fill) {
+      // Clear fill data
+      if (_fillEngine != null) {
+        final previousFills = _fillEngine!.clearAllFills();
+        _undoRedoManager?.addClearAllAction(previousFills);
+        ColoringStorageService.clearFillData(_image);
+      }
+      state = state.copyWith(filledPaths: {});
+    } else if (state.mode == ColoringMode.brush) {
+      // Clear brush data
+      if (_brushEngine != null) {
+        _brushEngine!.clearAllStrokes();
+        ColoringStorageService.clearBrushData(_image);
+      }
+      state = state.copyWith(brushStrokes: []);
     }
-    if (_brushEngine != null) {
-      _brushEngine!.clearAllStrokes();
-    }
-    state = state.copyWith(
-      filledPaths: {},
-      brushStrokes: [],
-    );
     _updateUndoRedoState();
   }
 

@@ -7,6 +7,12 @@ import 'services/remote_config_service.dart';
 import 'app.dart';
 
 void main() async {
+  // Disable Impeller engine to use Skia for better performance with complex SVG paths
+  // Impeller can cause lag with many paths. Skia is more stable.
+  // To disable Impeller, run: flutter run --no-enable-impeller
+  // Or set environment variable: export FLUTTER_IMPELLER=0
+  // For production builds, add --no-enable-impeller to build commands
+  
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase (optional - app will work without it)

@@ -93,5 +93,25 @@ class StorageUtils {
   static Future<void> resetSaveCount() async {
     await prefs.setInt(AppConstants.keySaveCount, 0);
   }
+
+  /// Check if intro is seen
+  static bool get introSeen {
+    return prefs.getBool(AppConstants.keyIntroSeen) ?? false;
+  }
+
+  /// Set intro seen status
+  static Future<void> setIntroSeen(bool value) async {
+    await prefs.setBool(AppConstants.keyIntroSeen, value);
+  }
+
+  /// Get language code
+  static String? get languageCode {
+    return prefs.getString(AppConstants.keyLanguageCode);
+  }
+
+  /// Set language code
+  static Future<void> setLanguageCode(String value) async {
+    await prefs.setString(AppConstants.keyLanguageCode, value);
+  }
 }
 

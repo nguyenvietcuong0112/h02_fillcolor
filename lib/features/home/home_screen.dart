@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
 import '../../core/widgets/loading_widget.dart';
 import '../../core/widgets/error_widget.dart';
+import '../../core/theme/app_dimens.dart';
+import '../../core/utils/thumbnail_helper.dart';
+import 'dart:io';
 import 'home_controller.dart';
-import '../coloring/coloring_screen.dart';
+import '../coloring/mode_selection_screen.dart';
 
 /// Home screen displaying categories and coloring images
 class HomeScreen extends ConsumerWidget {
@@ -14,201 +21,250 @@ class HomeScreen extends ConsumerWidget {
     final state = ref.watch(homeControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('FillColor'),
-        elevation: 0,
-      ),
-      body: state.isLoading
-          ? const LoadingWidget()
-          : state.error != null
-              ? ErrorDisplayWidget(
-                  message: state.error!,
-                  onRetry: () => ref.read(homeControllerProvider.notifier).refresh(),
-                )
-              : Column(
-                  children: [
-                    // Category tabs with improved design
-                    Container(
-                      height: 60,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        itemCount: state.categories.length,
-                        itemBuilder: (context, index) {
-                          final category = state.categories[index];
-                          final isSelected = category == state.selectedCategory;
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 12.0),
-                            child: FilterChip(
-                              label: Text(
-                                category,
-                                style: TextStyle(
-                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                  color: isSelected ? Colors.white : Colors.grey[700],
-                                ),
+      backgroundColor: const Color(0xFFF8F9FA), // Soft off-white
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Padding(
+              padding: EdgeInsets.fromLTRB(AppDimens.space24, AppDimens.space16, AppDimens.space24, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   Text(
+                    'Discover',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    'Choose your favorite art to color',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            SizedBox(height: AppDimens.space24),
+
+            // Category tabs
+            state.isLoading 
+              ? const SizedBox.shrink()
+              : SizedBox(
+                  height: 48.h,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(horizontal: AppDimens.space24),
+                    itemCount: state.categories.length,
+                    itemBuilder: (context, index) {
+                      final category = state.categories[index];
+                      final isSelected = category == state.selectedCategory;
+                      return Padding(
+                        padding: EdgeInsets.only(right: AppDimens.space12),
+                        child: GestureDetector(
+                          onTap: () {
+                             ref.read(homeControllerProvider.notifier).selectCategory(category);
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            padding: EdgeInsets.symmetric(horizontal: AppDimens.space20, vertical: 0),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: isSelected ? Colors.black87 : Colors.white,
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(
+                                color: isSelected ? Colors.transparent : Colors.grey[200]!,
+                                width: 1.5,
                               ),
-                              selected: isSelected,
-                              onSelected: (selected) {
-                                if (selected) {
-                                  ref.read(homeControllerProvider.notifier).selectCategory(category);
-                                }
-                              },
-                              selectedColor: Theme.of(context).primaryColor,
-                              checkmarkColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                side: BorderSide(
-                                  color: isSelected
-                                      ? Theme.of(context).primaryColor
-                                      : Colors.grey[300]!,
-                                  width: isSelected ? 0 : 1,
-                                ),
+                              boxShadow: isSelected 
+                                ? [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(alpha: 0.2),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 4),
+                                    )
+                                  ]
+                                : [],
+                            ),
+                            child: Text(
+                              category,
+                              style: TextStyle(
+                                fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                                color: isSelected ? Colors.white : Colors.grey[600],
+                                fontSize: 14.sp,
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                    // Image grid
-                    Expanded(
-                      child: GridView.builder(
-                        padding: const EdgeInsets.all(16),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 0.75,
+                          ),
                         ),
-                        itemCount: state.images.length, // Ads disabled
-                        itemBuilder: (context, index) {
-                          // Ads disabled - native ads removed
-                          // if (index > 0 && index % 5 == 0) {
-                          //   return AdsService.instance.createNativeAdWidget(
-                          //     height: 200,
-                          //     width: double.infinity,
-                          //   );
-                          // }
+                      );
+                    },
+                  ),
+                ),
 
+            SizedBox(height: AppDimens.space24),
+
+            // Image grid
+            Expanded(
+              child: state.isLoading
+                ? const LoadingWidget()
+                : state.error != null
+                    ? ErrorDisplayWidget(
+                        message: state.error!,
+                        onRetry: () => ref.read(homeControllerProvider.notifier).refresh(),
+                      )
+                    : GridView.builder(
+                        padding: EdgeInsets.fromLTRB(AppDimens.space24, 0, AppDimens.space24, AppDimens.space24),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: AppDimens.space16,
+                          mainAxisSpacing: AppDimens.space24,
+                          childAspectRatio: 0.75, // Taller cards
+                        ),
+                        itemCount: state.images.length,
+                        itemBuilder: (context, index) {
                           final image = state.images[index];
 
                           return _ImageCard(
+                            key: ValueKey(image.id),
                             image: image,
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => ColoringScreen(image: image),
+                                  builder: (_) => ColoringModeSelectionScreen(image: image),
                                 ),
                               );
                             },
                           );
                         },
                       ),
-                    ),
-                  ],
-                ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
-/// Image card widget
-class _ImageCard extends StatelessWidget {
+class _ImageCard extends StatefulWidget {
   final dynamic image;
   final VoidCallback onTap;
 
   const _ImageCard({
+    super.key,
     required this.image,
     required this.onTap,
   });
 
   @override
+  State<_ImageCard> createState() => _ImageCardState();
+}
+
+class _ImageCardState extends State<_ImageCard> {
+  File? _thumbnailFile;
+  final GlobalKey _repaintKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadThumbnail();
+  }
+
+  Future<void> _loadThumbnail() async {
+    if (!mounted) return;
+    
+    final file = await ThumbnailHelper.getCachedThumbnail(widget.image.id);
+    if (file != null) {
+      if (mounted) {
+        setState(() {
+          _thumbnailFile = file;
+        });
+      }
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _generateThumbnail();
+      });
+    }
+  }
+
+  Future<void> _generateThumbnail() async {
+    if (!mounted) return;
+    await Future.delayed(const Duration(milliseconds: 500));
+    if (!mounted) return;
+
+    try {
+      final boundary = _repaintKey.currentContext?.findRenderObject();
+      if (boundary is RenderRepaintBoundary) {
+         final image = await boundary.toImage(pixelRatio: 1.5);
+         final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+         if (byteData != null) {
+           final bytes = byteData.buffer.asUint8List();
+           final file = await ThumbnailHelper.saveThumbnail(widget.image.id, bytes);
+           if (file != null && mounted) {
+             setState(() {
+               _thumbnailFile = file;
+             });
+           }
+         }
+      }
+    } catch (e) {
+      // Fail silently
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Stack(
-          fit: StackFit.expand,
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04), // Subtle shadow
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        padding: EdgeInsets.all(AppDimens.space12), // Inner padding
+        child: Column(
           children: [
-            // Placeholder for image with gradient
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.blue[100]!,
-                    Colors.purple[100]!,
-                  ],
-                ),
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.palette,
-                  size: 64,
-                  color: Colors.grey[600],
-                ),
+            Expanded(
+              child: Hero(
+                tag: widget.image.id,
+                child: _thumbnailFile != null
+                    ? Image.file(
+                        _thumbnailFile!,
+                        fit: BoxFit.contain,
+                      )
+                    : RepaintBoundary(
+                        key: _repaintKey,
+                        child: SvgPicture.asset(
+                          widget.image.svgPath,
+                          fit: BoxFit.contain,
+                          placeholderBuilder: (_) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                        ),
+                      ),
               ),
             ),
-            // Difficulty indicator
-            Positioned(
-              top: 8,
-              right: 8,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(
-                    5,
-                    (index) => Icon(
-                      index < image.difficulty ? Icons.star : Icons.star_border,
-                      size: 12,
-                      color: Colors.amber,
-                    ),
-                  ),
-                ),
+            SizedBox(height: AppDimens.space12),
+            Text(
+              widget.image.name,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
               ),
-            ),
-            // Name overlay
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black87,
-                    ],
-                  ),
-                ),
-                child: Text(
-                  image.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
             ),
           ],
         ),

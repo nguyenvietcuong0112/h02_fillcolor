@@ -1,9 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <!-- Example bird for testing -->
-  <path id="body" d="M 100 80 Q 120 100 100 120 Q 80 100 100 80 Z" fill="none" stroke="black" stroke-width="2"/>
-  <path id="head" d="M 100 60 Q 110 50 120 60 Q 115 70 100 70 Q 85 70 80 60 Q 90 50 100 60 Z" fill="none" stroke="black" stroke-width="2"/>
-  <path id="wing" d="M 100 100 Q 85 90 80 100 Q 85 110 100 100 Z" fill="none" stroke="black" stroke-width="2"/>
-  <path id="beak" d="M 120 60 L 130 65 L 120 70 Z" fill="none" stroke="black" stroke-width="2"/>
-  <path id="eye" d="M 105 65 Q 108 67 105 69 Q 102 67 105 65 Z" fill="none" stroke="black" stroke-width="1"/>
+  <!-- Coloring Book Style: Fill Areas Layer -->
+  <g id="fill-areas">
+    <path id="area_body" d="M 100 80 Q 120 100 100 120 Q 80 100 100 80 Z" fill="#FFFFFF"/>
+    <path id="area_head" d="M 100 60 Q 110 50 120 60 Q 115 70 100 70 Q 85 70 80 60 Q 90 50 100 60 Z" fill="#FFFFFF"/>
+    <path id="area_wing" d="M 100 100 Q 85 90 80 100 Q 85 110 100 100 Z" fill="#FFFFFF"/>
+    <path id="area_beak" d="M 120 60 L 130 65 L 120 70 Z" fill="#FFFFFF"/>
+    <path id="area_eye" d="M 105 65 Q 108 67 105 69 Q 102 67 105 65 Z" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Coloring Book Style: Line Art Layer -->
+  <g id="line-art">
+    <path d="M 100 80 Q 120 100 100 120 Q 80 100 100 80 Z" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 100 60 Q 110 50 120 60 Q 115 70 100 70 Q 85 70 80 60 Q 90 50 100 60 Z" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 100 100 Q 85 90 80 100 Q 85 110 100 100 Z" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 120 60 L 130 65 L 120 70 Z" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 105 65 Q 108 67 105 69 Q 102 67 105 65 Z" fill="none" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
 </svg>
-

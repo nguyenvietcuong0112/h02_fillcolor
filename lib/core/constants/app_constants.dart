@@ -11,6 +11,8 @@ class AppConstants {
   static const String keySaveCount = 'save_count';
   static const String keyFirstLaunch = 'first_launch';
   static const String keyLastAdShown = 'last_ad_shown';
+  static const String keyLanguageCode = 'language_code';
+  static const String keyIntroSeen = 'intro_seen';
 
   // Ad IDs (Replace with your actual AdMob IDs)
   static const String adAppOpenId = 'ca-app-pub-3940256099942544/3419835294'; // Test ID

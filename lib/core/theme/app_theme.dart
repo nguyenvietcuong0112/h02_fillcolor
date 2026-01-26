@@ -1,67 +1,141 @@
 import 'package:flutter/material.dart';
 
+import 'app_colors.dart';
+import 'app_dimens.dart';
+import 'app_text_styles.dart';
+
 /// Application theme configuration
 class AppTheme {
   AppTheme._();
 
+  /// Light Theme
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xFF6366F1),
-        brightness: Brightness.light,
+      brightness: Brightness.light,
+      fontFamily: AppTextStyles.fontFamily,
+      
+      // Colors
+      colorScheme: const ColorScheme.light(
+        primary: AppColors.primary,
+        secondary: AppColors.secondary,
+        surface: AppColors.surfaceLight,
+        error: AppColors.error,
+        onPrimary: AppColors.white,
+        onSecondary: AppColors.white,
+        onSurface: AppColors.textPrimaryLight,
       ),
-      scaffoldBackgroundColor: const Color(0xFFF5F5F5),
-      appBarTheme: const AppBarTheme(
+      scaffoldBackgroundColor: AppColors.backgroundLight,
+      
+      // Component Themes
+      appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-      ),
-      cardTheme: CardThemeData(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+        backgroundColor: AppColors.surfaceLight,
+        foregroundColor: AppColors.textPrimaryLight,
+        titleTextStyle: AppTextStyles.h3.copyWith(
+          color: AppColors.textPrimaryLight,
         ),
       ),
+      
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.white,
+          padding: EdgeInsets.symmetric(
+            horizontal: AppDimens.space24,
+            vertical: AppDimens.space12,
           ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimens.radius8),
+          ),
+          textStyle: AppTextStyles.button,
         ),
+      ),
+      
+      cardTheme: CardThemeData(
+        color: AppColors.surfaceLight,
+        elevation: 2,
+        shadowColor: Colors.black.withValues(alpha: 0.05),
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimens.radius12),
+        ),
+      ),
+
+      textTheme: TextTheme(
+        displayLarge: AppTextStyles.h1.copyWith(color: AppColors.textPrimaryLight),
+        displayMedium: AppTextStyles.h2.copyWith(color: AppColors.textPrimaryLight),
+        titleLarge: AppTextStyles.h3.copyWith(color: AppColors.textPrimaryLight),
+        bodyLarge: AppTextStyles.bodyLarge.copyWith(color: AppColors.textPrimaryLight),
+        bodyMedium: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimaryLight),
+        bodySmall: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondaryLight),
       ),
     );
   }
 
+  /// Dark Theme
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xFF6366F1),
-        brightness: Brightness.dark,
+      brightness: Brightness.dark,
+      fontFamily: AppTextStyles.fontFamily,
+      
+      // Colors
+      colorScheme: const ColorScheme.dark(
+        primary: AppColors.primary,
+        secondary: AppColors.secondary,
+        surface: AppColors.surfaceDark,
+        error: AppColors.error,
+        onPrimary: AppColors.white,
+        onSecondary: AppColors.white,
+        onSurface: AppColors.textPrimaryDark,
       ),
-      scaffoldBackgroundColor: const Color(0xFF121212),
-      appBarTheme: const AppBarTheme(
+      scaffoldBackgroundColor: AppColors.backgroundDark,
+      
+      // Component Themes
+      appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xFF1E1E1E),
-        foregroundColor: Colors.white,
-      ),
-      cardTheme: CardThemeData(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+        backgroundColor: AppColors.surfaceDark,
+        foregroundColor: AppColors.textPrimaryDark,
+        titleTextStyle: AppTextStyles.h3.copyWith(
+          color: AppColors.textPrimaryDark,
         ),
       ),
+      
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.white,
+          padding: EdgeInsets.symmetric(
+            horizontal: AppDimens.space24,
+            vertical: AppDimens.space12,
           ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimens.radius8),
+          ),
+          textStyle: AppTextStyles.button,
         ),
+      ),
+      
+      cardTheme: CardThemeData(
+        color: AppColors.surfaceDark,
+        elevation: 2,
+        shadowColor: Colors.black.withValues(alpha: 0.2),
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimens.radius12),
+        ),
+      ),
+
+      textTheme: TextTheme(
+        displayLarge: AppTextStyles.h1.copyWith(color: AppColors.textPrimaryDark),
+        displayMedium: AppTextStyles.h2.copyWith(color: AppColors.textPrimaryDark),
+        titleLarge: AppTextStyles.h3.copyWith(color: AppColors.textPrimaryDark),
+        bodyLarge: AppTextStyles.bodyLarge.copyWith(color: AppColors.textPrimaryDark),
+        bodyMedium: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimaryDark),
+        bodySmall: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondaryDark),
       ),
     );
   }

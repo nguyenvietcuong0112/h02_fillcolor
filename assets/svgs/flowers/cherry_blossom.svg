@@ -1,187 +1,213 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
-  <!-- Ultra Detailed Cherry Blossom - Every petal, leaf, and detail is separate -->
+  <!-- Coloring Book Style: Fill Areas Layer -->
+  <g id="fill-areas">
+    <!-- Flower 1 - Center Top -->
+    <path id="area_flower_1_petal_1" d="M 200 150 Q 195 140 200 130 Q 205 140 200 150 Z" fill="#FFFFFF"/>
+    <path id="area_flower_1_petal_2" d="M 200 150 Q 190 145 185 150 Q 190 155 200 150 Z" fill="#FFFFFF"/>
+    <path id="area_flower_1_petal_3" d="M 200 150 Q 210 145 215 150 Q 210 155 200 150 Z" fill="#FFFFFF"/>
+    <path id="area_flower_1_petal_4" d="M 200 150 Q 195 160 200 170 Q 205 160 200 150 Z" fill="#FFFFFF"/>
+    <path id="area_flower_1_petal_5" d="M 200 150 Q 192 152 188 155 Q 192 158 200 150 Z" fill="#FFFFFF"/>
+    <path id="area_flower_1_center" d="M 200 150 Q 198 148 200 146 Q 202 148 200 150 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 2 - Left Branch 1 -->
+    <path id="area_flower_2_petal_1" d="M 130 280 Q 125 270 130 260 Q 135 270 130 280 Z" fill="#FFFFFF"/>
+    <path id="area_flower_2_petal_2" d="M 130 280 Q 120 275 115 280 Q 120 285 130 280 Z" fill="#FFFFFF"/>
+    <path id="area_flower_2_petal_3" d="M 130 280 Q 140 275 145 280 Q 140 285 130 280 Z" fill="#FFFFFF"/>
+    <path id="area_flower_2_petal_4" d="M 130 280 Q 125 290 130 300 Q 135 290 130 280 Z" fill="#FFFFFF"/>
+    <path id="area_flower_2_center" d="M 130 280 Q 128 278 130 276 Q 132 278 130 280 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 3 - Left Branch 2 -->
+    <path id="area_flower_3_petal_1" d="M 120 230 Q 115 220 120 210 Q 125 220 120 230 Z" fill="#FFFFFF"/>
+    <path id="area_flower_3_petal_2" d="M 120 230 Q 110 225 105 230 Q 110 235 120 230 Z" fill="#FFFFFF"/>
+    <path id="area_flower_3_petal_3" d="M 120 230 Q 130 225 135 230 Q 130 235 120 230 Z" fill="#FFFFFF"/>
+    <path id="area_flower_3_petal_4" d="M 120 230 Q 115 240 120 250 Q 125 240 120 230 Z" fill="#FFFFFF"/>
+    <path id="area_flower_3_center" d="M 120 230 Q 118 228 120 226 Q 122 228 120 230 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 4 - Left Branch 3 -->
+    <path id="area_flower_4_petal_1" d="M 110 180 Q 105 170 110 160 Q 115 170 110 180 Z" fill="#FFFFFF"/>
+    <path id="area_flower_4_petal_2" d="M 110 180 Q 100 175 95 180 Q 100 185 110 180 Z" fill="#FFFFFF"/>
+    <path id="area_flower_4_petal_3" d="M 110 180 Q 120 175 125 180 Q 120 185 110 180 Z" fill="#FFFFFF"/>
+    <path id="area_flower_4_petal_4" d="M 110 180 Q 105 190 110 200 Q 115 190 110 180 Z" fill="#FFFFFF"/>
+    <path id="area_flower_4_center" d="M 110 180 Q 108 178 110 176 Q 112 178 110 180 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 5 - Right Branch 1 -->
+    <path id="area_flower_5_petal_1" d="M 270 280 Q 265 270 270 260 Q 275 270 270 280 Z" fill="#FFFFFF"/>
+    <path id="area_flower_5_petal_2" d="M 270 280 Q 260 275 255 280 Q 260 285 270 280 Z" fill="#FFFFFF"/>
+    <path id="area_flower_5_petal_3" d="M 270 280 Q 280 275 285 280 Q 280 285 270 280 Z" fill="#FFFFFF"/>
+    <path id="area_flower_5_petal_4" d="M 270 280 Q 265 290 270 300 Q 275 290 270 280 Z" fill="#FFFFFF"/>
+    <path id="area_flower_5_center" d="M 270 280 Q 268 278 270 276 Q 272 278 270 280 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 6 - Right Branch 2 -->
+    <path id="area_flower_6_petal_1" d="M 280 230 Q 275 220 280 210 Q 285 220 280 230 Z" fill="#FFFFFF"/>
+    <path id="area_flower_6_petal_2" d="M 280 230 Q 270 225 265 230 Q 270 235 280 230 Z" fill="#FFFFFF"/>
+    <path id="area_flower_6_petal_3" d="M 280 230 Q 290 225 295 230 Q 290 235 280 230 Z" fill="#FFFFFF"/>
+    <path id="area_flower_6_petal_4" d="M 280 230 Q 275 240 280 250 Q 285 240 280 230 Z" fill="#FFFFFF"/>
+    <path id="area_flower_6_center" d="M 280 230 Q 278 228 280 226 Q 282 228 280 230 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 7 - Right Branch 3 -->
+    <path id="area_flower_7_petal_1" d="M 290 180 Q 285 170 290 160 Q 295 170 290 180 Z" fill="#FFFFFF"/>
+    <path id="area_flower_7_petal_2" d="M 290 180 Q 280 175 275 180 Q 280 185 290 180 Z" fill="#FFFFFF"/>
+    <path id="area_flower_7_petal_3" d="M 290 180 Q 300 175 305 180 Q 300 185 290 180 Z" fill="#FFFFFF"/>
+    <path id="area_flower_7_petal_4" d="M 290 180 Q 285 190 290 200 Q 295 190 290 180 Z" fill="#FFFFFF"/>
+    <path id="area_flower_7_center" d="M 290 180 Q 288 178 290 176 Q 292 178 290 180 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 8 - Main Branch -->
+    <path id="area_flower_8_petal_1" d="M 180 300 Q 175 290 180 280 Q 185 290 180 300 Z" fill="#FFFFFF"/>
+    <path id="area_flower_8_petal_2" d="M 180 300 Q 170 295 165 300 Q 170 305 180 300 Z" fill="#FFFFFF"/>
+    <path id="area_flower_8_petal_3" d="M 180 300 Q 190 295 195 300 Q 190 305 180 300 Z" fill="#FFFFFF"/>
+    <path id="area_flower_8_petal_4" d="M 180 300 Q 175 310 180 320 Q 185 310 180 300 Z" fill="#FFFFFF"/>
+    <path id="area_flower_8_center" d="M 180 300 Q 178 298 180 296 Q 182 298 180 300 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 9 - Main Branch -->
+    <path id="area_flower_9_petal_1" d="M 220 300 Q 215 290 220 280 Q 225 290 220 300 Z" fill="#FFFFFF"/>
+    <path id="area_flower_9_petal_2" d="M 220 300 Q 210 295 205 300 Q 210 305 220 300 Z" fill="#FFFFFF"/>
+    <path id="area_flower_9_petal_3" d="M 220 300 Q 230 295 235 300 Q 230 305 220 300 Z" fill="#FFFFFF"/>
+    <path id="area_flower_9_petal_4" d="M 220 300 Q 215 310 220 320 Q 225 310 220 300 Z" fill="#FFFFFF"/>
+    <path id="area_flower_9_center" d="M 220 300 Q 218 298 220 296 Q 222 298 220 300 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 10 - Main Branch -->
+    <path id="area_flower_10_petal_1" d="M 190 250 Q 185 240 190 230 Q 195 240 190 250 Z" fill="#FFFFFF"/>
+    <path id="area_flower_10_petal_2" d="M 190 250 Q 180 245 175 250 Q 180 255 190 250 Z" fill="#FFFFFF"/>
+    <path id="area_flower_10_petal_3" d="M 190 250 Q 200 245 205 250 Q 200 255 190 250 Z" fill="#FFFFFF"/>
+    <path id="area_flower_10_petal_4" d="M 190 250 Q 185 260 190 270 Q 195 260 190 250 Z" fill="#FFFFFF"/>
+    <path id="area_flower_10_center" d="M 190 250 Q 188 248 190 246 Q 192 248 190 250 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 11 - Main Branch -->
+    <path id="area_flower_11_petal_1" d="M 210 250 Q 205 240 210 230 Q 215 240 210 250 Z" fill="#FFFFFF"/>
+    <path id="area_flower_11_petal_2" d="M 210 250 Q 200 245 195 250 Q 200 255 210 250 Z" fill="#FFFFFF"/>
+    <path id="area_flower_11_petal_3" d="M 210 250 Q 220 245 225 250 Q 220 255 210 250 Z" fill="#FFFFFF"/>
+    <path id="area_flower_11_petal_4" d="M 210 250 Q 205 260 210 270 Q 215 260 210 250 Z" fill="#FFFFFF"/>
+    <path id="area_flower_11_center" d="M 210 250 Q 208 248 210 246 Q 212 248 210 250 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 12 - Main Branch -->
+    <path id="area_flower_12_petal_1" d="M 185 200 Q 180 190 185 180 Q 190 190 185 200 Z" fill="#FFFFFF"/>
+    <path id="area_flower_12_petal_2" d="M 185 200 Q 175 195 170 200 Q 175 205 185 200 Z" fill="#FFFFFF"/>
+    <path id="area_flower_12_petal_3" d="M 185 200 Q 195 195 200 200 Q 195 205 185 200 Z" fill="#FFFFFF"/>
+    <path id="area_flower_12_petal_4" d="M 185 200 Q 180 210 185 220 Q 190 210 185 200 Z" fill="#FFFFFF"/>
+    <path id="area_flower_12_center" d="M 185 200 Q 183 198 185 196 Q 187 198 185 200 Z" fill="#FFFFFF"/>
+    
+    <!-- Flower 13 - Main Branch -->
+    <path id="area_flower_13_petal_1" d="M 215 200 Q 210 190 215 180 Q 220 190 215 200 Z" fill="#FFFFFF"/>
+    <path id="area_flower_13_petal_2" d="M 215 200 Q 205 195 200 200 Q 205 205 215 200 Z" fill="#FFFFFF"/>
+    <path id="area_flower_13_petal_3" d="M 215 200 Q 225 195 230 200 Q 225 205 215 200 Z" fill="#FFFFFF"/>
+    <path id="area_flower_13_petal_4" d="M 215 200 Q 210 210 215 220 Q 220 210 215 200 Z" fill="#FFFFFF"/>
+    <path id="area_flower_13_center" d="M 215 200 Q 213 198 215 196 Q 217 198 215 200 Z" fill="#FFFFFF"/>
+  </g>
   
-  <!-- Main Branch -->
-  <path id="branch_main" d="M 200 450 Q 180 400 160 350 Q 150 300 160 250 Q 170 200 200 150" fill="none" stroke="black" stroke-width="4"/>
-  <path id="branch_main_bark_1" d="M 200 450 Q 195 425 190 400" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_main_bark_2" d="M 190 400 Q 185 375 180 350" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_main_bark_3" d="M 180 350 Q 175 325 170 300" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_main_bark_4" d="M 170 300 Q 165 275 160 250" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_main_bark_5" d="M 160 250 Q 165 225 170 200" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_main_bark_6" d="M 170 200 Q 180 175 190 160" fill="none" stroke="black" stroke-width="1"/>
-  
-  <!-- Branch Left 1 -->
-  <path id="branch_left_1" d="M 180 350 Q 150 340 130 320 Q 120 300 130 280" fill="none" stroke="black" stroke-width="3"/>
-  <path id="branch_left_1_bark_1" d="M 180 350 Q 165 345 150 340" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_left_1_bark_2" d="M 150 340 Q 140 330 130 320" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_left_1_bark_3" d="M 130 320 Q 125 310 120 300" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_left_1_bark_4" d="M 120 300 Q 125 290 130 280" fill="none" stroke="black" stroke-width="1"/>
-  
-  <!-- Branch Left 2 -->
-  <path id="branch_left_2" d="M 170 300 Q 140 290 120 270 Q 110 250 120 230" fill="none" stroke="black" stroke-width="2.5"/>
-  <path id="branch_left_2_bark_1" d="M 170 300 Q 155 295 140 290" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_left_2_bark_2" d="M 140 290 Q 130 280 120 270" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_left_2_bark_3" d="M 120 270 Q 115 260 110 250" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_left_2_bark_4" d="M 110 250 Q 115 240 120 230" fill="none" stroke="black" stroke-width="1"/>
-  
-  <!-- Branch Left 3 -->
-  <path id="branch_left_3" d="M 160 250 Q 130 240 110 220 Q 100 200 110 180" fill="none" stroke="black" stroke-width="2"/>
-  <path id="branch_left_3_bark_1" d="M 160 250 Q 145 245 130 240" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_left_3_bark_2" d="M 130 240 Q 120 230 110 220" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_left_3_bark_3" d="M 110 220 Q 105 210 100 200" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_left_3_bark_4" d="M 100 200 Q 105 190 110 180" fill="none" stroke="black" stroke-width="1"/>
-  
-  <!-- Branch Right 1 -->
-  <path id="branch_right_1" d="M 220 350 Q 250 340 270 320 Q 280 300 270 280" fill="none" stroke="black" stroke-width="3"/>
-  <path id="branch_right_1_bark_1" d="M 220 350 Q 235 345 250 340" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_right_1_bark_2" d="M 250 340 Q 260 330 270 320" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_right_1_bark_3" d="M 270 320 Q 275 310 280 300" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_right_1_bark_4" d="M 280 300 Q 275 290 270 280" fill="none" stroke="black" stroke-width="1"/>
-  
-  <!-- Branch Right 2 -->
-  <path id="branch_right_2" d="M 230 300 Q 260 290 280 270 Q 290 250 280 230" fill="none" stroke="black" stroke-width="2.5"/>
-  <path id="branch_right_2_bark_1" d="M 230 300 Q 245 295 260 290" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_right_2_bark_2" d="M 260 290 Q 270 280 280 270" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_right_2_bark_3" d="M 280 270 Q 285 260 290 250" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_right_2_bark_3" d="M 290 250 Q 285 240 280 230" fill="none" stroke="black" stroke-width="1"/>
-  
-  <!-- Branch Right 3 -->
-  <path id="branch_right_3" d="M 240 250 Q 270 240 290 220 Q 300 200 290 180" fill="none" stroke="black" stroke-width="2"/>
-  <path id="branch_right_3_bark_1" d="M 240 250 Q 255 245 270 240" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_right_3_bark_2" d="M 270 240 Q 280 230 290 220" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_right_3_bark_3" d="M 290 220 Q 295 210 300 200" fill="none" stroke="black" stroke-width="1"/>
-  <path id="branch_right_3_bark_4" d="M 300 200 Q 295 190 290 180" fill="none" stroke="black" stroke-width="1"/>
-  
-  <!-- Flower 1 - Center Top (Each petal separate) -->
-  <path id="flower_1_petal_1" d="M 200 150 Q 195 140 200 130 Q 205 140 200 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_1_petal_1_vein_1" d="M 200 150 Q 198 145 200 140" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_1_petal_1_vein_2" d="M 200 140 Q 202 145 200 150" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <path id="flower_1_petal_2" d="M 200 150 Q 190 145 185 150 Q 190 155 200 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_1_petal_2_vein_1" d="M 200 150 Q 195 147 190 145" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_1_petal_2_vein_2" d="M 190 145 Q 187 147 185 150" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <path id="flower_1_petal_3" d="M 200 150 Q 210 145 215 150 Q 210 155 200 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_1_petal_3_vein_1" d="M 200 150 Q 205 147 210 145" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_1_petal_3_vein_2" d="M 210 145 Q 213 147 215 150" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <path id="flower_1_petal_4" d="M 200 150 Q 195 160 200 170 Q 205 160 200 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_1_petal_4_vein_1" d="M 200 150 Q 198 155 195 160" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_1_petal_4_vein_2" d="M 195 160 Q 197 165 200 170" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <path id="flower_1_petal_5" d="M 200 150 Q 192 152 188 155 Q 192 158 200 150" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_1_center" d="M 200 150 Q 198 148 200 146 Q 202 148 200 150 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_1_center_dot" d="M 200 148 Q 199 147 200 146 Q 201 147 200 148 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <!-- Flower 2 - Left Branch 1 (Each petal separate) -->
-  <path id="flower_2_petal_1" d="M 130 280 Q 125 270 130 260 Q 135 270 130 280 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_2_petal_1_vein" d="M 130 280 Q 128 275 130 270" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_2_petal_2" d="M 130 280 Q 120 275 115 280 Q 120 285 130 280 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_2_petal_2_vein" d="M 130 280 Q 125 277 120 275" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_2_petal_3" d="M 130 280 Q 140 275 145 280 Q 140 285 130 280 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_2_petal_3_vein" d="M 130 280 Q 135 277 140 275" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_2_petal_4" d="M 130 280 Q 125 290 130 300 Q 135 290 130 280 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_2_petal_4_vein" d="M 130 280 Q 128 285 125 290" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_2_center" d="M 130 280 Q 128 278 130 276 Q 132 278 130 280 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_2_center_dot" d="M 130 278 Q 129 277 130 276 Q 131 277 130 278 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <!-- Flower 3 - Left Branch 2 -->
-  <path id="flower_3_petal_1" d="M 120 230 Q 115 220 120 210 Q 125 220 120 230 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_3_petal_1_vein" d="M 120 230 Q 118 225 120 220" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_3_petal_2" d="M 120 230 Q 110 225 105 230 Q 110 235 120 230 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_3_petal_2_vein" d="M 120 230 Q 115 227 110 225" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_3_petal_3" d="M 120 230 Q 130 225 135 230 Q 130 235 120 230 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_3_petal_3_vein" d="M 120 230 Q 125 227 130 225" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_3_petal_4" d="M 120 230 Q 115 240 120 250 Q 125 240 120 230 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_3_petal_4_vein" d="M 120 230 Q 118 235 115 240" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_3_center" d="M 120 230 Q 118 228 120 226 Q 122 228 120 230 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_3_center_dot" d="M 120 228 Q 119 227 120 226 Q 121 227 120 228 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <!-- Flower 4 - Left Branch 3 -->
-  <path id="flower_4_petal_1" d="M 110 180 Q 105 170 110 160 Q 115 170 110 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_4_petal_1_vein" d="M 110 180 Q 108 175 110 170" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_4_petal_2" d="M 110 180 Q 100 175 95 180 Q 100 185 110 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_4_petal_2_vein" d="M 110 180 Q 105 177 100 175" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_4_petal_3" d="M 110 180 Q 120 175 125 180 Q 120 185 110 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_4_petal_3_vein" d="M 110 180 Q 115 177 120 175" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_4_petal_4" d="M 110 180 Q 105 190 110 200 Q 115 190 110 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_4_petal_4_vein" d="M 110 180 Q 108 185 105 190" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_4_center" d="M 110 180 Q 108 178 110 176 Q 112 178 110 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_4_center_dot" d="M 110 178 Q 109 177 110 176 Q 111 177 110 178 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <!-- Flower 5 - Right Branch 1 -->
-  <path id="flower_5_petal_1" d="M 270 280 Q 265 270 270 260 Q 275 270 270 280 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_5_petal_1_vein" d="M 270 280 Q 268 275 270 270" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_5_petal_2" d="M 270 280 Q 260 275 255 280 Q 260 285 270 280 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_5_petal_2_vein" d="M 270 280 Q 265 277 260 275" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_5_petal_3" d="M 270 280 Q 280 275 285 280 Q 280 285 270 280 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_5_petal_3_vein" d="M 270 280 Q 275 277 280 275" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_5_petal_4" d="M 270 280 Q 265 290 270 300 Q 275 290 270 280 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_5_petal_4_vein" d="M 270 280 Q 268 285 265 290" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_5_center" d="M 270 280 Q 268 278 270 276 Q 272 278 270 280 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_5_center_dot" d="M 270 278 Q 269 277 270 276 Q 271 277 270 278 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <!-- Flower 6 - Right Branch 2 -->
-  <path id="flower_6_petal_1" d="M 280 230 Q 275 220 280 210 Q 285 220 280 230 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_6_petal_1_vein" d="M 280 230 Q 278 225 280 220" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_6_petal_2" d="M 280 230 Q 270 225 265 230 Q 270 235 280 230 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_6_petal_2_vein" d="M 280 230 Q 275 227 270 225" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_6_petal_3" d="M 280 230 Q 290 225 295 230 Q 290 235 280 230 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_6_petal_3_vein" d="M 280 230 Q 285 227 290 225" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_6_petal_4" d="M 280 230 Q 275 240 280 250 Q 285 240 280 230 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_6_petal_4_vein" d="M 280 230 Q 278 235 275 240" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_6_center" d="M 280 230 Q 278 228 280 226 Q 282 228 280 230 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_6_center_dot" d="M 280 228 Q 279 227 280 226 Q 281 227 280 228 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <!-- Flower 7 - Right Branch 3 -->
-  <path id="flower_7_petal_1" d="M 290 180 Q 285 170 290 160 Q 295 170 290 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_7_petal_1_vein" d="M 290 180 Q 288 175 290 170" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_7_petal_2" d="M 290 180 Q 280 175 275 180 Q 280 185 290 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_7_petal_2_vein" d="M 290 180 Q 285 177 280 175" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_7_petal_3" d="M 290 180 Q 300 175 305 180 Q 300 185 290 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_7_petal_3_vein" d="M 290 180 Q 295 177 300 175" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_7_petal_4" d="M 290 180 Q 285 190 290 200 Q 295 190 290 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_7_petal_4_vein" d="M 290 180 Q 288 185 285 190" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_7_center" d="M 290 180 Q 288 178 290 176 Q 292 178 290 180 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_7_center_dot" d="M 290 178 Q 289 177 290 176 Q 291 177 290 178 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <!-- Additional Flowers on Main Branch (simplified but still detailed) -->
-  <path id="flower_8_petal_1" d="M 180 300 Q 175 290 180 280 Q 185 290 180 300 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_8_petal_1_vein" d="M 180 300 Q 178 295 180 290" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_8_petal_2" d="M 180 300 Q 170 295 165 300 Q 170 305 180 300 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_8_petal_2_vein" d="M 180 300 Q 175 297 170 295" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_8_petal_3" d="M 180 300 Q 190 295 195 300 Q 190 305 180 300 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_8_petal_3_vein" d="M 180 300 Q 185 297 190 295" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_8_petal_4" d="M 180 300 Q 175 310 180 320 Q 185 310 180 300 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_8_petal_4_vein" d="M 180 300 Q 178 305 175 310" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_8_center" d="M 180 300 Q 178 298 180 296 Q 182 298 180 300 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_8_center_dot" d="M 180 298 Q 179 297 180 296 Q 181 297 180 298 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <path id="flower_9_petal_1" d="M 220 300 Q 215 290 220 280 Q 225 290 220 300 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_9_petal_1_vein" d="M 220 300 Q 218 295 220 290" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_9_petal_2" d="M 220 300 Q 210 295 205 300 Q 210 305 220 300 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_9_petal_2_vein" d="M 220 300 Q 215 297 210 295" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_9_petal_3" d="M 220 300 Q 230 295 235 300 Q 230 305 220 300 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_9_petal_3_vein" d="M 220 300 Q 225 297 230 295" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_9_petal_4" d="M 220 300 Q 215 310 220 320 Q 225 310 220 300 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_9_petal_4_vein" d="M 220 300 Q 218 305 215 310" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="flower_9_center" d="M 220 300 Q 218 298 220 296 Q 222 298 220 300 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="flower_9_center_dot" d="M 220 298 Q 219 297 220 296 Q 221 297 220 298 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  
-  <!-- Buds (each part separate) -->
-  <path id="bud_1_outer" d="M 150 320 Q 148 318 150 316 Q 152 318 150 320 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="bud_1_inner" d="M 150 318 Q 149 317 150 316 Q 151 317 150 318 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="bud_1_stem" d="M 150 320 Q 150 322 150 324" fill="none" stroke="black" stroke-width="1"/>
-  
-  <path id="bud_2_outer" d="M 250 320 Q 248 318 250 316 Q 252 318 250 320 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="bud_2_inner" d="M 250 318 Q 249 317 250 316 Q 251 317 250 318 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="bud_2_stem" d="M 250 320 Q 250 322 250 324" fill="none" stroke="black" stroke-width="1"/>
-  
-  <path id="bud_3_outer" d="M 140 270 Q 138 268 140 266 Q 142 268 140 270 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="bud_3_inner" d="M 140 268 Q 139 267 140 266 Q 141 267 140 268 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="bud_3_stem" d="M 140 270 Q 140 272 140 274" fill="none" stroke="black" stroke-width="1"/>
-  
-  <path id="bud_4_outer" d="M 260 270 Q 258 268 260 266 Q 262 268 260 270 Z" fill="none" stroke="black" stroke-width="1.5"/>
-  <path id="bud_4_inner" d="M 260 268 Q 259 267 260 266 Q 261 267 260 268 Z" fill="none" stroke="black" stroke-width="0.8"/>
-  <path id="bud_4_stem" d="M 260 270 Q 260 272 260 274" fill="none" stroke="black" stroke-width="1"/>
+  <!-- Coloring Book Style: Line Art Layer -->
+  <g id="line-art">
+    <!-- Main Branch -->
+    <path d="M 200 450 Q 180 400 160 350 Q 150 300 160 250 Q 170 200 200 150" fill="none" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Branch Left 1 -->
+    <path d="M 180 350 Q 150 340 130 320 Q 120 300 130 280" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Branch Left 2 -->
+    <path d="M 170 300 Q 140 290 120 270 Q 110 250 120 230" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Branch Left 3 -->
+    <path d="M 160 250 Q 130 240 110 220 Q 100 200 110 180" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Branch Right 1 -->
+    <path d="M 220 350 Q 250 340 270 320 Q 280 300 270 280" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Branch Right 2 -->
+    <path d="M 230 300 Q 260 290 280 270 Q 290 250 280 230" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Branch Right 3 -->
+    <path d="M 240 250 Q 270 240 290 220 Q 300 200 290 180" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Flower 1 Outlines -->
+    <path d="M 200 150 Q 195 140 200 130 Q 205 140 200 150 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 200 150 Q 190 145 185 150 Q 190 155 200 150 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 200 150 Q 210 145 215 150 Q 210 155 200 150 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 200 150 Q 195 160 200 170 Q 205 160 200 150 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 200 150 Q 192 152 188 155 Q 192 158 200 150 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 200 150 Q 198 148 200 146 Q 202 148 200 150 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Flower 2 Outlines -->
+    <path d="M 130 280 Q 125 270 130 260 Q 135 270 130 280 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 130 280 Q 120 275 115 280 Q 120 285 130 280 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 130 280 Q 140 275 145 280 Q 140 285 130 280 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 130 280 Q 125 290 130 300 Q 135 290 130 280 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 130 280 Q 128 278 130 276 Q 132 278 130 280 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Flower 3 Outlines -->
+    <path d="M 120 230 Q 115 220 120 210 Q 125 220 120 230 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 120 230 Q 110 225 105 230 Q 110 235 120 230 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 120 230 Q 130 225 135 230 Q 130 235 120 230 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 120 230 Q 115 240 120 250 Q 125 240 120 230 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 120 230 Q 118 228 120 226 Q 122 228 120 230 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Flower 4 Outlines -->
+    <path d="M 110 180 Q 105 170 110 160 Q 115 170 110 180 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 110 180 Q 100 175 95 180 Q 100 185 110 180 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 110 180 Q 120 175 125 180 Q 120 185 110 180 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 110 180 Q 105 190 110 200 Q 115 190 110 180 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 110 180 Q 108 178 110 176 Q 112 178 110 180 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Flower 5 Outlines -->
+    <path d="M 270 280 Q 265 270 270 260 Q 275 270 270 280 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 270 280 Q 260 275 255 280 Q 260 285 270 280 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 270 280 Q 280 275 285 280 Q 280 285 270 280 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 270 280 Q 265 290 270 300 Q 275 290 270 280 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 270 280 Q 268 278 270 276 Q 272 278 270 280 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Flower 6 Outlines -->
+    <path d="M 280 230 Q 275 220 280 210 Q 285 220 280 230 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 280 230 Q 270 225 265 230 Q 270 235 280 230 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 280 230 Q 290 225 295 230 Q 290 235 280 230 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 280 230 Q 275 240 280 250 Q 285 240 280 230 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 280 230 Q 278 228 280 226 Q 282 228 280 230 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Flower 7 Outlines -->
+    <path d="M 290 180 Q 285 170 290 160 Q 295 170 290 180 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 290 180 Q 280 175 275 180 Q 280 185 290 180 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 290 180 Q 300 175 305 180 Q 300 185 290 180 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 290 180 Q 285 190 290 200 Q 295 190 290 180 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 290 180 Q 288 178 290 176 Q 292 178 290 180 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Flower 8-13 Outlines (simplified) -->
+    <path d="M 180 300 Q 175 290 180 280 Q 185 290 180 300 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 180 300 Q 170 295 165 300 Q 170 305 180 300 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 180 300 Q 190 295 195 300 Q 190 305 180 300 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 180 300 Q 175 310 180 320 Q 185 310 180 300 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 180 300 Q 178 298 180 296 Q 182 298 180 300 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M 220 300 Q 215 290 220 280 Q 225 290 220 300 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 220 300 Q 210 295 205 300 Q 210 305 220 300 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 220 300 Q 230 295 235 300 Q 230 305 220 300 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 220 300 Q 215 310 220 320 Q 225 310 220 300 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 220 300 Q 218 298 220 296 Q 222 298 220 300 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M 190 250 Q 185 240 190 230 Q 195 240 190 250 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 190 250 Q 180 245 175 250 Q 180 255 190 250 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 190 250 Q 200 245 205 250 Q 200 255 190 250 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 190 250 Q 185 260 190 270 Q 195 260 190 250 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 190 250 Q 188 248 190 246 Q 192 248 190 250 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M 210 250 Q 205 240 210 230 Q 215 240 210 250 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 210 250 Q 200 245 195 250 Q 200 255 210 250 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 210 250 Q 220 245 225 250 Q 220 255 210 250 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 210 250 Q 205 260 210 270 Q 215 260 210 250 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 210 250 Q 208 248 210 246 Q 212 248 210 250 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M 185 200 Q 180 190 185 180 Q 190 190 185 200 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 185 200 Q 175 195 170 200 Q 175 205 185 200 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 185 200 Q 195 195 200 200 Q 195 205 185 200 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 185 200 Q 180 210 185 220 Q 190 210 185 200 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 185 200 Q 183 198 185 196 Q 187 198 185 200 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M 215 200 Q 210 190 215 180 Q 220 190 215 200 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 215 200 Q 205 195 200 200 Q 205 205 215 200 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 215 200 Q 225 195 230 200 Q 225 205 215 200 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 215 200 Q 210 210 215 220 Q 220 210 215 200 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 215 200 Q 213 198 215 196 Q 217 198 215 200 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Buds -->
+    <path d="M 150 320 Q 148 318 150 316 Q 152 318 150 320 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 250 320 Q 248 318 250 316 Q 252 318 250 320 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 140 270 Q 138 268 140 266 Q 142 268 140 270 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 260 270 Q 258 268 260 266 Q 262 268 260 270 Z" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
 </svg>

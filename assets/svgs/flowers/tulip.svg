@@ -1,10 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <!-- Example tulip for testing -->
-  <path id="petal1" d="M 100 60 Q 90 50 85 60 Q 80 70 85 80 Q 90 90 100 85 Q 110 90 115 80 Q 120 70 115 60 Q 110 50 100 60 Z" fill="none" stroke="black" stroke-width="2"/>
-  <path id="petal2" d="M 100 60 Q 110 50 115 60 Q 120 70 115 80 Q 110 90 100 85 Q 90 90 85 80 Q 80 70 85 60 Q 90 50 100 60 Z" fill="none" stroke="black" stroke-width="2"/>
-  <path id="center" d="M 100 70 Q 105 75 100 80 Q 95 75 100 70 Z" fill="none" stroke="black" stroke-width="2"/>
-  <path id="stem" d="M 100 90 L 100 150 L 105 150 L 105 90 Z" fill="none" stroke="black" stroke-width="2"/>
-  <path id="leaf1" d="M 100 110 Q 95 115 100 120 Q 105 115 100 110 Z" fill="none" stroke="black" stroke-width="2"/>
-  <path id="leaf2" d="M 100 130 Q 105 135 100 140 Q 95 135 100 130 Z" fill="none" stroke="black" stroke-width="2"/>
+  <!-- Coloring Book Style: Fill Areas Layer -->
+  <g id="fill-areas">
+    <path id="area_petal1" d="M 100 60 Q 90 50 85 60 Q 80 70 85 80 Q 90 90 100 85 Q 110 90 115 80 Q 120 70 115 60 Q 110 50 100 60 Z" fill="#FFFFFF"/>
+    <path id="area_petal2" d="M 100 60 Q 110 50 115 60 Q 120 70 115 80 Q 110 90 100 85 Q 90 90 85 80 Q 80 70 85 60 Q 90 50 100 60 Z" fill="#FFFFFF"/>
+    <path id="area_center" d="M 100 70 Q 105 75 100 80 Q 95 75 100 70 Z" fill="#FFFFFF"/>
+    <path id="area_stem" d="M 100 90 L 100 150 L 105 150 L 105 90 Z" fill="#FFFFFF"/>
+    <path id="area_leaf1" d="M 100 110 Q 95 115 100 120 Q 105 115 100 110 Z" fill="#FFFFFF"/>
+    <path id="area_leaf2" d="M 100 130 Q 105 135 100 140 Q 95 135 100 130 Z" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Coloring Book Style: Line Art Layer -->
+  <g id="line-art">
+    <path d="M 100 60 Q 90 50 85 60 Q 80 70 85 80 Q 90 90 100 85 Q 110 90 115 80 Q 120 70 115 60 Q 110 50 100 60 Z" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 100 60 Q 110 50 115 60 Q 120 70 115 80 Q 110 90 100 85 Q 90 90 85 80 Q 80 70 85 60 Q 90 50 100 60 Z" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 100 70 Q 105 75 100 80 Q 95 75 100 70 Z" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 100 90 L 100 150 L 105 150 L 105 90 Z" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 100 110 Q 95 115 100 120 Q 105 115 100 110 Z" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 100 130 Q 105 135 100 140 Q 95 135 100 130 Z" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
 </svg>
-

@@ -44,6 +44,7 @@ class SpatialGrid {
   }
 
   /// Find path at point using spatial grid
+  /// Returns the smallest path (innermost) if multiple paths contain the point
   SvgPathData? findPathAtPoint(Offset point) {
     // Check if point is within bounds
     if (!_bounds.contains(point)) return null;
@@ -59,7 +60,9 @@ class SpatialGrid {
     final candidateIndices = _grid[cellId];
     if (candidateIndices == null || candidateIndices.isEmpty) return null;
 
-    // Test candidates (check bounds first, then contains)
+    // Collect all paths that contain the point
+    final containingPaths = <SvgPathData>[];
+    
     for (final index in candidateIndices) {
       final pathData = _paths[index];
       
@@ -68,11 +71,58 @@ class SpatialGrid {
       
       // Precise path contains check
       if (pathData.containsPoint(point)) {
-        return pathData;
+        containingPaths.add(pathData);
       }
     }
 
-    return null;
+    // If no paths contain the point, return null
+    if (containingPaths.isEmpty) return null;
+
+    // If only one path contains the point, return it
+    if (containingPaths.length == 1) return containingPaths.first;
+
+    // If multiple paths contain the point, we need to find the "most specific" one
+    // Strategy: Chọn path nhỏ nhất (innermost) mà KHÔNG nằm trong path nhỏ hơn khác
+    // 
+    // Logic:
+    // 1. Sắp xếp theo area (nhỏ nhất trước)
+    // 2. Tìm path nhỏ nhất mà point nằm trong nó
+    // 3. Kiểm tra xem path này có nằm trong path nhỏ hơn khác không
+    // 4. Nếu có, chọn path nhỏ hơn đó
+    // 5. Nếu không, chọn path này
+    
+    // Sort by area (smallest first)
+    containingPaths.sort((a, b) {
+      final areaA = a.bounds.width * a.bounds.height;
+      final areaB = b.bounds.width * b.bounds.height;
+      return areaA.compareTo(areaB);
+    });
+
+    // Tìm path nhỏ nhất (innermost) - path mà point nằm trong và không có path nhỏ hơn chứa point
+    // Đi từ nhỏ nhất đến lớn nhất, tìm path đầu tiên chứa point
+    for (int i = 0; i < containingPaths.length; i++) {
+      final candidatePath = containingPaths[i];
+      final candidateCenter = candidatePath.bounds.center;
+      
+      // Kiểm tra xem có path nhỏ hơn nào chứa center của candidatePath không
+      // Nếu có, candidatePath là nested trong path nhỏ hơn → bỏ qua
+      bool isNestedInSmaller = false;
+      for (int j = 0; j < i; j++) {
+        final smallerPath = containingPaths[j];
+        if (smallerPath.containsPoint(candidateCenter)) {
+          isNestedInSmaller = true;
+          break;
+        }
+      }
+      
+      // Nếu không nested trong path nhỏ hơn, đây là path innermost
+      if (!isNestedInSmaller) {
+        return candidatePath;
+      }
+    }
+    
+    // Fallback: trả về path nhỏ nhất
+    return containingPaths.first;
   }
 
   /// Get all paths (for rendering)

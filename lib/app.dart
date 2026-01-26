@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'core/theme/app_dimens.dart';
 import 'core/theme/app_theme.dart';
 import 'features/home/home_screen.dart';
 import 'features/gallery/gallery_screen.dart';
+import 'features/splash/splash_screen.dart';
 
 /// Main application widget
 class FillColorApp extends StatelessWidget {
@@ -9,13 +12,20 @@ class FillColorApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FillColor',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      debugShowCheckedModeBanner: false,
-      home: const MainNavigator(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812), // Standard iPhone X/11/12/13 dimension
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+          title: 'FillColor',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
+          debugShowCheckedModeBanner: false,
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }
@@ -39,27 +49,60 @@ class _MainNavigatorState extends State<MainNavigator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true, // Allows body to go behind the floating nav bar
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.photo_library),
-            label: 'Gallery',
-          ),
-        ],
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.all(AppDimens.space24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(32),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(32),
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              setState(() => _currentIndex = index);
+            },
+            backgroundColor: Colors.white,
+            elevation: 0,
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.grey[400],
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            selectedLabelStyle: const TextStyle(
+              fontSize: 11,
+              height: 1.2,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontSize: 11,
+              height: 1.2,
+            ),
+            type: BottomNavigationBarType.fixed,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_outlined),
+                activeIcon: Icon(Icons.home_rounded),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.photo_library_outlined),
+                activeIcon: Icon(Icons.photo_library_rounded),
+                label: 'Gallery',
+              ),
+            ],
+          )
+        ),
       ),
     );
   }

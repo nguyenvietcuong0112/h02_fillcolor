@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../core/widgets/loading_widget.dart';
 import '../../core/widgets/error_widget.dart';
 import '../../data/repositories/gallery_repository.dart';
 import '../../data/models/saved_artwork_model.dart';
+import '../../core/theme/app_dimens.dart';
+import 'gallery_viewer_screen.dart';
 
 /// Gallery screen state
 class GalleryState {
@@ -84,7 +87,6 @@ final galleryControllerProvider = StateNotifierProvider<GalleryController, Galle
   return GalleryController(GalleryRepository());
 });
 
-/// Gallery screen
 class GalleryScreen extends ConsumerWidget {
   const GalleryScreen({super.key});
 
@@ -93,48 +95,128 @@ class GalleryScreen extends ConsumerWidget {
     final state = ref.watch(galleryControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Gallery'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => ref.read(galleryControllerProvider.notifier).refresh(),
-          ),
-        ],
-      ),
-      body: state.isLoading
-          ? const LoadingWidget()
-          : state.error != null
-              ? ErrorDisplayWidget(
-                  message: state.error!,
-                  onRetry: () => ref.read(galleryControllerProvider.notifier).refresh(),
-                )
-              : state.artworks.isEmpty
-                  ? const Center(
-                      child: Text('No saved artworks yet. Start coloring to save your masterpieces!'),
-                    )
-                  : GridView.builder(
-                      padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                        childAspectRatio: 0.75,
+      backgroundColor: const Color(0xFFF8F9FA),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Padding(
+              padding: EdgeInsets.fromLTRB(AppDimens.space24, AppDimens.space16, AppDimens.space24, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'My Gallery',
+                        style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -0.5,
+                        ),
                       ),
-                      itemCount: state.artworks.length,
-                      itemBuilder: (context, index) {
-                        final artwork = state.artworks[index];
-                        return _ArtworkCard(
-                          artwork: artwork,
-                          onDelete: () => _showDeleteDialog(
-                            context,
-                            ref,
-                            artwork,
+                      SizedBox(height: 4.h),
+                      Text(
+                        'Your masterpiece collection',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                    onPressed: () => ref.read(galleryControllerProvider.notifier).refresh(),
+                    icon: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
                           ),
-                          onShare: () => _shareArtwork(context, artwork),
-                        );
-                      },
+                        ],
+                      ),
+                      child: const Icon(Icons.refresh, color: Colors.black87),
                     ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: AppDimens.space24),
+
+            // Content
+            Expanded(
+              child: state.isLoading
+                  ? const LoadingWidget()
+                  : state.error != null
+                      ? ErrorDisplayWidget(
+                          message: state.error!,
+                          onRetry: () => ref.read(galleryControllerProvider.notifier).refresh(),
+                        )
+                      : state.artworks.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.palette_outlined, size: 64, color: Colors.grey[300]),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    'No saved artworks yet',
+                                    style: TextStyle(
+                                      color: Colors.grey[500],
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Start coloring to fill this space!',
+                                    style: TextStyle(color: Colors.grey[400]),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : GridView.builder(
+                              padding: EdgeInsets.fromLTRB(AppDimens.space24, 0, AppDimens.space24, AppDimens.space24),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: AppDimens.space16,
+                                mainAxisSpacing: AppDimens.space24,
+                                childAspectRatio: 0.75,
+                              ),
+                              itemCount: state.artworks.length,
+                              itemBuilder: (context, index) {
+                                final artwork = state.artworks[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => GalleryViewerScreen(artwork: artwork),
+                                      ),
+                                    );
+                                  },
+                                  child: _ArtworkCard(
+                                    artwork: artwork,
+                                    onDelete: () => _showDeleteDialog(
+                                      context,
+                                      ref,
+                                      artwork,
+                                    ),
+                                    onShare: () => _shareArtwork(context, artwork),
+                                  ),
+                                );
+                              },
+                            ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -154,7 +236,10 @@ class GalleryScreen extends ConsumerWidget {
               ref.read(galleryControllerProvider.notifier).deleteArtwork(artwork.filePath);
               Navigator.pop(context);
             },
-            child: const Text('Delete'),
+            child: Text(
+              'Delete',
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
           ),
         ],
       ),
@@ -188,76 +273,112 @@ class _ArtworkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Image placeholder
-          Container(
-            color: Colors.grey[200],
-            child: Image.file(
-              File(artwork.filePath),
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return const Center(
-                  child: Icon(Icons.broken_image, size: 48),
-                );
-              },
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
-          // Actions overlay
-          Positioned(
-            top: 8,
-            right: 8,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
+        ],
+      ),
+      padding: EdgeInsets.all(AppDimens.space12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.share, color: Colors.white),
-                  onPressed: onShare,
-                  style: IconButton.styleFrom(
-                    backgroundColor: Colors.black54,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Hero(
+                    tag: artwork.filePath,
+                    child: Image.file(
+                      File(artwork.filePath),
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Center(
+                          child: Icon(Icons.broken_image, size: 24, color: Colors.grey[300]),
+                        );
+                      },
+                    ),
                   ),
                 ),
-                const SizedBox(width: 4),
-                IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.white),
-                  onPressed: onDelete,
-                  style: IconButton.styleFrom(
-                    backgroundColor: Colors.red.withValues(alpha: 0.7),
+                // Actions Overlay (Top Right)
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Row(
+                    children: [
+                      _ActionButton(icon: Icons.share_outlined, onTap: onShare),
+                      SizedBox(width: 8),
+                      _ActionButton(icon: Icons.delete_outline, onTap: onDelete, isDestructive: true),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          // Info overlay
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              color: Colors.black54,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    artwork.imageName,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+          SizedBox(height: AppDimens.space12),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  artwork.imageName,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black87,
                   ),
-                  Text(
-                    '${artwork.createdAt.day}/${artwork.createdAt.month}/${artwork.createdAt.year}',
-                    style: const TextStyle(color: Colors.white70, fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  '${artwork.createdAt.day}/${artwork.createdAt.month}/${artwork.createdAt.year}',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.grey[500],
+                    fontSize: 10.sp,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final bool isDestructive;
+
+  const _ActionButton({required this.icon, required this.onTap, this.isDestructive = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.9),
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(color: Colors.black12, blurRadius: 4),
+          ],
+        ),
+        child: Icon(
+          icon,
+          size: 16,
+          color: isDestructive ? Colors.red[400] : Colors.black87,
+        ),
       ),
     );
   }

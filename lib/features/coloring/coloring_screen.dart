@@ -16,12 +16,18 @@ import 'coloring_controller.dart';
 import 'widgets/coloring_canvas.dart';
 import 'widgets/color_palette.dart';
 import 'widgets/brush_toolbar.dart';
+import '../gallery/gallery_screen.dart'; // For galleryControllerProvider
 
 /// Coloring screen
 class ColoringScreen extends ConsumerStatefulWidget {
   final dynamic image;
+  final ColoringMode mode; // Mode được chọn từ màn selection
 
-  const ColoringScreen({super.key, required this.image});
+  const ColoringScreen({
+    super.key,
+    required this.image,
+    required this.mode,
+  });
 
   @override
   ConsumerState<ColoringScreen> createState() => _ColoringScreenState();
@@ -31,10 +37,22 @@ class _ColoringScreenState extends ConsumerState<ColoringScreen> {
   final GlobalKey _repaintBoundaryKey = GlobalKey();
 
   @override
+  void initState() {
+    super.initState();
+    // Set mode và load data tương ứng khi screen init
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final controller = ref.read(coloringControllerProvider(widget.image).notifier);
+      // Set mode (sẽ tự động load data của mode đó)
+      controller.setMode(widget.mode);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final state = ref.watch(coloringControllerProvider(widget.image));
 
     return Scaffold(
+      backgroundColor: Colors.white, // Force white background for coloring canvas
       appBar: AppBar(
         title: Text(
           widget.image.name,
@@ -85,11 +103,13 @@ class _ColoringScreenState extends ConsumerState<ColoringScreen> {
               ? ErrorDisplayWidget(message: state.error!)
               : Column(
                   children: [
-                    // Mode selector with improved design
+                    // Mode indicator (chỉ hiển thị, không cho switch)
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                       decoration: BoxDecoration(
-                        color: Colors.grey[50],
+                        color: widget.mode == ColoringMode.fill 
+                            ? Colors.blue[50] 
+                            : Colors.purple[50],
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withValues(alpha: 0.05),
@@ -101,18 +121,25 @@ class _ColoringScreenState extends ConsumerState<ColoringScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _ModeButton(
-                            icon: Icons.format_color_fill,
-                            label: 'Fill',
-                            isSelected: state.mode == ColoringMode.fill,
-                            onTap: () => ref.read(coloringControllerProvider(widget.image).notifier).setMode(ColoringMode.fill),
+                          Icon(
+                            widget.mode == ColoringMode.fill 
+                                ? Icons.format_color_fill 
+                                : Icons.brush,
+                            color: widget.mode == ColoringMode.fill 
+                                ? Colors.blue 
+                                : Colors.purple,
+                            size: 20,
                           ),
-                          const SizedBox(width: 20),
-                          _ModeButton(
-                            icon: Icons.brush,
-                            label: 'Brush',
-                            isSelected: state.mode == ColoringMode.brush,
-                            onTap: () => ref.read(coloringControllerProvider(widget.image).notifier).setMode(ColoringMode.brush),
+                          const SizedBox(width: 8),
+                          Text(
+                            widget.mode == ColoringMode.fill ? 'Fill Mode' : 'Brush Mode',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: widget.mode == ColoringMode.fill 
+                                  ? Colors.blue[700] 
+                                  : Colors.purple[700],
+                            ),
                           ),
                         ],
                       ),
@@ -123,7 +150,7 @@ class _ColoringScreenState extends ConsumerState<ColoringScreen> {
                       onColorSelected: (color) => ref.read(coloringControllerProvider(widget.image).notifier).setColor(color),
                     ),
                     // Brush toolbar (only in brush mode)
-                    if (state.mode == ColoringMode.brush)
+                    if (widget.mode == ColoringMode.brush)
                       BrushToolbar(
                         brushSize: state.brushSize,
                         onBrushSizeChanged: (size) => ref.read(coloringControllerProvider(widget.image).notifier).setBrushSize(size),
@@ -135,7 +162,7 @@ class _ColoringScreenState extends ConsumerState<ColoringScreen> {
                         svgPaths: state.svgPaths,
                         filledPaths: state.filledPaths,
                         brushStrokes: state.brushStrokes,
-                        isBrushMode: state.mode == ColoringMode.brush,
+                        isBrushMode: widget.mode == ColoringMode.brush,
                         onTap: (point) => ref.read(coloringControllerProvider(widget.image).notifier).handleTap(point),
                         onPanStart: (point) => ref.read(coloringControllerProvider(widget.image).notifier).handlePanStart(point),
                         onPanUpdate: (point) => ref.read(coloringControllerProvider(widget.image).notifier).handlePanUpdate(point),
@@ -196,6 +223,10 @@ class _ColoringScreenState extends ConsumerState<ColoringScreen> {
       // Log analytics
       AnalyticsService.instance.logArtworkSaved();
 
+      // Refresh Gallery so it shows up immediately
+      // We need to import the provider from gallery_feature
+      ref.read(galleryControllerProvider.notifier).refresh();
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Artwork saved: ${file.path}')),
@@ -254,76 +285,5 @@ class _ColoringScreenState extends ConsumerState<ColoringScreen> {
   }
 }
 
-/// Mode button widget with improved design
-class _ModeButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _ModeButton({
-    required this.icon,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? Theme.of(context).colorScheme.primary : Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : Colors.grey[300]!,
-            width: isSelected ? 0 : 1.5,
-          ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-                    blurRadius: 8,
-                    spreadRadius: 1,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.white : Colors.grey[700],
-              size: 20,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.grey[700],
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 
