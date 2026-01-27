@@ -39,5 +39,23 @@ class ColoringImageModel {
       'difficulty': difficulty,
     };
   }
-}
 
+  /// Copy with
+  ColoringImageModel copyWith({
+    String? id,
+    String? name,
+    String? category,
+    String? svgPath,
+    String? thumbnailPath,
+    int? difficulty,
+  }) {
+    return ColoringImageModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      category: category ?? this.category,
+      svgPath: svgPath ?? this.svgPath,
+      thumbnailPath: thumbnailPath ?? this.thumbnailPath,
+      difficulty: difficulty ?? this.difficulty,
+    );
+  }
+}

@@ -1,349 +1,231 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:io';
 import 'package:share_plus/share_plus.dart';
-import '../../core/widgets/loading_widget.dart';
-import '../../core/widgets/error_widget.dart';
-import '../../data/repositories/gallery_repository.dart';
-import '../../data/models/saved_artwork_model.dart';
-import '../../core/theme/app_dimens.dart';
-import 'gallery_viewer_screen.dart';
 
-/// Gallery screen state
-class GalleryState {
-  final List<SavedArtworkModel> artworks;
-  final bool isLoading;
-  final String? error;
+import '../../core/services/app_gallery_service.dart';
 
-  const GalleryState({
-    required this.artworks,
-    this.isLoading = false,
-    this.error,
-  });
+/// Gallery state provider
+final galleryImagesProvider = StateNotifierProvider<GalleryNotifier, AsyncValue<List<File>>>((ref) {
+  return GalleryNotifier();
+});
 
-  GalleryState copyWith({
-    List<SavedArtworkModel>? artworks,
-    bool? isLoading,
-    String? error,
-  }) {
-    return GalleryState(
-      artworks: artworks ?? this.artworks,
-      isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-    );
-  }
-}
-
-/// Gallery controller
-class GalleryController extends StateNotifier<GalleryState> {
-  final GalleryRepository _repository;
-
-  GalleryController(this._repository)
-      : super(
-          const GalleryState(
-            artworks: [],
-            isLoading: true,
-          ),
-        ) {
-    _loadArtworks();
+/// Gallery notifier
+class GalleryNotifier extends StateNotifier<AsyncValue<List<File>>> {
+  GalleryNotifier() : super(const AsyncValue.loading()) {
+    loadImages();
   }
 
-  Future<void> _loadArtworks() async {
-    state = state.copyWith(isLoading: true, error: null);
-
+  Future<void> loadImages() async {
+    state = const AsyncValue.loading();
     try {
-      final artworks = await _repository.getSavedArtworks();
-      state = state.copyWith(
-        artworks: artworks,
-        isLoading: false,
-      );
-    } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
-    }
-  }
-
-  Future<void> deleteArtwork(String filePath) async {
-    try {
-      final success = await _repository.deleteArtwork(filePath);
-      if (success) {
-        await _loadArtworks();
-      }
-    } catch (e) {
-      // Handle error
+      final images = await AppGalleryService.getAllImages();
+      state = AsyncValue.data(images);
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
     }
   }
 
   Future<void> refresh() async {
-    await _loadArtworks();
+    await loadImages();
   }
 }
 
-/// Provider for gallery controller
-final galleryControllerProvider = StateNotifierProvider<GalleryController, GalleryState>((ref) {
-  return GalleryController(GalleryRepository());
-});
-
+/// Gallery screen using Riverpod
 class GalleryScreen extends ConsumerWidget {
   const GalleryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(galleryControllerProvider);
+    final imagesAsync = ref.watch(galleryImagesProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Padding(
-              padding: EdgeInsets.fromLTRB(AppDimens.space24, AppDimens.space16, AppDimens.space24, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'My Gallery',
-                        style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        'Your masterpiece collection',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () => ref.read(galleryControllerProvider.notifier).refresh(),
-                    icon: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: const Icon(Icons.refresh, color: Colors.black87),
+      appBar: AppBar(
+        title: const Text('My Gallery'),
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => ref.read(galleryImagesProvider.notifier).refresh(),
+            tooltip: 'Refresh',
+          ),
+        ],
+      ),
+      body: imagesAsync.when(
+        data: (images) => images.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.photo_library_outlined, size: 64, color: Colors.grey[400]),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No images yet',
+                      style: TextStyle(fontSize: 18, color: Colors.grey[600]),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    Text(
+                      'Start coloring to save images here!',
+                      style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+                    ),
+                  ],
+                ),
+              )
+            : GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 0.75,
+                ),
+                itemCount: images.length,
+                itemBuilder: (context, index) {
+                  final file = images[index];
+                  return _GalleryItem(file: file, ref: ref);
+                },
               ),
-            ),
-
-            SizedBox(height: AppDimens.space24),
-
-            // Content
-            Expanded(
-              child: state.isLoading
-                  ? const LoadingWidget()
-                  : state.error != null
-                      ? ErrorDisplayWidget(
-                          message: state.error!,
-                          onRetry: () => ref.read(galleryControllerProvider.notifier).refresh(),
-                        )
-                      : state.artworks.isEmpty
-                          ? Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.palette_outlined, size: 64, color: Colors.grey[300]),
-                                  SizedBox(height: 16),
-                                  Text(
-                                    'No saved artworks yet',
-                                    style: TextStyle(
-                                      color: Colors.grey[500],
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Start coloring to fill this space!',
-                                    style: TextStyle(color: Colors.grey[400]),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : GridView.builder(
-                              padding: EdgeInsets.fromLTRB(AppDimens.space24, 0, AppDimens.space24, AppDimens.space24),
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: AppDimens.space16,
-                                mainAxisSpacing: AppDimens.space24,
-                                childAspectRatio: 0.75,
-                              ),
-                              itemCount: state.artworks.length,
-                              itemBuilder: (context, index) {
-                                final artwork = state.artworks[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => GalleryViewerScreen(artwork: artwork),
-                                      ),
-                                    );
-                                  },
-                                  child: _ArtworkCard(
-                                    artwork: artwork,
-                                    onDelete: () => _showDeleteDialog(
-                                      context,
-                                      ref,
-                                      artwork,
-                                    ),
-                                    onShare: () => _shareArtwork(context, artwork),
-                                  ),
-                                );
-                              },
-                            ),
-            ),
-          ],
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              const SizedBox(height: 16),
+              Text('Error: $error'),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => ref.read(galleryImagesProvider.notifier).refresh(),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+}
 
-  void _showDeleteDialog(BuildContext context, WidgetRef ref, SavedArtworkModel artwork) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Artwork'),
-        content: const Text('Are you sure you want to delete this artwork?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              ref.read(galleryControllerProvider.notifier).deleteArtwork(artwork.filePath);
-              Navigator.pop(context);
-            },
-            child: Text(
-              'Delete',
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+class _GalleryItem extends StatefulWidget {
+  final File file;
+  final WidgetRef ref;
 
-  Future<void> _shareArtwork(BuildContext context, SavedArtworkModel artwork) async {
+  const _GalleryItem({required this.file, required this.ref});
+
+  @override
+  State<_GalleryItem> createState() => _GalleryItemState();
+}
+
+class _GalleryItemState extends State<_GalleryItem> {
+  bool _isDownloading = false;
+
+  Future<void> _downloadToDevice() async {
+    setState(() => _isDownloading = true);
+    
     try {
-      await Share.shareXFiles([XFile(artwork.filePath)], text: 'Check out my coloring!');
-    } catch (e) {
-      if (context.mounted) {
+      final success = await AppGalleryService.exportToDeviceGallery(widget.file);
+      
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error sharing artwork: $e')),
+          SnackBar(
+            content: Text(success ? 'Downloaded to device gallery!' : 'Download failed'),
+            backgroundColor: success ? Colors.green : Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
         );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isDownloading = false);
       }
     }
   }
-}
 
-/// Artwork card widget
-class _ArtworkCard extends StatelessWidget {
-  final SavedArtworkModel artwork;
-  final VoidCallback onDelete;
-  final VoidCallback onShare;
+  Future<void> _shareImage() async {
+    try {
+      await Share.shareXFiles([XFile(widget.file.path)], text: 'My colored artwork!');
+    } catch (e) {
+      debugPrint('Share error: $e');
+    }
+  }
 
-  const _ArtworkCard({
-    required this.artwork,
-    required this.onDelete,
-    required this.onShare,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+  Future<void> _deleteImage() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Image'),
+        content: const Text('Are you sure you want to delete this image?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
-      padding: EdgeInsets.all(AppDimens.space12),
+    );
+
+    if (confirm == true) {
+      await AppGalleryService.deleteImage(widget.file);
+      widget.ref.read(galleryImagesProvider.notifier).refresh();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      elevation: 4,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Hero(
-                    tag: artwork.filePath,
-                    child: Image.file(
-                      File(artwork.filePath),
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Center(
-                          child: Icon(Icons.broken_image, size: 24, color: Colors.grey[300]),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                // Actions Overlay (Top Right)
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Row(
-                    children: [
-                      _ActionButton(icon: Icons.share_outlined, onTap: onShare),
-                      SizedBox(width: 8),
-                      _ActionButton(icon: Icons.delete_outline, onTap: onDelete, isDestructive: true),
-                    ],
-                  ),
-                ),
-              ],
+            child: Image.file(
+              widget.file,
+              fit: BoxFit.cover,
             ),
           ),
-          SizedBox(height: AppDimens.space12),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Container(
+            color: Colors.grey[100],
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  artwork.imageName,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black87,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                IconButton(
+                  icon: _isDownloading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.download, size: 20),
+                  onPressed: _isDownloading ? null : _downloadToDevice,
+                  tooltip: 'Download to device',
+                  color: Colors.blue,
                 ),
-                Text(
-                  '${artwork.createdAt.day}/${artwork.createdAt.month}/${artwork.createdAt.year}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey[500],
-                    fontSize: 10.sp,
-                  ),
+                IconButton(
+                  icon: const Icon(Icons.share, size: 20),
+                  onPressed: _shareImage,
+                  tooltip: 'Share',
+                  color: Colors.green,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, size: 20),
+                  onPressed: _deleteImage,
+                  tooltip: 'Delete',
+                  color: Colors.red,
                 ),
               ],
             ),
@@ -353,34 +235,3 @@ class _ArtworkCard extends StatelessWidget {
     );
   }
 }
-
-class _ActionButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-  final bool isDestructive;
-
-  const _ActionButton({required this.icon, required this.onTap, this.isDestructive = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(6),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.9),
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(color: Colors.black12, blurRadius: 4),
-          ],
-        ),
-        child: Icon(
-          icon,
-          size: 16,
-          color: isDestructive ? Colors.red[400] : Colors.black87,
-        ),
-      ),
-    );
-  }
-}
-

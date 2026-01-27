@@ -43,8 +43,4 @@ android {
 
 flutter {
     source = "../.."
-    // Disable Impeller to use Skia for better performance with complex SVG paths
-    // Impeller can cause lag with many paths. Skia is more stable.
-    // This is critical for coloring apps with many fillable paths
-    enableImpeller = false
 }

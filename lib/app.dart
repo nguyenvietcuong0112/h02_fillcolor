@@ -49,7 +49,7 @@ class _MainNavigatorState extends State<MainNavigator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true, // Allows body to go behind the floating nav bar
+      extendBody: true,
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,

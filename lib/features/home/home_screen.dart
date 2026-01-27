@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import '../../core/widgets/loading_widget.dart';
@@ -131,13 +131,12 @@ class HomeScreen extends ConsumerWidget {
                           final image = state.images[index];
 
                           return _ImageCard(
-                            key: ValueKey(image.id),
                             image: image,
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => ColoringModeSelectionScreen(image: image),
+                                  builder: (_) => ModeSelectionScreen(image: image),
                                 ),
                               );
                             },
@@ -245,13 +244,20 @@ class _ImageCardState extends State<_ImageCard> {
                         _thumbnailFile!,
                         fit: BoxFit.contain,
                       )
-                    : RepaintBoundary(
-                        key: _repaintKey,
-                        child: SvgPicture.asset(
-                          widget.image.svgPath,
-                          fit: BoxFit.contain,
-                          placeholderBuilder: (_) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                        ),
+                    : FutureBuilder(
+                        future: rootBundle.load(widget.image.svgPath),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return RepaintBoundary(
+                              key: _repaintKey,
+                              child: Image.memory(
+                                snapshot.data!.buffer.asUint8List(),
+                                fit: BoxFit.contain,
+                              ),
+                            );
+                          }
+                          return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                        },
                       ),
               ),
             ),

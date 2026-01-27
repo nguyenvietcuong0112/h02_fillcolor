@@ -1,5 +1,5 @@
 name: h02_colorfill
-description: "FillColor - A professional coloring book app with brush and fill modes"
+description: "FillColor - A professional PNG coloring book app"
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -14,11 +14,6 @@ dependencies:
   # State Management
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
-
-  # SVG Rendering
-  flutter_svg: ^2.0.10+1
-  path_drawing: ^1.0.1
-  xml: ^6.5.0
 
   # Storage
   shared_preferences: ^2.3.2
@@ -59,7 +54,3 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/svgs/
-    - assets/svgs/animals/
-    - assets/svgs/flowers/
-    - assets/svgs/mandala/
