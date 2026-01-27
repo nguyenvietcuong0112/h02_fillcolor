@@ -28,7 +28,36 @@ class FillColoringScreen extends ConsumerStatefulWidget {
 class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
   Color _selectedColor = Color(AppConstants.defaultColors[0]);
   final GlobalKey _canvasKey = GlobalKey();
+  final GlobalKey<PixelColoringCanvasState> _canvasStateKey = GlobalKey<PixelColoringCanvasState>();
   bool _isSaving = false;
+  bool _canUndo = false;
+  bool _canRedo = false;
+
+  void _updateUndoRedoState() {
+    final canvasState = _canvasStateKey.currentState;
+    if (canvasState != null) {
+      setState(() {
+        _canUndo = canvasState.canUndo;
+        _canRedo = canvasState.canRedo;
+      });
+    }
+  }
+
+  Future<void> _handleUndo() async {
+    final canvasState = _canvasStateKey.currentState;
+    if (canvasState != null) {
+      await canvasState.undo();
+      _updateUndoRedoState();
+    }
+  }
+
+  Future<void> _handleRedo() async {
+    final canvasState = _canvasStateKey.currentState;
+    if (canvasState != null) {
+      await canvasState.redo();
+      _updateUndoRedoState();
+    }
+  }
 
   Future<void> _saveToAppGallery() async {
     setState(() => _isSaving = true);
@@ -82,6 +111,16 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
         ),
         elevation: 0,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.undo),
+            onPressed: _canUndo ? _handleUndo : null,
+            tooltip: 'Undo',
+          ),
+          IconButton(
+            icon: const Icon(Icons.redo),
+            onPressed: _canRedo ? _handleRedo : null,
+            tooltip: 'Redo',
+          ),
           if (_isSaving)
             const Padding(
               padding: EdgeInsets.all(16.0),
@@ -105,11 +144,18 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
             child: RepaintBoundary(
               key: _canvasKey,
               child: PixelColoringCanvas(
+                key: _canvasStateKey,
                 imagePath: widget.image.svgPath,
                 selectedColor: _selectedColor,
                 mode: ColoringMode.fill,
                 brushStrokes: const [],
-                onLoading: (loading) {}, // Ignore loading callback
+                onLoading: (loading) {
+                  if (!loading) {
+                    // Update undo/redo state after image loads
+                    Future.delayed(const Duration(milliseconds: 100), _updateUndoRedoState);
+                  }
+                },
+                onFillComplete: _updateUndoRedoState,
               ),
             ),
           ),

@@ -38,7 +38,7 @@ class LanguageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: AppDimens.space20, vertical: AppDimens.space20),
@@ -47,13 +47,13 @@ class LanguageScreen extends StatelessWidget {
             children: [
               Text(
                 'Choose Language',
-                style: Theme.of(context).textTheme.displayMedium,
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(color: Colors.black),
               ),
               SizedBox(height: AppDimens.space12),
               Text(
                 'Select your preferred language to continue',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textSecondaryLight,
+                  color: Colors.grey[600],
                 ),
               ),
               SizedBox(height: AppDimens.space32),
@@ -96,13 +96,14 @@ class LanguageScreen extends StatelessWidget {
               lang['name']!,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.w500,
+                color: Colors.black,
               ),
             ),
             const Spacer(),
             Icon(
               Icons.arrow_forward_ios,
               size: AppDimens.iconSmall,
-              color: AppColors.textSecondaryLight,
+              color: Colors.grey[600],
             ),
           ],
         ),

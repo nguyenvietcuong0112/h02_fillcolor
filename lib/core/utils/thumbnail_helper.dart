@@ -37,4 +37,18 @@ class ThumbnailHelper {
       return null;
     }
   }
+
+  /// Clear all cached thumbnails
+  static Future<void> clearAllThumbnails() async {
+    try {
+      final path = await _localPath;
+      final dir = Directory(path);
+      if (await dir.exists()) {
+        await dir.delete(recursive: true);
+        debugPrint('Cleared all thumbnails');
+      }
+    } catch (e) {
+      debugPrint('Error clearing thumbnails: $e');
+    }
+  }
 }

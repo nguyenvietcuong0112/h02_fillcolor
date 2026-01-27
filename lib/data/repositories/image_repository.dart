@@ -42,7 +42,7 @@ class ImageRepository {
       name: 'Cat',
       category: 'Animals',
       svgPath: 'assets/images/animal_cat.png',
-      thumbnailPath: 'assets/images/thumbnails/cat.png',
+      thumbnailPath: 'assets/images/animal_cat.png',
       difficulty: 3,
     ),
     ColoringImageModel(
@@ -50,7 +50,7 @@ class ImageRepository {
       name: 'Dog',
       category: 'Animals',
       svgPath: 'assets/images/animal_dog.png',
-      thumbnailPath: 'assets/images/thumbnails/dog.png',
+      thumbnailPath: 'assets/images/animal_dog.png',
       difficulty: 3,
     ),
     ColoringImageModel(
@@ -58,7 +58,7 @@ class ImageRepository {
       name: 'Lion',
       category: 'Animals',
       svgPath: 'assets/images/animal_lion.png',
-      thumbnailPath: 'assets/images/thumbnails/lion.png',
+      thumbnailPath: 'assets/images/animal_lion.png',
       difficulty: 4,
     ),
     ColoringImageModel(
@@ -66,7 +66,7 @@ class ImageRepository {
       name: 'Bird',
       category: 'Animals',
       svgPath: 'assets/images/animal_bird.png',
-      thumbnailPath: 'assets/images/thumbnails/bird.png',
+      thumbnailPath: 'assets/images/animal_bird.png',
       difficulty: 3,
     ),
     ColoringImageModel(
@@ -74,7 +74,7 @@ class ImageRepository {
       name: 'Butterfly',
       category: 'Animals',
       svgPath: 'assets/images/animal_butterfly.png',
-      thumbnailPath: 'assets/images/thumbnails/butterfly.png',
+      thumbnailPath: 'assets/images/animal_butterfly.png',
       difficulty: 4,
     ),
     ColoringImageModel(
@@ -82,41 +82,41 @@ class ImageRepository {
       name: 'Peacock',
       category: 'Animals',
       svgPath: 'assets/images/animal_peacock.png',
-      thumbnailPath: 'assets/images/thumbnails/peacock.png',
+      thumbnailPath: 'assets/images/animal_peacock.png',
       difficulty: 5,
     ),
     
     // ========== FLOWERS ==========
     ColoringImageModel(
-      id: 'flower_1',
+      id: 'flower_rose',
       name: 'Rose',
       category: 'Flowers',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual rose image
-      thumbnailPath: 'assets/images/thumbnails/rose.png',
+      svgPath: 'assets/images/flower_rose.png',
+      thumbnailPath: 'assets/images/flower_rose.png',
       difficulty: 3,
     ),
     ColoringImageModel(
-      id: 'flower_2',
+      id: 'flower_sunflower',
       name: 'Sunflower',
       category: 'Flowers',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual sunflower image
-      thumbnailPath: 'assets/images/thumbnails/sunflower.png',
+      svgPath: 'assets/images/flower_sunflower.png',
+      thumbnailPath: 'assets/images/flower_sunflower.png',
       difficulty: 3,
     ),
     ColoringImageModel(
-      id: 'flower_3',
+      id: 'flower_tulip',
       name: 'Tulip',
       category: 'Flowers',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual tulip image
-      thumbnailPath: 'assets/images/thumbnails/tulip.png',
+      svgPath: 'assets/images/flower_tulip.png',
+      thumbnailPath: 'assets/images/flower_tulip.png',
       difficulty: 2,
     ),
     ColoringImageModel(
-      id: 'flower_4',
+      id: 'flower_cherry',
       name: 'Cherry Blossom',
       category: 'Flowers',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual cherry blossom image
-      thumbnailPath: 'assets/images/thumbnails/cherry_blossom.png',
+      svgPath: 'assets/images/flower_cherry_blossom.png',
+      thumbnailPath: 'assets/images/flower_cherry_blossom.png',
       difficulty: 4,
     ),
     
@@ -125,16 +125,16 @@ class ImageRepository {
       id: 'mandala_1',
       name: 'Simple Mandala',
       category: 'Mandala',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual mandala image
-      thumbnailPath: 'assets/images/thumbnails/mandala_simple.png',
+      svgPath: 'assets/images/mandala_simple.png',
+      thumbnailPath: 'assets/images/mandala_simple.png',
       difficulty: 3,
     ),
     ColoringImageModel(
       id: 'mandala_2',
       name: 'Complex Mandala',
       category: 'Mandala',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual mandala image
-      thumbnailPath: 'assets/images/thumbnails/mandala_complex.png',
+      svgPath: 'assets/images/mandala_complex.png',
+      thumbnailPath: 'assets/images/mandala_complex.png',
       difficulty: 5,
     ),
     ColoringImageModel(
@@ -142,25 +142,25 @@ class ImageRepository {
       name: 'Ornate Mandala',
       category: 'Mandala',
       svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual mandala image
-      thumbnailPath: 'assets/images/thumbnails/ornate_mandala.png',
+      thumbnailPath: 'assets/images/test_flower.png',
       difficulty: 5,
     ),
     
     // ========== LANDSCAPE ==========
     ColoringImageModel(
-      id: 'landscape_1',
-      name: 'Mountain Scene',
+      id: 'landscape_mountains',
+      name: 'Mountain Lake Escape',
       category: 'Landscape',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual landscape image
-      thumbnailPath: 'assets/images/thumbnails/mountain.png',
+      svgPath: 'assets/images/landscape_mountains.png',
+      thumbnailPath: 'assets/images/landscape_mountains.png',
       difficulty: 4,
     ),
     ColoringImageModel(
-      id: 'landscape_2',
-      name: 'Beach Scene',
+      id: 'landscape_beach',
+      name: 'Tropical Beach Sunset',
       category: 'Landscape',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual landscape image
-      thumbnailPath: 'assets/images/thumbnails/beach.png',
+      svgPath: 'assets/images/landscape_beach.png',
+      thumbnailPath: 'assets/images/landscape_beach.png',
       difficulty: 3,
     ),
     ColoringImageModel(
@@ -168,33 +168,33 @@ class ImageRepository {
       name: 'Forest Scene',
       category: 'Landscape',
       svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual landscape image
-      thumbnailPath: 'assets/images/thumbnails/forest.png',
+      thumbnailPath: 'assets/images/test_flower.png',
       difficulty: 4,
     ),
     
     // ========== ABSTRACT ==========
     ColoringImageModel(
-      id: 'abstract_1',
-      name: 'Geometric Patterns',
+      id: 'abstract_swirls',
+      name: 'Swirling Patterns',
       category: 'Abstract',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual abstract image
-      thumbnailPath: 'assets/images/thumbnails/geometric.png',
-      difficulty: 3,
+      svgPath: 'assets/images/abstract_swirls.png',
+      thumbnailPath: 'assets/images/abstract_swirls.png',
+      difficulty: 4,
     ),
     ColoringImageModel(
-      id: 'abstract_2',
-      name: 'Wave Patterns',
+      id: 'abstract_waves',
+      name: 'Ocean Wave Patterns',
       category: 'Abstract',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual abstract image
-      thumbnailPath: 'assets/images/thumbnails/waves.png',
-      difficulty: 3,
+      svgPath: 'assets/images/abstract_waves.png',
+      thumbnailPath: 'assets/images/abstract_waves.png',
+      difficulty: 4,
     ),
     ColoringImageModel(
       id: 'abstract_3',
       name: 'Spiral Patterns',
       category: 'Abstract',
       svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual abstract image
-      thumbnailPath: 'assets/images/thumbnails/spiral.png',
+      thumbnailPath: 'assets/images/test_flower.png',
       difficulty: 4,
     ),
     
@@ -204,7 +204,7 @@ class ImageRepository {
       name: 'Unicorn',
       category: 'Fantasy',
       svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual fantasy image
-      thumbnailPath: 'assets/images/thumbnails/unicorn.png',
+      thumbnailPath: 'assets/images/test_flower.png',
       difficulty: 4,
     ),
     ColoringImageModel(
@@ -212,7 +212,7 @@ class ImageRepository {
       name: 'Dragon',
       category: 'Fantasy',
       svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual fantasy image
-      thumbnailPath: 'assets/images/thumbnails/dragon.png',
+      thumbnailPath: 'assets/images/test_flower.png',
       difficulty: 5,
     ),
     ColoringImageModel(
@@ -220,7 +220,7 @@ class ImageRepository {
       name: 'Castle',
       category: 'Fantasy',
       svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual fantasy image
-      thumbnailPath: 'assets/images/thumbnails/castle.png',
+      thumbnailPath: 'assets/images/test_flower.png',
       difficulty: 4,
     ),
   ];

@@ -10,9 +10,16 @@ class FloodFillEngine {
   Uint8List? _pixels;
   int _width = 0;
   int _height = 0;
+  
+  // History management for undo/redo
+  final List<Uint8List> _history = [];
+  int _historyIndex = -1;
+  static const int _maxHistorySize = 20;
 
   ui.Image? get image => _image;
   bool get isReady => _image != null && _pixels != null;
+  bool get canUndo => _historyIndex > 0;
+  bool get canRedo => _historyIndex < _history.length - 1;
 
   /// Load an image from assets
   Future<void> loadImage(String assetPath) async {
@@ -29,12 +36,20 @@ class FloodFillEngine {
     // Convert image to pixel data
     final ByteData? byteData = await _image!.toByteData(format: ui.ImageByteFormat.rawRgba);
     _pixels = byteData!.buffer.asUint8List();
+    
+    // Initialize history with the initial state
+    _history.clear();
+    _history.add(Uint8List.fromList(_pixels!));
+    _historyIndex = 0;
   }
 
   /// Perform optimized flood fill
   Future<ui.Image?> floodFill(int x, int y, ui.Color newColor) async {
     if (!isReady) return null;
     if (x < 0 || x >= _width || y < 0 || y >= _height) return null;
+
+    // Save current state to history before making changes
+    _saveToHistory();
 
     final int startIndex = (y * _width + x) * 4;
     final int targetR = _pixels![startIndex];
@@ -200,5 +215,77 @@ class FloodFillEngine {
 
     debugPrint('Region mask created: $pixelsProcessed pixels processed');
     return mask;
+  }
+
+  /// Save current state to history
+  void _saveToHistory() {
+    // Remove any redo history when a new action is performed
+    if (_historyIndex < _history.length - 1) {
+      _history.removeRange(_historyIndex + 1, _history.length);
+    }
+    
+    // Add current state to history
+    _history.add(Uint8List.fromList(_pixels!));
+    _historyIndex++;
+    
+    // Limit history size
+    if (_history.length > _maxHistorySize) {
+      _history.removeAt(0);
+      _historyIndex--;
+    }
+  }
+
+  /// Undo the last fill operation
+  Future<ui.Image?> undo() async {
+    if (!canUndo) return _image;
+    
+    _historyIndex--;
+    _pixels = Uint8List.fromList(_history[_historyIndex]);
+    
+    // Convert pixels back to image
+    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(_pixels!);
+    final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
+      buffer,
+      width: _width,
+      height: _height,
+      pixelFormat: ui.PixelFormat.rgba8888,
+    );
+
+    final ui.Codec codec = await descriptor.instantiateCodec();
+    final ui.FrameInfo frameInfo = await codec.getNextFrame();
+    
+    _image = frameInfo.image;
+    debugPrint('Undo: restored to history index $_historyIndex');
+    return _image;
+  }
+
+  /// Redo the last undone fill operation
+  Future<ui.Image?> redo() async {
+    if (!canRedo) return _image;
+    
+    _historyIndex++;
+    _pixels = Uint8List.fromList(_history[_historyIndex]);
+    
+    // Convert pixels back to image
+    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(_pixels!);
+    final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
+      buffer,
+      width: _width,
+      height: _height,
+      pixelFormat: ui.PixelFormat.rgba8888,
+    );
+
+    final ui.Codec codec = await descriptor.instantiateCodec();
+    final ui.FrameInfo frameInfo = await codec.getNextFrame();
+    
+    _image = frameInfo.image;
+    debugPrint('Redo: restored to history index $_historyIndex');
+    return _image;
+  }
+
+  /// Clear history (useful when loading a new image)
+  void clearHistory() {
+    _history.clear();
+    _historyIndex = -1;
   }
 }

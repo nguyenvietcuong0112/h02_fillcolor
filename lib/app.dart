@@ -56,6 +56,7 @@ class _MainNavigatorState extends State<MainNavigator> {
       ),
       bottomNavigationBar: Container(
         margin: EdgeInsets.all(AppDimens.space24),
+        height: 70,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(32),
@@ -69,42 +70,72 @@ class _MainNavigatorState extends State<MainNavigator> {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(32),
-          child: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              setState(() => _currentIndex = index);
-            },
-            backgroundColor: Colors.white,
-            elevation: 0,
-            selectedItemColor: Colors.black,
-            unselectedItemColor: Colors.grey[400],
-            showSelectedLabels: true,
-            showUnselectedLabels: true,
-            selectedLabelStyle: const TextStyle(
-              fontSize: 11,
-              height: 1.2,
-            ),
-            unselectedLabelStyle: const TextStyle(
-              fontSize: 11,
-              height: 1.2,
-            ),
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                activeIcon: Icon(Icons.home_rounded),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _NavItem(
+                icon: Icons.home_outlined,
+                activeIcon: Icons.home_rounded,
                 label: 'Home',
+                isActive: _currentIndex == 0,
+                onTap: () => setState(() => _currentIndex = 0),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.photo_library_outlined),
-                activeIcon: Icon(Icons.photo_library_rounded),
+              _NavItem(
+                icon: Icons.photo_library_outlined,
+                activeIcon: Icons.photo_library_rounded,
                 label: 'Gallery',
+                isActive: _currentIndex == 1,
+                onTap: () => setState(() => _currentIndex = 1),
               ),
             ],
-          )
+          ),
         ),
       ),
     );
   }
 }
 
+class _NavItem extends StatelessWidget {
+  final IconData icon;
+  final IconData activeIcon;
+  final String label;
+  final bool isActive;
+  final VoidCallback onTap;
+
+  const _NavItem({
+    required this.icon,
+    required this.activeIcon,
+    required this.label,
+    required this.isActive,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              isActive ? activeIcon : icon,
+              color: isActive ? Colors.black : Colors.grey[400],
+              size: 24,
+            ),
+            SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+                color: isActive ? Colors.black : Colors.grey[400],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -21,7 +21,7 @@ class HomeScreen extends ConsumerWidget {
     final state = ref.watch(homeControllerProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA), // Soft off-white
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,7 +172,8 @@ class _ImageCardState extends State<_ImageCard> {
   @override
   void initState() {
     super.initState();
-    _loadThumbnail();
+    // Temporarily disable thumbnail caching to debug
+    // _loadThumbnail();
   }
 
   Future<void> _loadThumbnail() async {

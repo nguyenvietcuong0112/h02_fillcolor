@@ -40,6 +40,7 @@ class GalleryScreen extends ConsumerWidget {
     final imagesAsync = ref.watch(galleryImagesProvider);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('My Gallery'),
         elevation: 0,

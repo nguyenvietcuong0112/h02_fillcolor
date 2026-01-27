@@ -56,7 +56,7 @@ class _IntroScreenState extends State<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -69,7 +69,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   'Skip',
                   style: TextStyle(
                     fontSize: 16.sp,
-                    color: AppColors.textSecondaryLight,
+                    color: Colors.grey[600],
                   ),
                 ),
               ),
@@ -101,7 +101,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   width: _currentPage == index ? 20.w : 8.w,
                   height: 8.h,
                   decoration: BoxDecoration(
-                    color: _currentPage == index ? Theme.of(context).colorScheme.primary : Colors.grey[300],
+                    color: _currentPage == index ? Colors.black : Colors.grey[300],
                     borderRadius: BorderRadius.circular(AppDimens.radius4),
                   ),
                 ),
@@ -150,20 +150,20 @@ class _IntroScreenState extends State<IntroScreen> {
               data['icon'] == 'brush' ? Icons.brush : 
               data['icon'] == 'flower' ? Icons.filter_vintage : Icons.palette,
               size: 100.w,
-              color: Theme.of(context).colorScheme.primary,
+              color: Colors.black,
             ),
           ),
           SizedBox(height: AppDimens.space40),
           Text(
             data['title']!,
-            style: Theme.of(context).textTheme.displayMedium,
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(color: Colors.black),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: AppDimens.space16),
           Text(
             data['desc']!,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: AppColors.textSecondaryLight,
+              color: Colors.grey[600],
               height: 1.5,
             ),
             textAlign: TextAlign.center,

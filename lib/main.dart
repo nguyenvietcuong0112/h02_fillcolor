@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/utils/storage_utils.dart';
+import 'core/utils/thumbnail_helper.dart';
 import 'services/ads_service.dart';
 import 'services/remote_config_service.dart';
 import 'app.dart';
@@ -29,6 +30,9 @@ void main() async {
 
   // Initialize services
   await StorageUtils.init();
+  
+  // Clear thumbnail cache to ensure fresh images are loaded
+  await ThumbnailHelper.clearAllThumbnails();
   
   // Initialize services that don't require Firebase first
   await AdsService.instance.initialize();

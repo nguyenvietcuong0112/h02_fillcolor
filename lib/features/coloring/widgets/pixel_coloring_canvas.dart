@@ -16,6 +16,7 @@ class PixelColoringCanvas extends StatefulWidget {
   final Function()? onPanEnd;
   final Function(Offset)? onTapForRegion; // For brush mode region selection
   final Function(bool)? onLoading;
+  final Function()? onFillComplete; // Called after a fill operation completes
 
   const PixelColoringCanvas({
     super.key,
@@ -28,13 +29,14 @@ class PixelColoringCanvas extends StatefulWidget {
     this.onPanEnd,
     this.onTapForRegion,
     this.onLoading,
+    this.onFillComplete,
   });
 
   @override
-  State<PixelColoringCanvas> createState() => _PixelColoringCanvasState();
+  State<PixelColoringCanvas> createState() => PixelColoringCanvasState();
 }
 
-class _PixelColoringCanvasState extends State<PixelColoringCanvas> {
+class PixelColoringCanvasState extends State<PixelColoringCanvas> {
   final FloodFillEngine _engine = FloodFillEngine();
   final TransformationController _transformationController = TransformationController();
   bool _isLoading = true;
@@ -52,6 +54,32 @@ class _PixelColoringCanvasState extends State<PixelColoringCanvas> {
   void dispose() {
     _transformationController.dispose();
     super.dispose();
+  }
+
+  // Public methods to access engine functionality
+  bool get canUndo => _engine.canUndo;
+  bool get canRedo => _engine.canRedo;
+
+  Future<void> undo() async {
+    if (_engine.canUndo) {
+      final newImage = await _engine.undo();
+      if (newImage != null) {
+        setState(() {
+          _displayImage = newImage;
+        });
+      }
+    }
+  }
+
+  Future<void> redo() async {
+    if (_engine.canRedo) {
+      final newImage = await _engine.redo();
+      if (newImage != null) {
+        setState(() {
+          _displayImage = newImage;
+        });
+      }
+    }
   }
 
   Future<void> _loadImage() async {
@@ -189,6 +217,8 @@ class _PixelColoringCanvasState extends State<PixelColoringCanvas> {
           _displayImage = newImage;
         });
         HapticFeedback.lightImpact();
+        // Notify parent that fill completed
+        widget.onFillComplete?.call();
       }
     }).catchError((error) {
       debugPrint('Flood fill error: $error');
