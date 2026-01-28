@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     
     <application
-        android:label="FillColor"
+        android:label="ColorFlow"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <!-- AdMob App ID - Replace with your actual AdMob App ID -->

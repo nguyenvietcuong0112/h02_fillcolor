@@ -18,7 +18,7 @@ class FillColorApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
-          title: 'FillColor',
+          title: 'ColorFlow - Coloring Book',
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.system,

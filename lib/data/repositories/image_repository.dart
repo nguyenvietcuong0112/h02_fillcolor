@@ -163,14 +163,6 @@ class ImageRepository {
       thumbnailPath: 'assets/images/landscape_beach.png',
       difficulty: 3,
     ),
-    ColoringImageModel(
-      id: 'landscape_3',
-      name: 'Forest Scene',
-      category: 'Landscape',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual landscape image
-      thumbnailPath: 'assets/images/test_flower.png',
-      difficulty: 4,
-    ),
     
     // ========== ABSTRACT ==========
     ColoringImageModel(
@@ -189,39 +181,31 @@ class ImageRepository {
       thumbnailPath: 'assets/images/abstract_waves.png',
       difficulty: 4,
     ),
-    ColoringImageModel(
-      id: 'abstract_3',
-      name: 'Spiral Patterns',
-      category: 'Abstract',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual abstract image
-      thumbnailPath: 'assets/images/test_flower.png',
-      difficulty: 4,
-    ),
     
     // ========== FANTASY ==========
     ColoringImageModel(
-      id: 'fantasy_1',
-      name: 'Unicorn',
+      id: 'fantasy_unicorn',
+      name: 'Unicorn Garden',
       category: 'Fantasy',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual fantasy image
-      thumbnailPath: 'assets/images/test_flower.png',
+      svgPath: 'assets/images/fantasy_unicorn.png',
+      thumbnailPath: 'assets/images/fantasy_unicorn.png',
       difficulty: 4,
     ),
     ColoringImageModel(
-      id: 'fantasy_2',
-      name: 'Dragon',
+      id: 'fantasy_castle',
+      name: 'Dragon Castle',
       category: 'Fantasy',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual fantasy image
-      thumbnailPath: 'assets/images/test_flower.png',
+      svgPath: 'assets/images/fantasy_castle.png',
+      thumbnailPath: 'assets/images/fantasy_castle.png',
       difficulty: 5,
     ),
     ColoringImageModel(
-      id: 'fantasy_3',
-      name: 'Castle',
+      id: 'fantasy_phoenix',
+      name: 'Mystical Phoenix',
       category: 'Fantasy',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual fantasy image
-      thumbnailPath: 'assets/images/test_flower.png',
-      difficulty: 4,
+      svgPath: 'assets/images/fantasy_phoenix.png',
+      thumbnailPath: 'assets/images/fantasy_phoenix.png',
+      difficulty: 5,
     ),
   ];
 }

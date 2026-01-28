@@ -1,5 +1,5 @@
 name: h02_colorfill
-description: "FillColor - A professional PNG coloring book app"
+description: "ColorFlow - A relaxing coloring book app with beautiful images"
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -48,9 +48,18 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   riverpod_generator: ^2.6.2
   build_runner: ^2.4.13
+  flutter_launcher_icons: ^0.14.1
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/
+    - assets/icon/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true

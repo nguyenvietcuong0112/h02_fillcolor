@@ -3,7 +3,8 @@ class AppConstants {
   AppConstants._();
 
   // App Info
-  static const String appName = 'FillColor';
+  static const String appName = 'ColorFlow';
+  static const String appFullName = 'ColorFlow - Coloring Book';
   static const String appVersion = '1.0.0';
 
   // Storage Keys
@@ -33,7 +34,7 @@ class AppConstants {
   static const int adCooldownMinutes = 5;
 
   // Gallery
-  static const String galleryFolderName = 'FillColor';
+  static const String galleryFolderName = 'ColorFlow';
   static const int maxGalleryItems = 100;
 
   // Coloring
