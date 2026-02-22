@@ -79,11 +79,19 @@ class ImageRepository {
     ),
     ColoringImageModel(
       id: 'animal_6',
-      name: 'Peacock',
+      name: 'Elephant',
       category: 'Animals',
-      svgPath: 'assets/images/animal_peacock.png',
-      thumbnailPath: 'assets/images/animal_peacock.png',
+      svgPath: 'assets/images/animal_elephant.png',
+      thumbnailPath: 'assets/images/animal_elephant.png',
       difficulty: 5,
+    ),
+    ColoringImageModel(
+      id: 'animal_7',
+      name: 'Pig',
+      category: 'Animals',
+      svgPath: 'assets/images/animal_pig.png',
+      thumbnailPath: 'assets/images/animal_pig.png',
+      difficulty: 6,
     ),
     
     // ========== FLOWERS ==========
@@ -119,7 +127,15 @@ class ImageRepository {
       thumbnailPath: 'assets/images/flower_cherry_blossom.png',
       difficulty: 4,
     ),
-    
+    ColoringImageModel(
+      id: 'flower_ly',
+      name: 'Lilium',
+      category: 'Flowers',
+      svgPath: 'assets/images/flower_ly.png',
+      thumbnailPath: 'assets/images/flower_ly.png',
+      difficulty: 4,
+    ),
+
     // ========== MANDALA ==========
     ColoringImageModel(
       id: 'mandala_1',
@@ -141,8 +157,8 @@ class ImageRepository {
       id: 'mandala_3',
       name: 'Ornate Mandala',
       category: 'Mandala',
-      svgPath: 'assets/images/test_flower.png', // Placeholder - replace with actual mandala image
-      thumbnailPath: 'assets/images/test_flower.png',
+      svgPath: 'assets/images/mandala_ornade.png', // Placeholder - replace with actual mandala image
+      thumbnailPath: 'assets/images/mandala_ornade.png',
       difficulty: 5,
     ),
     

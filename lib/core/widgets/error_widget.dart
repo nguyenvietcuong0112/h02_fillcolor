@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../localization/app_localizations.dart';
 
 /// Error display widget
-class ErrorDisplayWidget extends StatelessWidget {
+class ErrorDisplayWidget extends ConsumerWidget {
   final String message;
   final VoidCallback? onRetry;
 
@@ -12,7 +14,7 @@ class ErrorDisplayWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -34,7 +36,7 @@ class ErrorDisplayWidget extends StatelessWidget {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: onRetry,
-                child: const Text('Retry'),
+                child: Text(ref.tr('retry')),
               ),
             ],
           ],

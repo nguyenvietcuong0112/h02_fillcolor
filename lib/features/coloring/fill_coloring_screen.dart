@@ -4,13 +4,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/app_constants.dart';
 import '../../data/models/coloring_image_model.dart';
 import '../../core/services/app_gallery_service.dart';
 import '../gallery/gallery_screen.dart';
 import 'widgets/pixel_coloring_canvas.dart';
 import 'widgets/color_palette.dart';
-import '../../core/constants/app_constants.dart';
 import 'png_coloring_state.dart';
+import '../../core/localization/app_localizations.dart';
 
 /// Fill mode coloring screen
 class FillColoringScreen extends ConsumerStatefulWidget {
@@ -82,17 +83,17 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Saved to gallery! Check Gallery tab to view.'),
+          SnackBar(
+            content: Text(ref.tr('saved_to_gallery')),
             backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          SnackBar(content: Text('${ref.tr('error')}: $e'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -106,7 +107,7 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          '${widget.image.name} - Fill Mode',
+          '${widget.image.name} - ${ref.tr('tap_to_fill')}',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
@@ -134,7 +135,7 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
             IconButton(
               icon: const Icon(Icons.save_alt),
               onPressed: _saveToAppGallery,
-              tooltip: 'Save to Gallery',
+              tooltip: ref.tr('save'),
             ),
         ],
       ),

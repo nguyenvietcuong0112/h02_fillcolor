@@ -7,14 +7,18 @@ class BrushStroke {
   final Color color;
   final double size;
   final double opacity;
+  final bool isEraser;
   final String? pathId; // Optional: which SVG region this stroke belongs to
+  final ui.Image? maskImage; // Optional: raster mask for drawing inside a region
 
   BrushStroke({
     required this.points,
     required this.color,
     required this.size,
     this.opacity = 1.0,
+    this.isEraser = false,
     this.pathId,
+    this.maskImage,
   });
 
   /// Create a copy with updated points
@@ -23,14 +27,18 @@ class BrushStroke {
     Color? color,
     double? size,
     double? opacity,
+    bool? isEraser,
     String? pathId,
+    ui.Image? maskImage,
   }) {
     return BrushStroke(
       points: points ?? this.points,
       color: color ?? this.color,
       size: size ?? this.size,
       opacity: opacity ?? this.opacity,
+      isEraser: isEraser ?? this.isEraser,
       pathId: pathId ?? this.pathId,
+      maskImage: maskImage ?? this.maskImage,
     );
   }
 

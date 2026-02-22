@@ -10,7 +10,7 @@ class FloodFillEngine {
   Uint8List? _pixels;
   int _width = 0;
   int _height = 0;
-  
+
   // History management for undo/redo
   final List<Uint8List> _history = [];
   int _historyIndex = -1;
@@ -25,28 +25,62 @@ class FloodFillEngine {
   Future<void> loadImage(String assetPath) async {
     final ByteData data = await rootBundle.load(assetPath);
     final Uint8List bytes = data.buffer.asUint8List();
-    
+    await _loadFromBytes(bytes);
+  }
+
+  /// Load an image from a file
+  Future<void> loadFromFile(File file) async {
+    final Uint8List bytes = await file.readAsBytes();
+    await _loadFromBytes(bytes);
+  }
+
+  /// Common byte loading logic
+  Future<void> _loadFromBytes(Uint8List bytes) async {
     final ui.Codec codec = await ui.instantiateImageCodec(bytes);
     final ui.FrameInfo frameInfo = await codec.getNextFrame();
     _image = frameInfo.image;
-    
+
     _width = _image!.width;
     _height = _image!.height;
-    
+
     // Convert image to pixel data
     final ByteData? byteData = await _image!.toByteData(format: ui.ImageByteFormat.rawRgba);
     _pixels = byteData!.buffer.asUint8List();
-    
+
     // Initialize history with the initial state
     _history.clear();
     _history.add(Uint8List.fromList(_pixels!));
     _historyIndex = 0;
   }
 
-  /// Perform optimized flood fill
+  /// Check if a pixel is a dark edge (black or very dark color)
+  /// This prevents filling into the outline/border of the image
+  bool _isDarkEdge(int px, int py) {
+    if (px < 0 || px >= _width || py < 0 || py >= _height) return true;
+
+    final int i = (py * _width + px) * 4;
+    final int r = _pixels![i];
+    final int g = _pixels![i + 1];
+    final int b = _pixels![i + 2];
+
+    // Consider a pixel as "dark edge" if it's very dark
+    // Threshold of 50 means RGB values below 50 are considered edges
+    // Adjust this value based on your image (lower = more strict)
+    const int edgeThreshold = 50;
+
+    return r < edgeThreshold && g < edgeThreshold && b < edgeThreshold;
+  }
+
+  /// Perform optimized flood fill with edge protection
   Future<ui.Image?> floodFill(int x, int y, ui.Color newColor) async {
     if (!isReady) return null;
     if (x < 0 || x >= _width || y < 0 || y >= _height) return null;
+
+    // Don't allow filling on dark edges
+    if (_isDarkEdge(x, y)) {
+      debugPrint('Cannot fill: clicked on a dark edge');
+      return _image;
+    }
 
     // Save current state to history before making changes
     _saveToHistory();
@@ -69,20 +103,23 @@ class FloodFillEngine {
 
     // Create a copy of pixels to modify
     final Uint8List newPixels = Uint8List.fromList(_pixels!);
-    
+
     // Use BFS flood fill with pixel limit to prevent hanging
     final Queue<int> queue = Queue<int>();
     final Set<int> visited = {};
     queue.add(x);
     queue.add(y);
-    
+
     const int tolerance = 15;
     const int maxPixels = 500000; // Limit to prevent infinite loops
     int pixelsFilled = 0;
 
     bool isMatch(int px, int py) {
       if (px < 0 || px >= _width || py < 0 || py >= _height) return false;
-      
+
+      // DON'T fill dark edges
+      if (_isDarkEdge(px, py)) return false;
+
       final int i = (py * _width + px) * 4;
       final int r = _pixels![i];
       final int g = _pixels![i + 1];
@@ -90,9 +127,9 @@ class FloodFillEngine {
       final int a = _pixels![i + 3];
 
       return (r - targetR).abs() <= tolerance &&
-             (g - targetG).abs() <= tolerance &&
-             (b - targetB).abs() <= tolerance &&
-             (a - targetA).abs() <= tolerance;
+          (g - targetG).abs() <= tolerance &&
+          (b - targetB).abs() <= tolerance &&
+          (a - targetA).abs() <= tolerance;
     }
 
     void fillPixel(int px, int py) {
@@ -147,16 +184,22 @@ class FloodFillEngine {
 
     final ui.Codec codec = await descriptor.instantiateCodec();
     final ui.FrameInfo frameInfo = await codec.getNextFrame();
-    
+
     _image = frameInfo.image;
     _pixels = newPixels; // Update pixels cache
     return _image;
   }
 
-  /// Get region mask for brush clipping
+  /// Get region mask for brush clipping with edge protection
   Future<Uint8List?> getRegionMask(int x, int y) async {
     if (!isReady) return null;
     if (x < 0 || x >= _width || y < 0 || y >= _height) return null;
+
+    // Don't create mask for dark edges
+    if (_isDarkEdge(x, y)) {
+      debugPrint('Cannot create mask: clicked on a dark edge');
+      return null;
+    }
 
     final int startIndex = (y * _width + x) * 4;
     final int targetR = _pixels![startIndex];
@@ -177,7 +220,10 @@ class FloodFillEngine {
 
     bool isMatch(int px, int py) {
       if (px < 0 || px >= _width || py < 0 || py >= _height) return false;
-      
+
+      // DON'T include dark edges in the mask
+      if (_isDarkEdge(px, py)) return false;
+
       final int i = (py * _width + px) * 4;
       final int r = _pixels![i];
       final int g = _pixels![i + 1];
@@ -185,9 +231,9 @@ class FloodFillEngine {
       final int a = _pixels![i + 3];
 
       return (r - targetR).abs() <= tolerance &&
-             (g - targetG).abs() <= tolerance &&
-             (b - targetB).abs() <= tolerance &&
-             (a - targetA).abs() <= tolerance;
+          (g - targetG).abs() <= tolerance &&
+          (b - targetB).abs() <= tolerance &&
+          (a - targetA).abs() <= tolerance;
     }
 
     while (queue.isNotEmpty && pixelsProcessed < maxPixels) {
@@ -217,17 +263,47 @@ class FloodFillEngine {
     return mask;
   }
 
+  /// Get region mask as a ui.Image for brush clipping
+  Future<ui.Image?> getRegionMaskImage(int x, int y) async {
+    final Uint8List? mask = await getRegionMask(x, y);
+    if (mask == null) return null;
+
+    // Create an RGBA buffer where the mask (1) is opaque white and (0) is transparent
+    final Uint8List rgbaMask = Uint8List(_width * _height * 4);
+    for (int i = 0; i < mask.length; i++) {
+      if (mask[i] == 1) {
+        final int j = i * 4;
+        rgbaMask[j] = 255;
+        rgbaMask[j + 1] = 255;
+        rgbaMask[j + 2] = 255;
+        rgbaMask[j + 3] = 255;
+      }
+    }
+
+    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(rgbaMask);
+    final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
+      buffer,
+      width: _width,
+      height: _height,
+      pixelFormat: ui.PixelFormat.rgba8888,
+    );
+
+    final ui.Codec codec = await descriptor.instantiateCodec();
+    final ui.FrameInfo frameInfo = await codec.getNextFrame();
+    return frameInfo.image;
+  }
+
   /// Save current state to history
   void _saveToHistory() {
     // Remove any redo history when a new action is performed
     if (_historyIndex < _history.length - 1) {
       _history.removeRange(_historyIndex + 1, _history.length);
     }
-    
+
     // Add current state to history
     _history.add(Uint8List.fromList(_pixels!));
     _historyIndex++;
-    
+
     // Limit history size
     if (_history.length > _maxHistorySize) {
       _history.removeAt(0);
@@ -238,10 +314,10 @@ class FloodFillEngine {
   /// Undo the last fill operation
   Future<ui.Image?> undo() async {
     if (!canUndo) return _image;
-    
+
     _historyIndex--;
     _pixels = Uint8List.fromList(_history[_historyIndex]);
-    
+
     // Convert pixels back to image
     final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(_pixels!);
     final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
@@ -253,7 +329,7 @@ class FloodFillEngine {
 
     final ui.Codec codec = await descriptor.instantiateCodec();
     final ui.FrameInfo frameInfo = await codec.getNextFrame();
-    
+
     _image = frameInfo.image;
     debugPrint('Undo: restored to history index $_historyIndex');
     return _image;
@@ -262,10 +338,10 @@ class FloodFillEngine {
   /// Redo the last undone fill operation
   Future<ui.Image?> redo() async {
     if (!canRedo) return _image;
-    
+
     _historyIndex++;
     _pixels = Uint8List.fromList(_history[_historyIndex]);
-    
+
     // Convert pixels back to image
     final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(_pixels!);
     final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
@@ -277,7 +353,7 @@ class FloodFillEngine {
 
     final ui.Codec codec = await descriptor.instantiateCodec();
     final ui.FrameInfo frameInfo = await codec.getNextFrame();
-    
+
     _image = frameInfo.image;
     debugPrint('Redo: restored to history index $_historyIndex');
     return _image;

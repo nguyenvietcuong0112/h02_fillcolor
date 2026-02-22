@@ -9,8 +9,9 @@ import '../../core/widgets/error_widget.dart';
 import '../../core/theme/app_dimens.dart';
 import '../../core/utils/thumbnail_helper.dart';
 import 'dart:io';
-import 'home_controller.dart';
 import '../coloring/mode_selection_screen.dart';
+import '../../core/localization/app_localizations.dart';
+import 'home_controller.dart';
 
 /// Home screen displaying categories and coloring images
 class HomeScreen extends ConsumerWidget {
@@ -33,7 +34,7 @@ class HomeScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                    Text(
-                    'Discover',
+                    ref.tr('discover'),
                     style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       color: Colors.black87,
                       fontWeight: FontWeight.w800,
@@ -42,7 +43,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    'Choose your favorite art to color',
+                    ref.tr('discover_desc'),
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Colors.grey[600],
                     ),
@@ -93,7 +94,7 @@ class HomeScreen extends ConsumerWidget {
                                 : [],
                             ),
                             child: Text(
-                              category,
+                              ref.tr(category.toLowerCase()),
                               style: TextStyle(
                                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
                                 color: isSelected ? Colors.white : Colors.grey[600],

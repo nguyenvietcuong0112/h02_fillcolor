@@ -4,6 +4,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../core/widgets/loading_widget.dart';
 import '../../services/purchase_service.dart';
 import '../../services/analytics_service.dart';
+import '../../core/localization/app_localizations.dart';
 
 /// Paywall screen
 class PaywallScreen extends ConsumerStatefulWidget {
@@ -61,7 +62,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Subscription successful! Enjoy premium features.')),
+            SnackBar(content: Text(ref.tr('subs_success'))),
           );
           Navigator.pop(context);
         }
@@ -90,12 +91,12 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       if (mounted) {
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Purchases restored successfully!')),
+            SnackBar(content: Text(ref.tr('restore_success'))),
           );
           Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('No purchases found to restore.')),
+            SnackBar(content: Text(ref.tr('restore_failed'))),
           );
         }
       }
@@ -117,7 +118,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Go Premium'),
+        title: Text(ref.tr('go_premium')),
       ),
       body: _isLoading
           ? const LoadingWidget()
@@ -129,24 +130,24 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   // Header
                   const Icon(Icons.palette, size: 64, color: Colors.amber),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Unlock Premium Features',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  Text(
+                    ref.tr('unlock_premium'),
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Get unlimited access to all coloring pages and features',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  Text(
+                    ref.tr('premium_desc'),
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
                   // Features
-                  _FeatureItem(icon: Icons.lock_open, text: 'Unlock all premium images'),
-                  _FeatureItem(icon: Icons.palette, text: 'Access premium color palettes'),
-                  _FeatureItem(icon: Icons.block, text: 'Remove all ads'),
-                  _FeatureItem(icon: Icons.save, text: 'Unlimited saves'),
-                  _FeatureItem(icon: Icons.brush, text: 'Advanced brush tools'),
+                  _FeatureItem(icon: Icons.lock_open, text: ref.tr('unlock_all_images')),
+                  _FeatureItem(icon: Icons.palette, text: ref.tr('access_premium_palettes')),
+                  _FeatureItem(icon: Icons.block, text: ref.tr('remove_ads')),
+                  _FeatureItem(icon: Icons.save, text: ref.tr('unlimited_saves')),
+                  _FeatureItem(icon: Icons.brush, text: ref.tr('advanced_brush')),
                   const SizedBox(height: 32),
                   // Packages
                   if (_error != null)
@@ -159,8 +160,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       ),
                     ),
                   if (_packages.isEmpty)
-                    const Text(
-                      'No subscription packages available. Please try again later.',
+                    Text(
+                      ref.tr('no_packages'),
                       textAlign: TextAlign.center,
                     )
                   else
@@ -172,11 +173,11 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   // Restore purchases
                   TextButton(
                     onPressed: _isPurchasing ? null : _restorePurchases,
-                    child: const Text('Restore Purchases'),
+                    child: Text(ref.tr('restore_purchases')),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Subscription automatically renews unless cancelled at least 24 hours before the end of the current period.',
+                    ref.tr('subs_disclaimer'),
                     style: Theme.of(context).textTheme.bodySmall,
                     textAlign: TextAlign.center,
                   ),
@@ -213,7 +214,7 @@ class _FeatureItem extends StatelessWidget {
 }
 
 /// Package card widget
-class _PackageCard extends StatelessWidget {
+class _PackageCard extends ConsumerWidget {
   final Package package;
   final VoidCallback? onTap;
 
@@ -222,16 +223,16 @@ class _PackageCard extends StatelessWidget {
     this.onTap,
   });
 
-  String _getPackageName(String identifier) {
-    if (identifier.contains('weekly')) return 'Weekly';
-    if (identifier.contains('monthly')) return 'Monthly';
-    if (identifier.contains('yearly')) return 'Yearly';
+  String _getPackageName(String identifier, WidgetRef ref) {
+    if (identifier.contains('weekly')) return ref.tr('weekly');
+    if (identifier.contains('monthly')) return ref.tr('monthly');
+    if (identifier.contains('yearly')) return ref.tr('yearly');
     return 'Premium';
   }
 
   @override
-  Widget build(BuildContext context) {
-    final packageName = _getPackageName(package.identifier);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final packageName = _getPackageName(package.identifier, ref);
     final price = package.storeProduct.priceString;
 
     return Card(
@@ -250,10 +251,10 @@ class _PackageCard extends StatelessWidget {
                       packageName,
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    if (packageName == 'Yearly')
-                      const Text(
-                        'Best Value',
-                        style: TextStyle(color: Colors.green, fontSize: 12),
+                    if (package.identifier.contains('yearly'))
+                      Text(
+                        ref.tr('best_value'),
+                        style: const TextStyle(color: Colors.green, fontSize: 12),
                       ),
                   ],
                 ),

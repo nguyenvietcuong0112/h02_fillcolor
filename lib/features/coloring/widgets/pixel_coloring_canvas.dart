@@ -12,11 +12,14 @@ class PixelColoringCanvas extends StatefulWidget {
   final ColoringMode mode;
   final List<BrushStroke> brushStrokes;
   final Function(Offset)? onPanStart;
+  final Function(Offset, ui.Image?)? onPanStartWithMask;
   final Function(Offset)? onPanUpdate;
   final Function()? onPanEnd;
-  final Function(Offset)? onTapForRegion; // For brush mode region selection
+  final Function(Offset)? onTapForRegion;
   final Function(bool)? onLoading;
-  final Function()? onFillComplete; // Called after a fill operation completes
+  final Function()? onFillComplete;
+  final bool isMoveMode;
+  final bool isLockRegionMode;
 
   const PixelColoringCanvas({
     super.key,
@@ -25,11 +28,14 @@ class PixelColoringCanvas extends StatefulWidget {
     required this.mode,
     this.brushStrokes = const [],
     this.onPanStart,
+    this.onPanStartWithMask,
     this.onPanUpdate,
     this.onPanEnd,
     this.onTapForRegion,
     this.onLoading,
     this.onFillComplete,
+    this.isMoveMode = false,
+    this.isLockRegionMode = false,
   });
 
   @override
@@ -43,6 +49,7 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
   ui.Image? _displayImage;
   bool _isDrawing = false; // Track if currently drawing
   bool _engineReady = false; // Track if engine is ready
+  int _pointerCount = 0; // Track active touches for auto-zoom
 
   @override
   void initState() {
@@ -85,13 +92,33 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
   Future<void> _loadImage() async {
     widget.onLoading?.call(true);
     try {
-      // Load image for display
       await _engine.loadImage(widget.imagePath);
       if (mounted) {
         setState(() {
           _displayImage = _engine.image;
           _isLoading = false;
-          _engineReady = true; // Mark engine as ready
+          _engineReady = true;
+          
+          // Initialize transformation to fit image to screen
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) return;
+            final RenderBox box = context.findRenderObject() as RenderBox;
+            final size = box.size;
+            
+            final double imgW = _displayImage!.width.toDouble();
+            final double imgH = _displayImage!.height.toDouble();
+            
+            final double scaleX = size.width / imgW;
+            final double scaleY = size.height / imgH;
+            final double scale = (scaleX < scaleY ? scaleX : scaleY) * 0.9; // 90% fit
+            
+            final double dx = (size.width - imgW * scale) / 2;
+            final double dy = (size.height - imgH * scale) / 2;
+            
+            _transformationController.value = Matrix4.identity()
+              ..translate(dx, dy)
+              ..scale(scale);
+          });
         });
       }
     } catch (e) {
@@ -109,115 +136,46 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
     final RenderBox box = context.findRenderObject() as RenderBox;
     final Offset localPosition = box.globalToLocal(globalPosition);
 
-    // Apply inverse transformation
+    // Apply inverse transformation to get image coordinates
     final Matrix4 inverse = Matrix4.inverted(_transformationController.value);
     final Offset transformedPosition = MatrixUtils.transformPoint(inverse, localPosition);
 
     if (widget.mode == ColoringMode.fill) {
       _handleFillTap(transformedPosition, constraints);
     } else {
-      // Brush mode - convert to image coordinates
-      setState(() => _isDrawing = true); // Start drawing
-      final imagePoint = _screenToImageCoords(transformedPosition, constraints);
-      widget.onPanStart?.call(imagePoint);
+      setState(() => _isDrawing = true);
+      
+      if (widget.isLockRegionMode && widget.onPanStartWithMask != null) {
+        // Fetch mask image
+        final int x = transformedPosition.dx.round();
+        final int y = transformedPosition.dy.round();
+        _engine.getRegionMaskImage(x, y).then((maskImage) {
+          if (mounted && _isDrawing) {
+            widget.onPanStartWithMask?.call(transformedPosition, maskImage);
+          }
+        });
+      } else {
+        widget.onPanStart?.call(transformedPosition);
+      }
     }
-  }
-
-  Offset _screenToImageCoords(Offset screenPoint, BoxConstraints constraints) {
-    final double widgetWidth = constraints.maxWidth;
-    final double widgetHeight = constraints.maxHeight;
-    final double imageWidth = _displayImage!.width.toDouble();
-    final double imageHeight = _displayImage!.height.toDouble();
-
-    final double scaleX = widgetWidth / imageWidth;
-    final double scaleY = widgetHeight / imageHeight;
-    final double scale = scaleX < scaleY ? scaleX : scaleY;
-
-    final double displayedWidth = imageWidth * scale;
-    final double displayedHeight = imageHeight * scale;
-
-    final double dx = (widgetWidth - displayedWidth) / 2;
-    final double dy = (widgetHeight - displayedHeight) / 2;
-
-    final double imgX = (screenPoint.dx - dx) / scale;
-    final double imgY = (screenPoint.dy - dy) / scale;
-
-    return Offset(imgX, imgY);
-  }
-
-  void _handleTapDown(Offset globalPosition, BoxConstraints constraints) {
-    if (_isLoading || _displayImage == null) return;
-    if (widget.mode != ColoringMode.brush) return;
-
-    final RenderBox box = context.findRenderObject() as RenderBox;
-    final Offset localPosition = box.globalToLocal(globalPosition);
-    final Matrix4 inverse = Matrix4.inverted(_transformationController.value);
-    final Offset transformedPosition = MatrixUtils.transformPoint(inverse, localPosition);
-
-    // Convert to image coordinates for region selection
-    final double widgetWidth = constraints.maxWidth;
-    final double widgetHeight = constraints.maxHeight;
-    final double imageWidth = _displayImage!.width.toDouble();
-    final double imageHeight = _displayImage!.height.toDouble();
-
-    final double scaleX = widgetWidth / imageWidth;
-    final double scaleY = widgetHeight / imageHeight;
-    final double scale = scaleX < scaleY ? scaleX : scaleY;
-
-    final double displayedWidth = imageWidth * scale;
-    final double displayedHeight = imageHeight * scale;
-
-    final double dx = (widgetWidth - displayedWidth) / 2;
-    final double dy = (widgetHeight - displayedHeight) / 2;
-
-    final double imgX = (transformedPosition.dx - dx) / scale;
-    final double imgY = (transformedPosition.dy - dy) / scale;
-
-    final imagePoint = Offset(imgX, imgY);
-    widget.onTapForRegion?.call(imagePoint);
   }
 
   void _handleFillTap(Offset transformedPosition, BoxConstraints constraints) {
-    // Check if engine is ready
-    if (!_engineReady || _displayImage == null) {
-      debugPrint('Engine not ready yet, ignoring tap');
-      return;
-    }
+    if (!_engineReady || _displayImage == null) return;
 
-    // Calculate scaling to map UI coordinates to Image coordinates
-    final double widgetWidth = constraints.maxWidth;
-    final double widgetHeight = constraints.maxHeight;
-    final double imageWidth = _displayImage!.width.toDouble();
-    final double imageHeight = _displayImage!.height.toDouble();
-
-    final double scaleX = widgetWidth / imageWidth;
-    final double scaleY = widgetHeight / imageHeight;
-    final double scale = scaleX < scaleY ? scaleX : scaleY;
-
-    final double displayedWidth = imageWidth * scale;
-    final double displayedHeight = imageHeight * scale;
-
-    final double dx = (widgetWidth - displayedWidth) / 2;
-    final double dy = (widgetHeight - displayedHeight) / 2;
-
-    final double imgX = (transformedPosition.dx - dx) / scale;
-    final double imgY = (transformedPosition.dy - dy) / scale;
-
-    final int x = imgX.round();
-    final int y = imgY.round();
+    final int x = transformedPosition.dx.round();
+    final int y = transformedPosition.dy.round();
 
     if (x < 0 || x >= _displayImage!.width || y < 0 || y >= _displayImage!.height) {
       return;
     }
 
-    // Run flood fill synchronously - UI will lag briefly but won't hang
     _engine.floodFill(x, y, widget.selectedColor).then((newImage) {
       if (newImage != null && mounted) {
         setState(() {
           _displayImage = newImage;
         });
         HapticFeedback.lightImpact();
-        // Notify parent that fill completed
         widget.onFillComplete?.call();
       }
     }).catchError((error) {
@@ -225,22 +183,10 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
     });
   }
 
-  void _handlePanUpdate(Offset globalPosition, BoxConstraints constraints) {
-    if (widget.mode != ColoringMode.brush) return;
-    if (!_isDrawing) return; // Only update if drawing
-    
-    final RenderBox box = context.findRenderObject() as RenderBox;
-    final Offset localPosition = box.globalToLocal(globalPosition);
-    final Matrix4 inverse = Matrix4.inverted(_transformationController.value);
-    final Offset transformedPosition = MatrixUtils.transformPoint(inverse, localPosition);
-    
-    final imagePoint = _screenToImageCoords(transformedPosition, constraints);
-    widget.onPanUpdate?.call(imagePoint);
-  }
 
   void _handlePanEnd() {
     if (_isDrawing) {
-      setState(() => _isDrawing = false); // Stop drawing
+      setState(() => _isDrawing = false);
       widget.onPanEnd?.call();
     }
   }
@@ -253,63 +199,72 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        // For brush mode, use simple GestureDetector without InteractiveViewer
-        if (widget.mode == ColoringMode.brush) {
-          return GestureDetector(
-            onTapDown: (details) {
-              // Tap to select region
-              final RenderBox box = context.findRenderObject() as RenderBox;
-              final Offset localPosition = box.globalToLocal(details.globalPosition);
-              final imagePoint = _screenToImageCoords(localPosition, constraints);
-              debugPrint('Tap for region selection at: $imagePoint');
-              widget.onTapForRegion?.call(imagePoint);
+        return Listener(
+          behavior: HitTestBehavior.opaque,
+          onPointerDown: (event) {
+            setState(() => _pointerCount++);
+          },
+          onPointerUp: (event) {
+            setState(() => _pointerCount--);
+            if (_pointerCount < 0) _pointerCount = 0;
+          },
+          onPointerCancel: (event) {
+            setState(() => _pointerCount = 0);
+          },
+          child: InteractiveViewer(
+            transformationController: _transformationController,
+            minScale: 0.01,
+            maxScale: 20.0,
+            boundaryMargin: const EdgeInsets.all(5000),
+            constrained: false,
+            // Only enable panel/scale if 2+ fingers are used OR if in fill mode
+            panEnabled: widget.mode == ColoringMode.fill || _pointerCount > 1,
+            scaleEnabled: widget.mode == ColoringMode.fill || _pointerCount > 1,
+            onInteractionStart: (details) {
+              if (widget.mode == ColoringMode.brush && _pointerCount == 1) {
+                _handleTapOrPanStart(details.focalPoint, constraints);
+              }
             },
-            onPanStart: (details) {
-              final RenderBox box = context.findRenderObject() as RenderBox;
-              final Offset localPosition = box.globalToLocal(details.globalPosition);
-              final imagePoint = _screenToImageCoords(localPosition, constraints);
-              debugPrint('Brush start at: $imagePoint');
-              debugPrint('Calling widget.onPanStart: ${widget.onPanStart != null}');
-              widget.onPanStart?.call(imagePoint);
-            },
-            onPanUpdate: (details) {
-              final RenderBox box = context.findRenderObject() as RenderBox;
-              final Offset localPosition = box.globalToLocal(details.globalPosition);
-              final imagePoint = _screenToImageCoords(localPosition, constraints);
-              debugPrint('Brush update at: $imagePoint');
-              debugPrint('Calling widget.onPanUpdate: ${widget.onPanUpdate != null}');
-              widget.onPanUpdate?.call(imagePoint);
-            },
-            onPanEnd: (_) {
-              debugPrint('Brush end');
-              debugPrint('Calling widget.onPanEnd: ${widget.onPanEnd != null}');
-              widget.onPanEnd?.call();
-            },
-            child: CustomPaint(
-              size: Size(constraints.maxWidth, constraints.maxHeight),
-              painter: _CombinedPainter(
-                image: _displayImage!,
-                brushStrokes: widget.brushStrokes,
-              ),
-            ),
-          );
-        }
+            onInteractionUpdate: (details) {
+              if (widget.mode == ColoringMode.brush) {
+                if (_pointerCount == 1) {
+                  // Drawing mode
+                  final RenderBox box = context.findRenderObject() as RenderBox;
+                  final Offset localPosition = box.globalToLocal(details.focalPoint);
+                  final Matrix4 inverse = Matrix4.inverted(_transformationController.value);
+                  final Offset transformedPosition = MatrixUtils.transformPoint(inverse, localPosition);
 
-        // For fill mode, use InteractiveViewer with zoom/pan
-        return InteractiveViewer(
-          transformationController: _transformationController,
-          minScale: 0.5,
-          maxScale: 4.0,
-          boundaryMargin: const EdgeInsets.all(double.infinity),
-          child: GestureDetector(
-            onTapDown: (details) {
-              _handleTapOrPanStart(details.globalPosition, constraints);
+                  if (!_isDrawing) {
+                    _handleTapOrPanStart(details.focalPoint, constraints);
+                  } else {
+                    widget.onPanUpdate?.call(transformedPosition);
+                  }
+                } else if (_pointerCount > 1 && _isDrawing) {
+                  // Switched to zoom, kill active stroke
+                  _handlePanEnd();
+                }
+              }
             },
-            child: CustomPaint(
-              size: Size(constraints.maxWidth, constraints.maxHeight),
-              painter: _CombinedPainter(
-                image: _displayImage!,
-                brushStrokes: widget.brushStrokes,
+            onInteractionEnd: (details) {
+              _handlePanEnd();
+            },
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTapUp: (details) {
+                if (_pointerCount <= 1) {
+                  _handleTapOrPanStart(details.globalPosition, constraints);
+                }
+              },
+              child: Container(
+                width: _displayImage!.width.toDouble(),
+                height: _displayImage!.height.toDouble(),
+                color: Colors.transparent,
+                child: CustomPaint(
+                  painter: _CombinedPainter(
+                    image: _displayImage!,
+                    brushStrokes: widget.brushStrokes,
+                  ),
+                ),
               ),
             ),
           ),
@@ -332,53 +287,44 @@ class _CombinedPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Draw the filled image
-    final double scaleX = size.width / image.width;
-    final double scaleY = size.height / image.height;
-    final double scale = scaleX < scaleY ? scaleX : scaleY;
+    // 1:1 scale drawing - much simpler!
+    final Rect rect = Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());
+    canvas.drawImage(image, Offset.zero, Paint());
 
-    final double displayedWidth = image.width * scale;
-    final double displayedHeight = image.height * scale;
+    // Draw brush strokes on a separate layer for eraser support
+    canvas.saveLayer(rect, Paint());
     
-    final double dx = (size.width - displayedWidth) / 2;
-    final double dy = (size.height - displayedHeight) / 2;
-
-    final Rect srcRect = Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());
-    final Rect dstRect = Rect.fromLTWH(dx, dy, displayedWidth, displayedHeight);
-
-    canvas.drawImageRect(image, srcRect, dstRect, Paint());
-
-    // Draw brush strokes on top
     for (final stroke in brushStrokes) {
       if (stroke.points.isEmpty) continue;
 
       final paint = Paint()
-        ..color = stroke.color
-        ..strokeWidth = stroke.size * scale // Scale brush size too
+        ..color = stroke.isEraser ? Colors.black : stroke.color
+        ..strokeWidth = stroke.size
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round
-        ..style = PaintingStyle.stroke;
+        ..style = PaintingStyle.stroke
+        ..blendMode = stroke.isEraser ? BlendMode.clear : BlendMode.srcOver;
 
       final path = Path();
+      path.moveTo(stroke.points.first.dx, stroke.points.first.dy);
       
-      // Convert first point from image coords to screen coords
-      final firstScreenPoint = Offset(
-        stroke.points.first.dx * scale + dx,
-        stroke.points.first.dy * scale + dy,
-      );
-      path.moveTo(firstScreenPoint.dx, firstScreenPoint.dy);
-      
-      // Convert remaining points
       for (int i = 1; i < stroke.points.length; i++) {
-        final screenPoint = Offset(
-          stroke.points[i].dx * scale + dx,
-          stroke.points[i].dy * scale + dy,
-        );
-        path.lineTo(screenPoint.dx, screenPoint.dy);
+        path.lineTo(stroke.points[i].dx, stroke.points[i].dy);
       }
 
-      canvas.drawPath(path, paint);
+      if (stroke.maskImage != null) {
+        // Apply masking for this specific stroke
+        canvas.saveLayer(rect, Paint());
+        canvas.drawPath(path, paint);
+        // Apply the mask
+        canvas.drawImage(stroke.maskImage!, Offset.zero, Paint()..blendMode = BlendMode.dstIn);
+        canvas.restore();
+      } else {
+        canvas.drawPath(path, paint);
+      }
     }
+    
+    canvas.restore();
   }
 
   @override

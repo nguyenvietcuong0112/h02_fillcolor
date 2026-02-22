@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/utils/storage_utils.dart';
 import '../../core/constants/app_constants.dart';
-import '../../app.dart'; // For MainNavigator
 import '../language/language_screen.dart';
 import '../intro/intro_screen.dart';
+import '../../app.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/localization/app_localizations.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
@@ -62,22 +64,22 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     final languageCode = StorageUtils.languageCode;
     final introSeen = StorageUtils.introSeen;
 
-    if (languageCode == null) {
-      // 1. Language not set -> Go to Language Screen
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const LanguageScreen()),
-      );
-    } else if (!introSeen) {
+    // if (languageCode == null) {
+    //   // 1. Language not set -> Go to Language Screen
+    //   Navigator.of(context).pushReplacement(
+    //     MaterialPageRoute(builder: (_) => const LanguageScreen()),
+    //   );
+    // } else if (!introSeen) {
       // 2. Language set but Intro not seen -> Go to Intro Screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const IntroScreen()),
       );
-    } else {
-      // 3. All set -> Go to Home
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const MainNavigator()),
-      );
-    }
+    // } else {
+    //   // 3. All set -> Go to Home
+    //   Navigator.of(context).pushReplacement(
+    //     MaterialPageRoute(builder: (_) => const MainNavigator()),
+    //   );
+    // }
   }
 
   @override
@@ -132,9 +134,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       ),
                       SizedBox(height: 30.h),
                       
-                      // App Name
+                       // App Name
                       Text(
-                        AppConstants.appName,
+                        ref.tr('app_name'),
                         style: TextStyle(
                           fontSize: 48.sp,
                           fontWeight: FontWeight.bold,
@@ -153,7 +155,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       
                       // Subtitle
                       Text(
-                        'Coloring Book',
+                        ref.tr('coloring_book'),
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w500,

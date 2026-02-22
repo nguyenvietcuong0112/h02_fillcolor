@@ -1,41 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/utils/storage_utils.dart';
 import '../../app.dart'; // For MainNavigator
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_dimens.dart';
+import '../../core/localization/app_localizations.dart';
 
-class IntroScreen extends StatefulWidget {
+class IntroScreen extends ConsumerStatefulWidget {
   const IntroScreen({super.key});
 
   @override
-  State<IntroScreen> createState() => _IntroScreenState();
+  ConsumerState<IntroScreen> createState() => _IntroScreenState();
 }
 
-class _IntroScreenState extends State<IntroScreen> {
+class _IntroScreenState extends ConsumerState<IntroScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<Map<String, String>> _pages = [
-    {
-      'title': 'Creative Coloring',
-      'desc': 'Unleash your creativity with hundreds of unique coloring pages.',
-      'icon': 'mypainting', // Using built-in icons for demo
-    },
-    {
-      'title': 'Relax & Unwind',
-      'desc': 'Enjoy a peaceful coloring experience with soothing music.',
-      'icon': 'flower', 
-    },
-    {
-      'title': 'Easy to Use',
-      'desc': 'Simple tap-to-fill features suitable for all ages.',
-      'icon': 'brush',
-    },
-  ];
-
   void _onNext() {
-    if (_currentPage < _pages.length - 1) {
+    if (_currentPage < 2) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -55,6 +39,24 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, String>> pages = [
+      {
+        'title': ref.tr('intro_1_title'),
+        'desc': ref.tr('intro_1_desc'),
+        'icon': 'mypainting',
+      },
+      {
+        'title': ref.tr('intro_2_title'),
+        'desc': ref.tr('intro_2_desc'),
+        'icon': 'flower', 
+      },
+      {
+        'title': ref.tr('intro_3_title'),
+        'desc': ref.tr('intro_3_desc'),
+        'icon': 'brush',
+      },
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -66,7 +68,7 @@ class _IntroScreenState extends State<IntroScreen> {
               child: TextButton(
                 onPressed: _onFinish,
                 child: Text(
-                  'Skip',
+                  ref.tr('skip'),
                   style: TextStyle(
                     fontSize: 16.sp,
                     color: Colors.grey[600],
@@ -84,9 +86,9 @@ class _IntroScreenState extends State<IntroScreen> {
                     _currentPage = index;
                   });
                 },
-                itemCount: _pages.length,
+                itemCount: pages.length,
                 itemBuilder: (context, index) {
-                  return _buildPage(_pages[index]);
+                  return _buildPage(pages[index]);
                 },
               ),
             ),
@@ -95,7 +97,7 @@ class _IntroScreenState extends State<IntroScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
-                _pages.length,
+                pages.length,
                 (index) => Container(
                   margin: EdgeInsets.symmetric(horizontal: AppDimens.space4),
                   width: _currentPage == index ? 20.w : 8.w,
@@ -118,9 +120,8 @@ class _IntroScreenState extends State<IntroScreen> {
                 height: AppDimens.buttonHeight + 8.h,
                 child: ElevatedButton(
                   onPressed: _onNext,
-                  // Style is mainly from Theme, but we can override specifics if needed
                   child: Text(
-                    _currentPage == _pages.length - 1 ? 'Get Started' : 'Next',
+                    _currentPage == pages.length - 1 ? ref.tr('get_started') : ref.tr('next'),
                   ),
                 ),
               ),

@@ -5,20 +5,23 @@ import 'core/theme/app_theme.dart';
 import 'features/home/home_screen.dart';
 import 'features/gallery/gallery_screen.dart';
 import 'features/splash/splash_screen.dart';
+import 'features/settings/settings_screen.dart';
+import 'core/localization/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Main application widget
-class FillColorApp extends StatelessWidget {
+class FillColorApp extends ConsumerWidget {
   const FillColorApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812), // Standard iPhone X/11/12/13 dimension
+      designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
-          title: 'ColorFlow - Coloring Book',
+          title: ref.tr('app_full_name'),
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.system,
@@ -31,19 +34,20 @@ class FillColorApp extends StatelessWidget {
 }
 
 /// Main navigator with bottom navigation
-class MainNavigator extends StatefulWidget {
+class MainNavigator extends ConsumerStatefulWidget {
   const MainNavigator({super.key});
 
   @override
-  State<MainNavigator> createState() => _MainNavigatorState();
+  ConsumerState<MainNavigator> createState() => _MainNavigatorState();
 }
 
-class _MainNavigatorState extends State<MainNavigator> {
+class _MainNavigatorState extends ConsumerState<MainNavigator> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
     const HomeScreen(),
     const GalleryScreen(),
+    const SettingsScreen(),
   ];
 
   @override
@@ -77,16 +81,23 @@ class _MainNavigatorState extends State<MainNavigator> {
               _NavItem(
                 icon: Icons.home_outlined,
                 activeIcon: Icons.home_rounded,
-                label: 'Home',
+                label: ref.tr('home'),
                 isActive: _currentIndex == 0,
                 onTap: () => setState(() => _currentIndex = 0),
               ),
               _NavItem(
                 icon: Icons.photo_library_outlined,
                 activeIcon: Icons.photo_library_rounded,
-                label: 'Gallery',
+                label: ref.tr('gallery'),
                 isActive: _currentIndex == 1,
                 onTap: () => setState(() => _currentIndex = 1),
+              ),
+              _NavItem(
+                icon: Icons.settings_outlined,
+                activeIcon: Icons.settings_rounded,
+                label: ref.tr('settings'),
+                isActive: _currentIndex == 2,
+                onTap: () => setState(() => _currentIndex = 2),
               ),
             ],
           ),
