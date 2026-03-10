@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
@@ -16,10 +18,12 @@ import '../../core/localization/app_localizations.dart';
 /// Fill mode coloring screen
 class FillColoringScreen extends ConsumerStatefulWidget {
   final ColoringImageModel image;
+  final File? savedImageFile;
 
   const FillColoringScreen({
     super.key,
     required this.image,
+    this.savedImageFile,
   });
 
   @override
@@ -76,12 +80,22 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
       final Uint8List pngBytes = byteData.buffer.asUint8List();
 
       // Save to app gallery
-      await AppGalleryService.saveToAppGallery(pngBytes, widget.image.id);
+      await AppGalleryService.saveToAppGallery(
+        pngBytes, 
+        widget.image.id,
+        overwritePath: widget.savedImageFile?.path,
+      );
 
       // Refresh gallery provider
       ref.read(galleryImagesProvider.notifier).refresh();
 
       if (mounted) {
+        // Clear image cache to force reload of the overwritten file
+        if (widget.savedImageFile != null) {
+          final imageProvider = FileImage(widget.savedImageFile!);
+          imageProvider.evict();
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(ref.tr('saved_to_gallery')),
@@ -89,6 +103,13 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
             duration: const Duration(seconds: 2),
           ),
         );
+
+        // Wait a bit for the snackbar or just pop
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            Navigator.pop(context, true); // Return true to indicate success
+          }
+        });
       }
     } catch (e) {
       if (mounted) {
@@ -147,6 +168,7 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
               child: PixelColoringCanvas(
                 key: _canvasStateKey,
                 imagePath: widget.image.svgPath,
+                initialImageFile: widget.savedImageFile,
                 selectedColor: _selectedColor,
                 mode: ColoringMode.fill,
                 brushStrokes: const [],

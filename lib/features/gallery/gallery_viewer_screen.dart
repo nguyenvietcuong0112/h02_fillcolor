@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../core/services/app_gallery_service.dart';
 import '../../core/localization/app_localizations.dart';
 import 'gallery_screen.dart';
+import '../coloring/fill_coloring_screen.dart';
+import '../coloring/brush_coloring_screen.dart';
+import '../../data/repositories/image_repository.dart';
 
 class GalleryViewerScreen extends ConsumerStatefulWidget {
   final File imageFile;
@@ -81,6 +85,89 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
     }
   }
 
+  Future<void> _editImage() async {
+    final fileName = path.basenameWithoutExtension(widget.imageFile.path);
+    // Format is {id}_{timestamp}
+    final lastUnderscoreIndex = fileName.lastIndexOf('_');
+    if (lastUnderscoreIndex == -1) return;
+    
+    final imageId = fileName.substring(0, lastUnderscoreIndex);
+    final repository = ImageRepository();
+    final imageModel = repository.getImageById(imageId);
+    
+    if (imageModel == null) {
+       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(ref.tr('error'))),
+        );
+      }
+      return;
+    }
+
+    // Show mode selection
+    final mode = await showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(ref.tr('choose_style'), style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 24),
+            ListTile(
+              leading: Icon(Icons.format_paint_rounded, color: Colors.blue),
+              title: Text(ref.tr('tap_to_fill')),
+              subtitle: Text(ref.tr('tap_to_fill_desc')),
+              onTap: () => Navigator.pop(context, 'fill'),
+            ),
+            const SizedBox(height: 12),
+            ListTile(
+              leading: Icon(Icons.brush_rounded, color: Colors.orange),
+              title: Text(ref.tr('freehand_brush')),
+              subtitle: Text(ref.tr('freehand_brush_desc')),
+              onTap: () => Navigator.pop(context, 'brush'),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+
+    if (mode == null || !mounted) return;
+
+    final bool? result;
+    if (mode == 'fill') {
+      result = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FillColoringScreen(
+            image: imageModel,
+            savedImageFile: widget.imageFile,
+          ),
+        ),
+      );
+    } else {
+      result = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BrushColoringScreen(
+            image: imageModel,
+            savedImageFile: widget.imageFile,
+          ),
+        ),
+      );
+    }
+
+    if (result == true && mounted) {
+      setState(() {}); // Trigger rebuild to show the updated (and evicted) image
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,6 +233,11 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      _BarButton(
+                        icon: Icons.edit_note_rounded,
+                        label: ref.tr('edit'),
+                        onTap: _editImage,
+                      ),
                       _BarButton(
                         icon: Icons.file_download_outlined,
                         label: ref.tr('save'),

@@ -19,11 +19,17 @@ class AppGalleryService {
   }
 
   /// Save image to app gallery
-  static Future<File> saveToAppGallery(Uint8List imageBytes, String imageName) async {
-    final galleryDir = await getGalleryDirectory();
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final fileName = '${imageName}_$timestamp.png';
-    final filePath = path.join(galleryDir.path, fileName);
+  static Future<File> saveToAppGallery(Uint8List imageBytes, String imageName, {String? overwritePath}) async {
+    final String filePath;
+    
+    if (overwritePath != null) {
+      filePath = overwritePath;
+    } else {
+      final galleryDir = await getGalleryDirectory();
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName = '${imageName}_$timestamp.png';
+      filePath = path.join(galleryDir.path, fileName);
+    }
     
     final file = File(filePath);
     await file.writeAsBytes(imageBytes);

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
@@ -17,10 +19,12 @@ import '../../core/constants/app_constants.dart';
 /// Brush mode coloring screen - simplified with local state
 class BrushColoringScreen extends ConsumerStatefulWidget {
   final ColoringImageModel image;
+  final File? savedImageFile;
 
   const BrushColoringScreen({
     super.key,
     required this.image,
+    this.savedImageFile,
   });
 
   @override
@@ -155,12 +159,22 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
       final Uint8List pngBytes = byteData.buffer.asUint8List();
 
       // Save to app gallery
-      await AppGalleryService.saveToAppGallery(pngBytes, widget.image.id);
+      await AppGalleryService.saveToAppGallery(
+        pngBytes, 
+        widget.image.id,
+        overwritePath: widget.savedImageFile?.path,
+      );
 
       // Refresh gallery provider
       ref.read(galleryImagesProvider.notifier).refresh();
 
       if (mounted) {
+        // Clear image cache to force reload of the overwritten file
+        if (widget.savedImageFile != null) {
+          final imageProvider = FileImage(widget.savedImageFile!);
+          imageProvider.evict();
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(ref.tr('saved_to_gallery')),
@@ -168,6 +182,13 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
             duration: const Duration(seconds: 2),
           ),
         );
+
+        // Wait a bit for the snackbar or just pop
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            Navigator.pop(context, true); // Return true to indicate success
+          }
+        });
       }
     } catch (e, stackTrace) {
       debugPrint('Save error: $e');
@@ -198,6 +219,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
               key: _canvasKey,
               child: PixelColoringCanvas(
                 imagePath: widget.image.svgPath,
+                initialImageFile: widget.savedImageFile,
                 selectedColor: _selectedColor,
                 mode: ColoringMode.brush,
                 brushStrokes: _allStrokes,

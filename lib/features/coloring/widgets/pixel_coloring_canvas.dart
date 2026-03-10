@@ -1,4 +1,5 @@
 
+import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +21,7 @@ class PixelColoringCanvas extends StatefulWidget {
   final Function()? onFillComplete;
   final bool isMoveMode;
   final bool isLockRegionMode;
+  final File? initialImageFile;
 
   const PixelColoringCanvas({
     super.key,
@@ -36,6 +38,7 @@ class PixelColoringCanvas extends StatefulWidget {
     this.onFillComplete,
     this.isMoveMode = false,
     this.isLockRegionMode = false,
+    this.initialImageFile,
   });
 
   @override
@@ -92,7 +95,12 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
   Future<void> _loadImage() async {
     widget.onLoading?.call(true);
     try {
-      await _engine.loadImage(widget.imagePath);
+      if (widget.initialImageFile != null) {
+        await _engine.loadFromFile(widget.initialImageFile!);
+      } else {
+        await _engine.loadImage(widget.imagePath);
+      }
+      
       if (mounted) {
         setState(() {
           _displayImage = _engine.image;
