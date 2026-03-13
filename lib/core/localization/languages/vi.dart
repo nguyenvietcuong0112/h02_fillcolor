@@ -6,11 +6,11 @@ const Map<String, String> vi = {
   'language': 'Ngôn ngữ',
   'coloring_book': 'Sách tô màu',
   'app_full_name': 'ColorFlow - Sách tô màu',
-  
+
   // Language Selection
   'select_language': 'Chọn ngôn ngữ',
   'select_language_desc': 'Chọn ngôn ngữ bạn muốn sử dụng để tiếp tục',
-  
+
   // Gallery
   'gallery_desc': 'Những tác phẩm tuyệt vời của bạn',
   'no_images': 'Chưa có tác phẩm nào',
@@ -20,7 +20,7 @@ const Map<String, String> vi = {
   'download_success': 'Đã tải về máy!',
   'download_failed': 'Tải về thất bại',
   'edit': 'Sửa',
-  
+
   // Mode Selection
   'choose_style': 'Chọn phong cách',
   'bring_to_life': 'Thổi hồn vào tác phẩm của bạn',
@@ -29,7 +29,7 @@ const Map<String, String> vi = {
   'freehand_brush': 'Cọ vẽ tự do',
   'freehand_brush_desc': 'Đầy cảm hứng và nghệ thuật. Như ở studio.',
   'ready_to_color': 'SẴN SÀNG TÔ MÀU',
-  
+
   // Discovery Categories
   'discover': 'Khám phá',
   'discover_desc': 'Chọn tác phẩm bạn yêu thích',
@@ -39,7 +39,10 @@ const Map<String, String> vi = {
   'landscape': 'Phong cảnh',
   'abstract': 'Trừu tượng',
   'fantasy': 'Kỳ ảo',
-  
+  'sea life': 'Biển cả',
+  'vehicles': 'Phương tiện',
+  'food': 'Ẩm thực',
+
   // Common Actions
   'save': 'Lưu',
   'share': 'Chia sẻ',
@@ -53,13 +56,13 @@ const Map<String, String> vi = {
   'skip': 'Bỏ qua',
   'next': 'Tiếp theo',
   'get_started': 'Bắt đầu',
-  
+
   // Coloring Tools
   'lock_region': 'KHÓA',
   'clear': 'Xóa hết',
   'saved_to_gallery': 'Đã lưu! Hãy xem trong tab Thư viện nhé.',
   'brush_size': 'Kích thước cọ',
-  
+
   // Color Palette
   'pro_swatches': 'Màu chuyên nghiệp',
   'hue': 'Sắc độ',
@@ -67,8 +70,9 @@ const Map<String, String> vi = {
   'lightness': 'Độ sáng',
   'custom_color': 'Màu tùy chỉnh',
   'apply_color': 'Áp dụng',
-  
+
   // Palette Categories
+  'recent': 'Gần đây',
   'basic': 'Cơ bản',
   'vibrant': 'Sống động',
   'pastel': 'Màu Pastel',
@@ -81,7 +85,7 @@ const Map<String, String> vi = {
   'hair': 'Màu tóc',
   'eyes': 'Màu mắt',
   'lips': 'Màu môi',
-  
+
   // Settings & Info
   'info': 'Thông tin',
   'version': 'Phiên bản',
@@ -89,11 +93,12 @@ const Map<String, String> vi = {
   'privacy_policy': 'Chính sách bảo mật',
   'share_app': 'Chia sẻ ứng dụng',
   'rate_app': 'Đánh giá ứng dụng',
-  
+
   // Paywall
   'go_premium': 'Nâng cấp Premium',
   'unlock_premium': 'Mở khóa tính năng Premium',
-  'premium_desc': 'Truy cập không giới hạn vào tất cả các trang tô màu và tính năng',
+  'premium_desc':
+      'Truy cập không giới hạn vào tất cả các trang tô màu và tính năng',
   'unlock_all_images': 'Mở khóa tất cả hình ảnh premium',
   'access_premium_palettes': 'Truy cập bảng màu premium',
   'remove_ads': 'Gỡ bỏ toàn bộ quảng cáo',
@@ -101,7 +106,8 @@ const Map<String, String> vi = {
   'advanced_brush': 'Công cụ cọ vẽ nâng cao',
   'restore_purchases': 'Khôi phục giao dịch',
   'no_packages': 'Không có gói đăng ký nào. Vui lòng thử lại sau.',
-  'subs_disclaimer': 'Đăng ký sẽ tự động gia hạn trừ khi bị hủy ít nhất 24 giờ trước khi kết thúc giai đoạn hiện tại.',
+  'subs_disclaimer':
+      'Đăng ký sẽ tự động gia hạn trừ khi bị hủy ít nhất 24 giờ trước khi kết thúc giai đoạn hiện tại.',
   'subs_success': 'Đăng ký thành công! Hãy tận hưởng các tính năng premium.',
   'restore_success': 'Khôi phục thành công!',
   'restore_failed': 'Không tìm thấy giao dịch nào để khôi phục.',

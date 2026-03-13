@@ -45,7 +45,9 @@ class FloodFillEngine {
     _height = _image!.height;
 
     // Convert image to pixel data
-    final ByteData? byteData = await _image!.toByteData(format: ui.ImageByteFormat.rawRgba);
+    final ByteData? byteData = await _image!.toByteData(
+      format: ui.ImageByteFormat.rawRgba,
+    );
     _pixels = byteData!.buffer.asUint8List();
 
     // Initialize history with the initial state
@@ -67,7 +69,9 @@ class FloodFillEngine {
     // Consider a pixel as "dark edge" if it's very dark
     // Threshold of 50 means RGB values below 50 are considered edges
     // Adjust this value based on your image (lower = more strict)
-    const int edgeThreshold = 50;
+    // Consider a pixel as "dark edge" if it's very dark
+    // Threshold of 60 is optimized for our standardized 1024x1024 assets
+    const int edgeThreshold = 60;
 
     return r < edgeThreshold && g < edgeThreshold && b < edgeThreshold;
   }
@@ -98,7 +102,10 @@ class FloodFillEngine {
     final int newA = (newColor.a * 255.0).round();
 
     // If target color is same as new color, no need to fill
-    if (targetR == newR && targetG == newG && targetB == newB && targetA == newA) {
+    if (targetR == newR &&
+        targetG == newG &&
+        targetB == newB &&
+        targetA == newA) {
       return _image;
     }
 
@@ -111,7 +118,7 @@ class FloodFillEngine {
     queue.add(x);
     queue.add(y);
 
-    const int tolerance = 15;
+    const int tolerance = 10;
     const int maxPixels = 500000; // Limit to prevent infinite loops
     int pixelsFilled = 0;
 
@@ -175,7 +182,9 @@ class FloodFillEngine {
     debugPrint('Flood fill completed: $pixelsFilled pixels filled');
 
     // Convert modified pixels back to image
-    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(newPixels);
+    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(
+      newPixels,
+    );
     final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
       buffer,
       width: _width,
@@ -281,7 +290,9 @@ class FloodFillEngine {
       }
     }
 
-    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(rgbaMask);
+    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(
+      rgbaMask,
+    );
     final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
       buffer,
       width: _width,
@@ -320,7 +331,9 @@ class FloodFillEngine {
     _pixels = Uint8List.fromList(_history[_historyIndex]);
 
     // Convert pixels back to image
-    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(_pixels!);
+    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(
+      _pixels!,
+    );
     final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
       buffer,
       width: _width,
@@ -344,7 +357,9 @@ class FloodFillEngine {
     _pixels = Uint8List.fromList(_history[_historyIndex]);
 
     // Convert pixels back to image
-    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(_pixels!);
+    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(
+      _pixels!,
+    );
     final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
       buffer,
       width: _width,

@@ -33,10 +33,13 @@ class FillColoringScreen extends ConsumerStatefulWidget {
 class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
   Color _selectedColor = Color(AppConstants.defaultColors[0]);
   final GlobalKey _canvasKey = GlobalKey();
-  final GlobalKey<PixelColoringCanvasState> _canvasStateKey = GlobalKey<PixelColoringCanvasState>();
+  final GlobalKey<PixelColoringCanvasState> _canvasStateKey =
+      GlobalKey<PixelColoringCanvasState>();
   bool _isSaving = false;
   bool _canUndo = false;
   bool _canRedo = false;
+  final GlobalKey<ColorPaletteState> _paletteKey =
+      GlobalKey<ColorPaletteState>();
 
   void _updateUndoRedoState() {
     final canvasState = _canvasStateKey.currentState;
@@ -66,22 +69,25 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
 
   Future<void> _saveToAppGallery() async {
     setState(() => _isSaving = true);
-    
+
     try {
-      final RenderRepaintBoundary boundary = 
-          _canvasKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      final RenderRepaintBoundary boundary =
+          _canvasKey.currentContext!.findRenderObject()
+              as RenderRepaintBoundary;
       final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      
+      final ByteData? byteData = await image.toByteData(
+        format: ui.ImageByteFormat.png,
+      );
+
       if (byteData == null) {
         throw Exception('Failed to convert image to bytes');
       }
-      
+
       final Uint8List pngBytes = byteData.buffer.asUint8List();
 
       // Save to app gallery
       await AppGalleryService.saveToAppGallery(
-        pngBytes, 
+        pngBytes,
         widget.image.id,
         overwritePath: widget.savedImageFile?.path,
       );
@@ -114,7 +120,10 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${ref.tr('error')}: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text('${ref.tr('error')}: $e'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } finally {
@@ -128,7 +137,8 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          '${widget.image.name} - ${ref.tr('tap_to_fill')}',
+          '${widget.image.name}',
+          // '${widget.image.name} - ${ref.tr('tap_to_fill')}',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
@@ -175,16 +185,27 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
                 onLoading: (loading) {
                   if (!loading) {
                     // Update undo/redo state after image loads
-                    Future.delayed(const Duration(milliseconds: 100), _updateUndoRedoState);
+                    Future.delayed(
+                      const Duration(milliseconds: 100),
+                      _updateUndoRedoState,
+                    );
                   }
                 },
-                onFillComplete: _updateUndoRedoState,
+                onFillComplete: () {
+                  _updateUndoRedoState();
+                  // Add selected color to recent colors when a fill is completed
+                  final paletteState = _paletteKey.currentState;
+                  if (paletteState != null) {
+                    paletteState.addColorToHistory(_selectedColor);
+                  }
+                },
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 24.0),
             child: ColorPalette(
+              key: _paletteKey,
               selectedColor: _selectedColor,
               onColorSelected: (color) {
                 setState(() => _selectedColor = color);

@@ -28,27 +28,30 @@ class BrushColoringScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<BrushColoringScreen> createState() => _BrushColoringScreenState();
+  ConsumerState<BrushColoringScreen> createState() =>
+      _BrushColoringScreenState();
 }
 
 class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
   final GlobalKey _canvasKey = GlobalKey();
   bool _isSaving = false;
-  
+
   // Local state for brush
   Color _selectedColor = Color(AppConstants.defaultColors[0]);
   double _brushSize = 10.0;
   List<BrushStroke> _brushStrokes = [];
   BrushStroke? _currentStroke;
-  
-  bool _isLockMode = true; // Enabled by default as it's a highly requested feature
-  
-  final GlobalKey<ColorPaletteState> _paletteKey = GlobalKey<ColorPaletteState>();
+
+  bool _isLockMode =
+      true; // Enabled by default as it's a highly requested feature
+
+  final GlobalKey<ColorPaletteState> _paletteKey =
+      GlobalKey<ColorPaletteState>();
 
   // Undo/Redo
   final List<List<BrushStroke>> _undoStack = [];
   final List<List<BrushStroke>> _redoStack = [];
-  
+
   // Eraser mode
   bool _isEraserMode = false;
 
@@ -59,7 +62,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
 
   void _undo() {
     if (_undoStack.isEmpty) return;
-    
+
     setState(() {
       _redoStack.add(List.from(_brushStrokes));
       _brushStrokes = _undoStack.removeLast();
@@ -68,19 +71,20 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
 
   void _redo() {
     if (_redoStack.isEmpty) return;
-    
+
     setState(() {
       _undoStack.add(List.from(_brushStrokes));
       _brushStrokes = _redoStack.removeLast();
     });
   }
 
-
   void _handlePanStartWithMask(Offset point, ui.Image? mask) {
     setState(() {
       _currentStroke = BrushStroke(
         points: [point],
-        color: _isEraserMode ? Colors.transparent : _selectedColor, // Eraser uses transparent if mask is handled by painter
+        color: _isEraserMode
+            ? Colors.transparent
+            : _selectedColor, // Eraser uses transparent if mask is handled by painter
         size: _brushSize,
         opacity: 1.0,
         isEraser: _isEraserMode,
@@ -118,8 +122,14 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
         // Save current state to undo stack
         _undoStack.add(List.from(_brushStrokes));
         _redoStack.clear(); // Clear redo stack on new action
-        
+
         _brushStrokes = [..._brushStrokes, _currentStroke!];
+
+        // Add color to recent history
+        if (!_isEraserMode) {
+          _paletteKey.currentState?.addColorToHistory(_selectedColor);
+        }
+
         _currentStroke = null;
       });
       debugPrint('Total strokes: ${_brushStrokes.length}');
@@ -140,27 +150,30 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
     }
 
     setState(() => _isSaving = true);
-    
+
     try {
-      final RenderRepaintBoundary? boundary = 
-          _canvasKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
-      
+      final RenderRepaintBoundary? boundary =
+          _canvasKey.currentContext?.findRenderObject()
+              as RenderRepaintBoundary?;
+
       if (boundary == null) {
         throw Exception('RenderObject is not a RenderRepaintBoundary');
       }
 
       final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      
+      final ByteData? byteData = await image.toByteData(
+        format: ui.ImageByteFormat.png,
+      );
+
       if (byteData == null) {
         throw Exception('Failed to convert image to bytes');
       }
-      
+
       final Uint8List pngBytes = byteData.buffer.asUint8List();
 
       // Save to app gallery
       await AppGalleryService.saveToAppGallery(
-        pngBytes, 
+        pngBytes,
         widget.image.id,
         overwritePath: widget.savedImageFile?.path,
       );
@@ -271,33 +284,49 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 // 3. SECONDARY TOP BAR (Brush Size Slider - Requested Position!)
                 _GlassControlBar(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
+                  ),
                   child: Row(
                     children: [
-                      Icon(Icons.line_weight_rounded, size: 18, color: Colors.blueGrey[700]),
+                      Icon(
+                        Icons.line_weight_rounded,
+                        size: 18,
+                        color: Colors.blueGrey[700],
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: SliderTheme(
                           data: SliderTheme.of(context).copyWith(
                             trackHeight: 3,
-                            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
+                            thumbShape: const RoundSliderThumbShape(
+                              enabledThumbRadius: 8,
+                            ),
                           ),
                           child: Slider(
                             value: _brushSize,
                             min: AppConstants.minBrushSize,
                             max: AppConstants.maxBrushSize,
                             activeColor: Colors.blueGrey[800],
-                            onChanged: (value) => setState(() => _brushSize = value),
+                            onChanged: (value) =>
+                                setState(() => _brushSize = value),
                           ),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text('${_brushSize.toInt()}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      Text(
+                        '${_brushSize.toInt()}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -334,7 +363,9 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                 _GlassControlBar(
                   padding: const EdgeInsets.all(6),
                   child: _ToggleToolButton(
-                    icon: _isLockMode ? Icons.format_paint_rounded : Icons.format_paint_outlined,
+                    icon: _isLockMode
+                        ? Icons.format_paint_rounded
+                        : Icons.format_paint_outlined,
                     isActive: _isLockMode,
                     activeColor: Colors.blueAccent,
                     onTap: () => setState(() => _isLockMode = !_isLockMode),
@@ -347,7 +378,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                   child: _ToolButton(
                     icon: Icons.delete_outline_rounded,
                     onTap: () {
-                       setState(() {
+                      setState(() {
                         _undoStack.add(List.from(_brushStrokes));
                         _redoStack.clear();
                         _brushStrokes = [];
@@ -412,9 +443,20 @@ class _ToggleToolButton extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Icon(icon, size: 22, color: isActive ? Colors.white : Colors.blueGrey[700]),
+            Icon(
+              icon,
+              size: 22,
+              color: isActive ? Colors.white : Colors.blueGrey[700],
+            ),
             const SizedBox(height: 2),
-            Text(label, style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: isActive ? Colors.white : Colors.blueGrey[400])),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 8,
+                fontWeight: FontWeight.bold,
+                color: isActive ? Colors.white : Colors.blueGrey[400],
+              ),
+            ),
           ],
         ),
       ),
@@ -422,13 +464,15 @@ class _ToggleToolButton extends StatelessWidget {
   }
 }
 
-
 /// --- Premium UI Helper Widgets ---
 
 class _GlassControlBar extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
-  const _GlassControlBar({required this.child, this.padding = const EdgeInsets.all(8)});
+  const _GlassControlBar({
+    required this.child,
+    this.padding = const EdgeInsets.all(8),
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -441,13 +485,16 @@ class _GlassControlBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.7),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.4), width: 1.5),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.4),
+              width: 1.5,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
-              )
+              ),
             ],
           ),
           child: child,
@@ -478,16 +525,25 @@ class _RoundIconButton extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isPrimary ? Colors.blueGrey[900] : (enabled ? Colors.white : Colors.grey[200]),
+          color: isPrimary
+              ? Colors.blueGrey[900]
+              : (enabled ? Colors.white : Colors.grey[200]),
           shape: BoxShape.circle,
           boxShadow: [
-             if (enabled) BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 8, offset: const Offset(0, 4))
+            if (enabled)
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
           ],
         ),
         child: Icon(
           icon,
           size: 20,
-          color: isPrimary ? Colors.white : (enabled ? Colors.blueGrey[800] : Colors.grey[400]),
+          color: isPrimary
+              ? Colors.white
+              : (enabled ? Colors.blueGrey[800] : Colors.grey[400]),
         ),
       ),
     );
@@ -517,7 +573,15 @@ class _ToolButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected ? activeColor : Colors.white.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(16),
-          boxShadow: isSelected ? [BoxShadow(color: activeColor.withValues(alpha: 0.3), blurRadius: 10, spreadRadius: 2)] : [],
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: activeColor.withValues(alpha: 0.3),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                  ),
+                ]
+              : [],
         ),
         child: Icon(
           icon,
@@ -535,8 +599,15 @@ class _Loader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-      child: const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+      ),
+      child: const SizedBox(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(strokeWidth: 2),
+      ),
     );
   }
 }

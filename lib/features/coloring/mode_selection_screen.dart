@@ -5,14 +5,12 @@ import 'fill_coloring_screen.dart';
 import 'brush_coloring_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/localization/app_localizations.dart';
+import '../../core/widgets/premium_icons.dart';
 
 class ModeSelectionScreen extends ConsumerWidget {
   final ColoringImageModel image;
 
-  const ModeSelectionScreen({
-    super.key,
-    required this.image,
-  });
+  const ModeSelectionScreen({super.key, required this.image});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +22,11 @@ class ModeSelectionScreen extends ConsumerWidget {
         leading: Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.blueGrey[900], size: 22.sp),
+            icon: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.blueGrey[900],
+              size: 22.sp,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -65,7 +67,9 @@ class ModeSelectionScreen extends ConsumerWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20.r),
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.22, // Fixed height based on screen
+                        height:
+                            MediaQuery.of(context).size.height *
+                            0.22, // Fixed height based on screen
                         child: Container(
                           color: Colors.blueGrey[50]!.withValues(alpha: 0.3),
                           width: double.infinity,
@@ -84,7 +88,11 @@ class ModeSelectionScreen extends ConsumerWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.palette_rounded, size: 14.sp, color: Colors.blueGrey[300]),
+                          Icon(
+                            Icons.palette_rounded,
+                            size: 14.sp,
+                            color: Colors.blueGrey[300],
+                          ),
                           SizedBox(width: 8.w),
                           Text(
                             ref.tr('ready_to_color'),
@@ -101,9 +109,9 @@ class ModeSelectionScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              
+
               const Spacer(),
-              
+
               // 2. Focused Titles
               Text(
                 ref.tr('choose_style'),
@@ -114,9 +122,9 @@ class ModeSelectionScreen extends ConsumerWidget {
                   letterSpacing: -0.5,
                 ),
               ),
-              
+
               SizedBox(height: 6.h),
-              
+
               Text(
                 ref.tr('bring_to_life'),
                 style: TextStyle(
@@ -126,12 +134,15 @@ class ModeSelectionScreen extends ConsumerWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              
+
               const Spacer(),
-              
+
               // 3. Compact Mode Selection
               _ModeButton(
-                icon: Icons.format_paint_rounded,
+                iconWidget: PremiumFillIcon(
+                  size: 28.sp,
+                  color: const Color(0xFF4285F4),
+                ),
                 title: ref.tr('tap_to_fill'),
                 description: ref.tr('tap_to_fill_desc'),
                 color: const Color(0xFF4285F4),
@@ -144,11 +155,14 @@ class ModeSelectionScreen extends ConsumerWidget {
                   );
                 },
               ),
-              
+
               SizedBox(height: 16.h),
-              
+
               _ModeButton(
-                icon: Icons.brush_rounded,
+                iconWidget: PremiumBrushIcon(
+                  size: 28.sp,
+                  color: const Color(0xFFA142F4),
+                ),
                 title: ref.tr('freehand_brush'),
                 description: ref.tr('freehand_brush_desc'),
                 color: const Color(0xFFA142F4),
@@ -161,7 +175,7 @@ class ModeSelectionScreen extends ConsumerWidget {
                   );
                 },
               ),
-              
+
               const Spacer(flex: 2),
             ],
           ),
@@ -172,14 +186,14 @@ class ModeSelectionScreen extends ConsumerWidget {
 }
 
 class _ModeButton extends StatelessWidget {
-  final IconData icon;
+  final Widget iconWidget;
   final String title;
   final String description;
   final Color color;
   final VoidCallback onTap;
 
   const _ModeButton({
-    required this.icon,
+    required this.iconWidget,
     required this.title,
     required this.description,
     required this.color,
@@ -218,11 +232,7 @@ class _ModeButton extends StatelessWidget {
                     color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(16.r),
                   ),
-                  child: Icon(
-                    icon,
-                    size: 26.sp,
-                    color: color,
-                  ),
+                  child: Center(child: iconWidget),
                 ),
                 SizedBox(width: 16.w),
                 Expanded(

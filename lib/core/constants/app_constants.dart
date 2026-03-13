@@ -16,9 +16,12 @@ class AppConstants {
   static const String keyIntroSeen = 'intro_seen';
 
   // Ad IDs (Replace with your actual AdMob IDs)
-  static const String adAppOpenId = 'ca-app-pub-3940256099942544/3419835294'; // Test ID
-  static const String adInterstitialId = 'ca-app-pub-3940256099942544/1033173712'; // Test ID
-  static const String adNativeId = 'ca-app-pub-3940256099942544/2247696110'; // Test ID
+  static const String adAppOpenId =
+      'ca-app-pub-3940256099942544/3419835294'; // Test ID
+  static const String adInterstitialId =
+      'ca-app-pub-3940256099942544/1033173712'; // Test ID
+  static const String adNativeId =
+      'ca-app-pub-3940256099942544/2247696110'; // Test ID
 
   // RevenueCat
   static const String revenueCatApiKey = 'YOUR_REVENUECAT_API_KEY';
@@ -166,15 +169,17 @@ class AppConstants {
 
   // Default Colors (Legacy support)
   static const List<int> defaultColors = [
-    0xFFFF0000, // Changed Red to first color instead of black
+    0xFF87CEEB, // Sky Blue (Default)
     0xFF808080, 0xFFC0C0C0, 0xFFFFFFFF,
     0xFF8B0000, 0xFFFF4D4D, 0xFFFF6666,
     0xFF00FF00, 0xFF008000, 0xFF013220, 0xFF90EE90,
   ];
 
   static const List<int> premiumColors = [
-    0xFFFFB7B2, 0xFFFFDAC1, 0xFFE2F0CB, 0xFFB5EAD7, 0xFFC7CEEA,
+    0xFFFFB7B2,
+    0xFFFFDAC1,
+    0xFFE2F0CB,
+    0xFFB5EAD7,
+    0xFFC7CEEA,
   ];
 }
-
-

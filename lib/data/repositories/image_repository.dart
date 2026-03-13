@@ -4,7 +4,17 @@ import '../models/coloring_image_model.dart';
 class ImageRepository {
   /// Get all categories
   List<String> getCategories() {
-    return ['Animals', 'Flowers', 'Mandala', 'Landscape', 'Abstract', 'Fantasy'];
+    return [
+      'Animals',
+      'Sea Life',
+      'Flowers',
+      'Mandala',
+      'Landscape',
+      'Abstract',
+      'Fantasy',
+      'Vehicles',
+      'Food',
+    ];
   }
 
   /// Get images by category
@@ -29,7 +39,7 @@ class ImageRepository {
   }
 
   /// Sample images data
-  /// 
+  ///
   /// Để thêm image mới:
   /// 1. Tạo file PNG trong thư mục assets/images/
   /// 2. Thêm ColoringImageModel vào list _sampleImages bên dưới
@@ -93,7 +103,33 @@ class ImageRepository {
       thumbnailPath: 'assets/images/animal_pig.png',
       difficulty: 6,
     ),
-    
+
+    // ========== SEA LIFE ==========
+    ColoringImageModel(
+      id: 'sealife_turtle',
+      name: 'Sea Turtle',
+      category: 'Sea Life',
+      svgPath: 'assets/images/sealife_turtle.png',
+      thumbnailPath: 'assets/images/sealife_turtle.png',
+      difficulty: 3,
+    ),
+    ColoringImageModel(
+      id: 'sealife_octopus',
+      name: 'Happy Octopus',
+      category: 'Sea Life',
+      svgPath: 'assets/images/sealife_octopus.png',
+      thumbnailPath: 'assets/images/sealife_octopus.png',
+      difficulty: 4,
+    ),
+    ColoringImageModel(
+      id: 'sealife_clownfish',
+      name: 'Clownfish',
+      category: 'Sea Life',
+      svgPath: 'assets/images/sealife_clownfish.png',
+      thumbnailPath: 'assets/images/sealife_clownfish.png',
+      difficulty: 3,
+    ),
+
     // ========== FLOWERS ==========
     ColoringImageModel(
       id: 'flower_rose',
@@ -157,11 +193,12 @@ class ImageRepository {
       id: 'mandala_3',
       name: 'Ornate Mandala',
       category: 'Mandala',
-      svgPath: 'assets/images/mandala_ornade.png', // Placeholder - replace with actual mandala image
+      svgPath:
+          'assets/images/mandala_ornade.png', // Placeholder - replace with actual mandala image
       thumbnailPath: 'assets/images/mandala_ornade.png',
       difficulty: 5,
     ),
-    
+
     // ========== LANDSCAPE ==========
     ColoringImageModel(
       id: 'landscape_mountains',
@@ -179,7 +216,7 @@ class ImageRepository {
       thumbnailPath: 'assets/images/landscape_beach.png',
       difficulty: 3,
     ),
-    
+
     // ========== ABSTRACT ==========
     ColoringImageModel(
       id: 'abstract_swirls',
@@ -197,7 +234,7 @@ class ImageRepository {
       thumbnailPath: 'assets/images/abstract_waves.png',
       difficulty: 4,
     ),
-    
+
     // ========== FANTASY ==========
     ColoringImageModel(
       id: 'fantasy_unicorn',
@@ -223,6 +260,41 @@ class ImageRepository {
       thumbnailPath: 'assets/images/fantasy_phoenix.png',
       difficulty: 5,
     ),
+
+    // ========== VEHICLES ==========
+    ColoringImageModel(
+      id: 'vehicle_rocket',
+      name: 'Space Rocket',
+      category: 'Vehicles',
+      svgPath: 'assets/images/vehicle_rocket.png',
+      thumbnailPath: 'assets/images/vehicle_rocket.png',
+      difficulty: 4,
+    ),
+    ColoringImageModel(
+      id: 'vehicle_car',
+      name: 'Vintage Car',
+      category: 'Vehicles',
+      svgPath: 'assets/images/vehicle_car.png',
+      thumbnailPath: 'assets/images/vehicle_car.png',
+      difficulty: 3,
+    ),
+    ColoringImageModel(
+      id: 'vehicle_ship',
+      name: 'Pirate Ship',
+      category: 'Vehicles',
+      svgPath: 'assets/images/vehicle_ship.png',
+      thumbnailPath: 'assets/images/vehicle_ship.png',
+      difficulty: 4,
+    ),
+
+    // ========== FOOD ==========
+    ColoringImageModel(
+      id: 'food_cupcake',
+      name: 'Sweet Cupcake',
+      category: 'Food',
+      svgPath: 'assets/images/food_cupcake.png',
+      thumbnailPath: 'assets/images/food_cupcake.png',
+      difficulty: 2,
+    ),
   ];
 }
-

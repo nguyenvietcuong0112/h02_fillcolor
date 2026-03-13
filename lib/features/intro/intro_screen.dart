@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/utils/storage_utils.dart';
-import '../../app.dart'; // For MainNavigator
-import '../../core/theme/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../app.dart';
 import '../../core/theme/app_dimens.dart';
 import '../../core/localization/app_localizations.dart';
+import '../../core/utils/storage_utils.dart';
 
 class IntroScreen extends ConsumerStatefulWidget {
   const IntroScreen({super.key});
@@ -32,9 +32,15 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
   void _onFinish() async {
     await StorageUtils.setIntroSeen(true);
     if (!mounted) return;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const MainNavigator()),
-    );
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => const MainNavigator()));
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,131 +49,179 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
       {
         'title': ref.tr('intro_1_title'),
         'desc': ref.tr('intro_1_desc'),
-        'icon': 'mypainting',
+        'image': 'assets/images/intro_1.png',
       },
       {
         'title': ref.tr('intro_2_title'),
         'desc': ref.tr('intro_2_desc'),
-        'icon': 'flower', 
+        'image': 'assets/images/intro_2.png',
       },
       {
         'title': ref.tr('intro_3_title'),
         'desc': ref.tr('intro_3_desc'),
-        'icon': 'brush',
+        'image': 'assets/images/intro_3.png',
       },
     ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Skip button
-            Align(
-              alignment: Alignment.topRight,
-              child: TextButton(
-                onPressed: _onFinish,
-                child: Text(
-                  ref.tr('skip'),
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ),
-            ),
-            
-            // PageView
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
-                itemCount: pages.length,
-                itemBuilder: (context, index) {
-                  return _buildPage(pages[index]);
-                },
-              ),
-            ),
-
-            // Pagination Dots
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                pages.length,
-                (index) => Container(
-                  margin: EdgeInsets.symmetric(horizontal: AppDimens.space4),
-                  width: _currentPage == index ? 20.w : 8.w,
-                  height: 8.h,
-                  decoration: BoxDecoration(
-                    color: _currentPage == index ? Colors.black : Colors.grey[300],
-                    borderRadius: BorderRadius.circular(AppDimens.radius4),
-                  ),
-                ),
-              ),
-            ),
-            
-            SizedBox(height: AppDimens.space40),
-
-            // Next/Get Started Button
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppDimens.space32),
-              child: SizedBox(
-                width: double.infinity,
-                height: AppDimens.buttonHeight + 8.h,
-                child: ElevatedButton(
-                  onPressed: _onNext,
-                  child: Text(
-                    _currentPage == pages.length - 1 ? ref.tr('get_started') : ref.tr('next'),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: AppDimens.space32),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPage(Map<String, String> data) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppDimens.space32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor: Colors.black,
+      body: Column(
         children: [
-          // Illustration Placeholder
-          Container(
-            width: 280.w,
-            height: 280.w,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              data['icon'] == 'brush' ? Icons.brush : 
-              data['icon'] == 'flower' ? Icons.filter_vintage : Icons.palette,
-              size: 100.w,
-              color: Colors.black,
+          // Top Part: Image with dynamic transition
+          Expanded(
+            flex: 3,
+            child: Stack(
+              children: [
+                PageView.builder(
+                  controller: _pageController,
+                  onPageChanged: (index) =>
+                      setState(() => _currentPage = index),
+                  itemCount: pages.length,
+                  itemBuilder: (context, index) {
+                    return Image.asset(
+                      pages[index]['image']!,
+                      fit: BoxFit.fill,
+                    );
+                  },
+                ),
+                // Skip Button (Positioned over images)
+                SafeArea(
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: EdgeInsets.all(16.w),
+                      child: TextButton(
+                        onPressed: _onFinish,
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.black.withValues(alpha: 0.3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: Text(
+                          ref.tr('skip'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                // Bottom Gradient Shade to blend with content area
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.transparent, Colors.black],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(height: AppDimens.space40),
-          Text(
-            data['title']!,
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(color: Colors.black),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: AppDimens.space16),
-          Text(
-            data['desc']!,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Colors.grey[600],
-              height: 1.5,
+
+          // Bottom Part: Content and Controls
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              decoration: const BoxDecoration(color: Colors.black),
+              child: Column(
+                children: [
+                  SizedBox(height: 20.h),
+                  // Pagination
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      pages.length,
+                      (index) => AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: EdgeInsets.symmetric(horizontal: 4.w),
+                        width: _currentPage == index ? 24.w : 8.w,
+                        height: 8.h,
+                        decoration: BoxDecoration(
+                          color: _currentPage == index
+                              ? Colors.white
+                              : Colors.white.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  // Text Content
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 400),
+                    child: Column(
+                      key: ValueKey<int>(_currentPage),
+                      children: [
+                        Text(
+                          pages[_currentPage]['title']!,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 26.sp,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: -0.5,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 12.h),
+                        Text(
+                          pages[_currentPage]['desc']!,
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.6),
+                            fontSize: 15.sp,
+                            height: 1.5,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  // Action Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 60.h,
+                    child: ElevatedButton(
+                      onPressed: _onNext,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            _currentPage == pages.length - 1
+                                ? ref.tr('get_started')
+                                : ref.tr('next'),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16,
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          const Icon(Icons.arrow_forward_rounded, size: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 32.h),
+                ],
+              ),
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),

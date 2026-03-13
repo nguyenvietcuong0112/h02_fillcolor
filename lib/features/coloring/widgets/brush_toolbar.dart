@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/widgets/premium_icons.dart';
 
 /// Brush toolbar widget with improved design
 class BrushToolbar extends StatelessWidget {
@@ -28,7 +29,7 @@ class BrushToolbar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.brush, size: 20, color: Colors.grey[700]),
+          PremiumBrushIcon(size: 22, color: Colors.grey[700]!),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -57,7 +58,9 @@ class BrushToolbar extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
@@ -74,4 +77,3 @@ class BrushToolbar extends StatelessWidget {
     );
   }
 }
-

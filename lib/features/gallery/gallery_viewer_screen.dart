@@ -10,6 +10,8 @@ import 'gallery_screen.dart';
 import '../coloring/fill_coloring_screen.dart';
 import '../coloring/brush_coloring_screen.dart';
 import '../../data/repositories/image_repository.dart';
+import '../../core/widgets/premium_icons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GalleryViewerScreen extends ConsumerStatefulWidget {
   final File imageFile;
@@ -17,7 +19,8 @@ class GalleryViewerScreen extends ConsumerStatefulWidget {
   const GalleryViewerScreen({super.key, required this.imageFile});
 
   @override
-  ConsumerState<GalleryViewerScreen> createState() => _GalleryViewerScreenState();
+  ConsumerState<GalleryViewerScreen> createState() =>
+      _GalleryViewerScreenState();
 }
 
 class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
@@ -26,14 +29,20 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
   Future<void> _downloadToDevice() async {
     setState(() => _isDownloading = true);
     try {
-      final success = await AppGalleryService.exportToDeviceGallery(widget.imageFile);
+      final success = await AppGalleryService.exportToDeviceGallery(
+        widget.imageFile,
+      );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(success ? ref.tr('download_success') : ref.tr('download_failed')),
+            content: Text(
+              success ? ref.tr('download_success') : ref.tr('download_failed'),
+            ),
             backgroundColor: success ? Colors.green : Colors.red,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         );
       }
@@ -44,7 +53,9 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
 
   Future<void> _shareImage() async {
     try {
-      await Share.shareXFiles([XFile(widget.imageFile.path)], text: 'My colored artwork!');
+      await Share.shareXFiles([
+        XFile(widget.imageFile.path),
+      ], text: 'My colored artwork!');
     } catch (e) {
       debugPrint('Share error: $e');
     }
@@ -56,13 +67,22 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white.withValues(alpha: 0.9),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-        title: Text(ref.tr('delete_title'), style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          ref.tr('delete_title'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         content: Text(ref.tr('delete_desc')),
         actionsAlignment: MainAxisAlignment.spaceEvenly,
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(ref.tr('keep_it'), style: TextStyle(color: Colors.blueGrey[600], fontWeight: FontWeight.bold)),
+            child: Text(
+              ref.tr('keep_it'),
+              style: TextStyle(
+                color: Colors.blueGrey[600],
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
@@ -70,9 +90,14 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
               backgroundColor: Colors.redAccent,
               foregroundColor: Colors.white,
               elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
             ),
-            child: Text(ref.tr('delete'), style: const TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+              ref.tr('delete'),
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
@@ -90,16 +115,16 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
     // Format is {id}_{timestamp}
     final lastUnderscoreIndex = fileName.lastIndexOf('_');
     if (lastUnderscoreIndex == -1) return;
-    
+
     final imageId = fileName.substring(0, lastUnderscoreIndex);
     final repository = ImageRepository();
     final imageModel = repository.getImageById(imageId);
-    
+
     if (imageModel == null) {
-       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(ref.tr('error'))),
-        );
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(ref.tr('error'))));
       }
       return;
     }
@@ -117,22 +142,38 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(ref.tr('choose_style'), style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 24),
-            ListTile(
-              leading: Icon(Icons.format_paint_rounded, color: Colors.blue),
-              title: Text(ref.tr('tap_to_fill')),
-              subtitle: Text(ref.tr('tap_to_fill_desc')),
+            Container(
+              width: 40.w,
+              height: 4.h,
+              margin: EdgeInsets.only(bottom: 20.h),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            Text(
+              ref.tr('choose_style'),
+              style: TextStyle(
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w900,
+                color: Colors.blueGrey[900],
+              ),
+            ),
+            SizedBox(height: 24.h),
+            _ModeListTile(
+              iconWidget: PremiumFillIcon(size: 24.sp, color: Colors.blue),
+              title: ref.tr('tap_to_fill'),
+              subtitle: ref.tr('tap_to_fill_desc'),
               onTap: () => Navigator.pop(context, 'fill'),
             ),
-            const SizedBox(height: 12),
-            ListTile(
-              leading: Icon(Icons.brush_rounded, color: Colors.orange),
-              title: Text(ref.tr('freehand_brush')),
-              subtitle: Text(ref.tr('freehand_brush_desc')),
+            SizedBox(height: 12.h),
+            _ModeListTile(
+              iconWidget: PremiumBrushIcon(size: 24.sp, color: Colors.orange),
+              title: ref.tr('freehand_brush'),
+              subtitle: ref.tr('freehand_brush_desc'),
               onTap: () => Navigator.pop(context, 'brush'),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 20.h),
           ],
         ),
       ),
@@ -164,7 +205,9 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
     }
 
     if (result == true && mounted) {
-      setState(() {}); // Trigger rebuild to show the updated (and evicted) image
+      setState(
+        () {},
+      ); // Trigger rebuild to show the updated (and evicted) image
     }
   }
 
@@ -177,10 +220,7 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
         children: [
           // 1. Blurred Background for Depth
           Positioned.fill(
-            child: Image.file(
-              widget.imageFile,
-              fit: BoxFit.cover,
-            ),
+            child: Image.file(widget.imageFile, fit: BoxFit.cover),
           ),
           Positioned.fill(
             child: BackdropFilter(
@@ -196,10 +236,7 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
               child: InteractiveViewer(
                 minScale: 0.5,
                 maxScale: 4.0,
-                child: Image.file(
-                  widget.imageFile,
-                  fit: BoxFit.contain,
-                ),
+                child: Image.file(widget.imageFile, fit: BoxFit.contain),
               ),
             ),
           ),
@@ -224,11 +261,16 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
               child: BackdropFilter(
                 filter: ui.ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 24,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.2),
+                    ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -262,6 +304,82 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+
+class _ModeListTile extends StatelessWidget {
+  final Widget iconWidget;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  const _ModeListTile({
+    required this.iconWidget,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20.r),
+        child: Container(
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+            border: Border.all(color: Colors.grey[100]!),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 48.w,
+                height: 48.w,
+                decoration: BoxDecoration(
+                  color: Colors.grey[50],
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Center(child: iconWidget),
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.blueGrey[900],
+                      ),
+                    ),
+                    SizedBox(height: 2.h),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.blueGrey[500],
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: Colors.blueGrey[200],
+                size: 20.sp,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -320,7 +438,14 @@ class _BarButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           isLoading
-              ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
+                )
               : Icon(icon, color: color ?? Colors.white, size: 28),
           const SizedBox(height: 6),
           Text(

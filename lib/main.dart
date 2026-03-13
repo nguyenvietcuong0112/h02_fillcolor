@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/utils/storage_utils.dart';
@@ -13,8 +14,19 @@ void main() async {
   // To disable Impeller, run: flutter run --no-enable-impeller
   // Or set environment variable: export FLUTTER_IMPELLER=0
   // For production builds, add --no-enable-impeller to build commands
-  
+
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Hide status bar and navigation bar for immersive experience
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
 
   // Initialize Firebase (optional - app will work without it)
   bool firebaseInitialized = false;
@@ -30,13 +42,13 @@ void main() async {
 
   // Initialize services
   await StorageUtils.init();
-  
+
   // Clear thumbnail cache to ensure fresh images are loaded
   await ThumbnailHelper.clearAllThumbnails();
-  
+
   // Initialize services that don't require Firebase first
   await AdsService.instance.initialize();
-  
+
   // Initialize Firebase services only if Firebase is initialized
   if (firebaseInitialized) {
     try {
@@ -49,9 +61,5 @@ void main() async {
   // Show app open ad
   AdsService.instance.showAppOpenAd();
 
-  runApp(
-    const ProviderScope(
-      child: FillColorApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: FillColorApp()));
 }
