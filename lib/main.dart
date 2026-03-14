@@ -4,17 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/utils/storage_utils.dart';
 import 'core/utils/thumbnail_helper.dart';
-import 'services/ads_service.dart';
+import 'di/dependency_injection.dart';
 import 'services/remote_config_service.dart';
+import 'package:injectable/injectable.dart';
+import 'package:ds_ads/ds_ads.dart';
+
 import 'app.dart';
 
-void main() async {
-  // Disable Impeller engine to use Skia for better performance with complex SVG paths
-  // Impeller can cause lag with many paths. Skia is more stable.
-  // To disable Impeller, run: flutter run --no-enable-impeller
-  // Or set environment variable: export FLUTTER_IMPELLER=0
-  // For production builds, add --no-enable-impeller to build commands
+const String env = Environment.prod;
 
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Hide status bar and navigation bar for immersive experience
@@ -47,7 +46,12 @@ void main() async {
   await ThumbnailHelper.clearAllThumbnails();
 
   // Initialize services that don't require Firebase first
-  await AdsService.instance.initialize();
+  await configureDependencies(env);
+
+  // Initialize Ads
+  final ads = getIt<AdManager>();
+  await ads.init();
+  ads.loadInterstitialAd();
 
   // Initialize Firebase services only if Firebase is initialized
   if (firebaseInitialized) {
@@ -59,7 +63,5 @@ void main() async {
   }
 
   // Show app open ad
-  AdsService.instance.showAppOpenAd();
-
   runApp(const ProviderScope(child: FillColorApp()));
 }

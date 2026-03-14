@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/utils/storage_utils.dart';
-import '../../core/constants/app_constants.dart';
 import '../language/language_screen.dart';
 import '../intro/intro_screen.dart';
 import '../../app.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/localization/app_localizations.dart';
+import 'package:ds_ads/ds_ads.dart';
+import '../../ads/ad_constants.dart';
+import '../../services/remote_config_service.dart';
+import '../../di/dependency_injection.dart';
+import 'package:firebase_core/firebase_core.dart';
+import '../../core/utils/thumbnail_helper.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -15,36 +20,100 @@ class SplashScreen extends ConsumerStatefulWidget {
   ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends ConsumerState<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+  bool _isInitStarted = false;
 
   @override
   void initState() {
     super.initState();
-    
+
     // Initialize animations
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
+
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: const Interval(0.0, 0.6, curve: Curves.easeIn),
       ),
     );
-    
+
     _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: const Interval(0.0, 0.6, curve: Curves.easeOutBack),
       ),
     );
-    
+
     _animationController.forward();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitStarted) {
+      _isInitStarted = true;
+      _bootstrapApp();
+    }
+  }
+
+  Future<void> _bootstrapApp() async {
+    debugPrint('SplashScreen: Starting Bootstrap...');
+
+    // 1. Storage (Essential)
+    try {
+      debugPrint('SplashScreen: Init Storage...');
+      await StorageUtils.init().timeout(const Duration(seconds: 5));
+      debugPrint('SplashScreen: Storage Done');
+    } catch (e) {
+      debugPrint('SplashScreen: Storage Timeout/Error: $e');
+    }
+
+    // 2. DI (Essential for AdManager)
+    try {
+      debugPrint('SplashScreen: Init DI...');
+      await configureDependencies('dev').timeout(const Duration(seconds: 7));
+      debugPrint('SplashScreen: DI Done');
+    } catch (e) {
+      debugPrint('SplashScreen: DI Timeout/Error: $e');
+    }
+
+    // 3. Firebase & Remote Config
+    try {
+      debugPrint('SplashScreen: Init Firebase...');
+      await Firebase.initializeApp().timeout(const Duration(seconds: 5));
+      debugPrint('SplashScreen: Firebase Done');
+
+      debugPrint('SplashScreen: Init Remote Config...');
+      await RemoteConfigService.instance.initialize().timeout(
+        const Duration(seconds: 5),
+      );
+      debugPrint('SplashScreen: Remote Config Done');
+    } catch (e) {
+      debugPrint('SplashScreen: Firebase/RC error: $e');
+    }
+
+    // 4. Ads
+    try {
+      debugPrint('SplashScreen: Init Ads...');
+      final ads = getIt<AdManager>();
+      await ads.init().timeout(const Duration(seconds: 5));
+      ads.loadInterstitialAd();
+      debugPrint('SplashScreen: Ads Done');
+    } catch (e) {
+      debugPrint('SplashScreen: Ads error: $e');
+    }
+
+    // Background task
+    ThumbnailHelper.clearAllThumbnails();
+
+    debugPrint('SplashScreen: Bootstrap Complete');
     _checkNavigator();
   }
 
@@ -55,48 +124,58 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
   }
 
   Future<void> _checkNavigator() async {
-    // Artificial delay for splash effect (2.5 seconds)
-    await Future.delayed(const Duration(milliseconds: 2500));
+    // Ensure splash is visible for at least 2 seconds total
+    await Future.delayed(const Duration(milliseconds: 1000));
 
     if (!mounted) return;
 
-    // Check routing logic
-    final languageCode = StorageUtils.languageCode;
-    final introSeen = StorageUtils.introSeen;
+    void navigate() {
+      if (!mounted) return;
 
-    // if (languageCode == null) {
-    //   // 1. Language not set -> Go to Language Screen
-    //   Navigator.of(context).pushReplacement(
-    //     MaterialPageRoute(builder: (_) => const LanguageScreen()),
-    //   );
-    // } else if (!introSeen) {
-      // 2. Language set but Intro not seen -> Go to Intro Screen
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const IntroScreen()),
+      final languageCode = StorageUtils.languageCode;
+      final introSeen = StorageUtils.introSeen;
+
+      if (languageCode == null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const LanguageScreen()),
+        );
+      } else if (!introSeen) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const IntroScreen()),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const MainNavigator()),
+        );
+      }
+    }
+
+    // Try showing splash ad if ready, otherwise navigate direct
+    try {
+      DSAdInterstitial.show(
+        id: AppAdIds.interstitialSplash,
+        onAdClosed: navigate,
       );
-    // } else {
-    //   // 3. All set -> Go to Home
-    //   Navigator.of(context).pushReplacement(
-    //     MaterialPageRoute(builder: (_) => const MainNavigator()),
-    //   );
-    // }
+    } catch (e) {
+      navigate();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              const Color(0xFFFF6B9D), // Pink
-              const Color(0xFFFFA06B), // Orange
-              const Color(0xFFFFC371), // Yellow
-              const Color(0xFF9B59B6), // Purple
+              Color(0xFFFF6B9D),
+              Color(0xFFFFA06B),
+              Color(0xFFFFC371),
+              Color(0xFF9B59B6),
             ],
-            stops: const [0.0, 0.3, 0.6, 1.0],
+            stops: [0.0, 0.3, 0.6, 1.0],
           ),
         ),
         child: Center(
@@ -110,7 +189,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // App Icon
                       Container(
                         width: 150.w,
                         height: 150.w,
@@ -133,10 +211,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                         ),
                       ),
                       SizedBox(height: 30.h),
-                      
-                       // App Name
                       Text(
-                        ref.tr('app_name'),
+                        // Use hardcoded app name for bootstrap safety
+                        'ColorFlow',
                         style: TextStyle(
                           fontSize: 48.sp,
                           fontWeight: FontWeight.bold,
@@ -152,10 +229,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                         ),
                       ),
                       SizedBox(height: 8.h),
-                      
-                      // Subtitle
                       Text(
-                        ref.tr('coloring_book'),
+                        'Coloring Book',
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w500,
@@ -164,8 +239,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                         ),
                       ),
                       SizedBox(height: 50.h),
-                      
-                      // Loading indicator
                       SizedBox(
                         width: 40.w,
                         height: 40.w,

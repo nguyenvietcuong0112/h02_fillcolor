@@ -6,6 +6,8 @@ import 'brush_coloring_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/localization/app_localizations.dart';
 import '../../core/widgets/premium_icons.dart';
+import 'package:ds_ads/ds_ads.dart';
+import '../../ads/ad_constants.dart';
 
 class ModeSelectionScreen extends ConsumerWidget {
   final ColoringImageModel image;
@@ -176,11 +178,12 @@ class ModeSelectionScreen extends ConsumerWidget {
                 },
               ),
 
-              const Spacer(flex: 2),
+              const Spacer(flex: 1),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: SafeArea(child: DSAdBanner(id: AppAdIds.banner)),
     );
   }
 }

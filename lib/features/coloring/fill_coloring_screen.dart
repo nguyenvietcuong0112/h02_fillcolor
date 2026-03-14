@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/app_constants.dart';
 import '../../data/models/coloring_image_model.dart';
@@ -14,6 +15,9 @@ import 'widgets/pixel_coloring_canvas.dart';
 import 'widgets/color_palette.dart';
 import 'png_coloring_state.dart';
 import '../../core/localization/app_localizations.dart';
+import 'package:ds_ads/ds_ads.dart';
+import '../../ads/ad_constants.dart';
+import '../../ads/widgets/closable_native_ad.dart';
 
 /// Fill mode coloring screen
 class FillColoringScreen extends ConsumerStatefulWidget {
@@ -110,12 +114,16 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
           ),
         );
 
-        // Wait a bit for the snackbar or just pop
-        Future.delayed(const Duration(milliseconds: 500), () {
-          if (mounted) {
-            Navigator.pop(context, true); // Return true to indicate success
-          }
-        });
+        if (mounted) {
+          DSAdInterstitial.show(
+            id: AppAdIds.interstitialSave,
+            onAdClosed: () {
+              if (mounted) {
+                Navigator.pop(context, true);
+              }
+            },
+          );
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -170,46 +178,59 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
             ),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: RepaintBoundary(
-              key: _canvasKey,
-              child: PixelColoringCanvas(
-                key: _canvasStateKey,
-                imagePath: widget.image.svgPath,
-                initialImageFile: widget.savedImageFile,
-                selectedColor: _selectedColor,
-                mode: ColoringMode.fill,
-                brushStrokes: const [],
-                onLoading: (loading) {
-                  if (!loading) {
-                    // Update undo/redo state after image loads
-                    Future.delayed(
-                      const Duration(milliseconds: 100),
-                      _updateUndoRedoState,
-                    );
-                  }
-                },
-                onFillComplete: () {
-                  _updateUndoRedoState();
-                  // Add selected color to recent colors when a fill is completed
-                  final paletteState = _paletteKey.currentState;
-                  if (paletteState != null) {
-                    paletteState.addColorToHistory(_selectedColor);
-                  }
-                },
+          Column(
+            children: [
+              Expanded(
+                child: RepaintBoundary(
+                  key: _canvasKey,
+                  child: PixelColoringCanvas(
+                    key: _canvasStateKey,
+                    imagePath: widget.image.svgPath,
+                    initialImageFile: widget.savedImageFile,
+                    selectedColor: _selectedColor,
+                    mode: ColoringMode.fill,
+                    brushStrokes: const [],
+                    onLoading: (loading) {
+                      if (!loading) {
+                        // Update undo/redo state after image loads
+                        Future.delayed(
+                          const Duration(milliseconds: 100),
+                          _updateUndoRedoState,
+                        );
+                      }
+                    },
+                    onFillComplete: () {
+                      _updateUndoRedoState();
+                      // Add selected color to recent colors when a fill is completed
+                      final paletteState = _paletteKey.currentState;
+                      if (paletteState != null) {
+                        paletteState.addColorToHistory(_selectedColor);
+                      }
+                    },
+                  ),
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24.0),
+                child: ColorPalette(
+                  key: _paletteKey,
+                  selectedColor: _selectedColor,
+                  onColorSelected: (color) {
+                    setState(() => _selectedColor = color);
+                  },
+                ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 24.0),
-            child: ColorPalette(
-              key: _paletteKey,
-              selectedColor: _selectedColor,
-              onColorSelected: (color) {
-                setState(() => _selectedColor = color);
-              },
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: ClosableNativeAd(
+              adId: AppAdIds.nativeColoring,
+              height: 265.h,
             ),
           ),
         ],

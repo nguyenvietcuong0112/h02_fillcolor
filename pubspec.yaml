@@ -2,7 +2,7 @@ name: h02_colorfill
 description: "ColorFlow - A relaxing coloring book app with beautiful images"
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.1+101
 
 environment:
   sdk: ^3.9.2
@@ -21,12 +21,21 @@ dependencies:
 
   # Monetization
   purchases_flutter: ^8.1.0
-  google_mobile_ads: ^5.1.0
+  get_it: ^7.6.4
+  ds_ads:
+    path: packages/ds_ads
 
   # Firebase
   firebase_core: ^3.6.0
   firebase_analytics: ^11.3.3
   firebase_remote_config: ^5.1.3
+  firebase_crashlytics: ^4.0.4
+  firebase_messaging: ^15.0.4
+  appsflyer_sdk: ^6.15.1
+  google_mobile_ads: ^5.2.0
+
+  shimmer: ^3.0.0
+
 
   # Image & Share
   image_gallery_saver: ^2.0.3
@@ -45,6 +54,10 @@ dependencies:
   url_launcher: ^6.3.2
   in_app_review: ^2.0.11
 
+  injectable: ^2.6.0
+  get: ^4.6.6
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -52,6 +65,8 @@ dev_dependencies:
   riverpod_generator: ^2.6.2
   build_runner: ^2.4.13
   flutter_launcher_icons: ^0.14.1
+  injectable_generator: ^2.4.1
+  json_serializable: ^6.8.0
 
 flutter:
   uses-material-design: true

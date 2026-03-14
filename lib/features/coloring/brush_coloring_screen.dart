@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../data/models/coloring_image_model.dart';
 import '../../data/models/brush_stroke.dart';
@@ -15,6 +16,9 @@ import 'widgets/color_palette.dart';
 import 'png_coloring_state.dart';
 import '../../core/localization/app_localizations.dart';
 import '../../core/constants/app_constants.dart';
+import 'package:ds_ads/ds_ads.dart';
+import '../../ads/ad_constants.dart';
+import '../../ads/widgets/closable_native_ad.dart';
 
 /// Brush mode coloring screen - simplified with local state
 class BrushColoringScreen extends ConsumerStatefulWidget {
@@ -196,12 +200,16 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
           ),
         );
 
-        // Wait a bit for the snackbar or just pop
-        Future.delayed(const Duration(milliseconds: 500), () {
-          if (mounted) {
-            Navigator.pop(context, true); // Return true to indicate success
-          }
-        });
+        if (mounted) {
+          DSAdInterstitial.show(
+            id: AppAdIds.interstitialSave,
+            onAdClosed: () {
+              if (mounted) {
+                Navigator.pop(context, true);
+              }
+            },
+          );
+        }
       }
     } catch (e, stackTrace) {
       debugPrint('Save error: $e');
@@ -405,6 +413,15 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                   _isEraserMode = false;
                 });
               },
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: ClosableNativeAd(
+              adId: AppAdIds.nativeColoring,
+              height: 265.h,
             ),
           ),
         ],

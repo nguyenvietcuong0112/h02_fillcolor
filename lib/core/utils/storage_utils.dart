@@ -11,21 +11,28 @@ class StorageUtils {
 
   /// Initialize shared preferences
   static Future<void> init() async {
-    _prefs ??= await SharedPreferences.getInstance();
+    if (_prefs != null) return;
+    try {
+      _prefs = await SharedPreferences.getInstance().timeout(
+        const Duration(seconds: 5),
+      );
+    } catch (e) {
+      // Fallback or handle later
+    }
   }
 
-  /// Get shared preferences instance
-  static SharedPreferences get prefs {
-    if (_prefs == null) {
-      throw Exception('StorageUtils not initialized. Call init() first.');
-    }
-    return _prefs!;
-  }
+  /// Check if initialized
+  static bool get isInitialized => _prefs != null;
+
+  /// Get shared preferences instance (SAFE getter)
+  static SharedPreferences? get prefs => _prefs;
 
   /// Get gallery directory
   static Future<Directory> getGalleryDirectory() async {
     final directory = await getApplicationDocumentsDirectory();
-    final galleryDir = Directory('${directory.path}/${AppConstants.galleryFolderName}');
+    final galleryDir = Directory(
+      '${directory.path}/${AppConstants.galleryFolderName}',
+    );
     if (!await galleryDir.exists()) {
       await galleryDir.create(recursive: true);
     }
@@ -46,7 +53,8 @@ class StorageUtils {
     if (!await galleryDir.exists()) {
       return [];
     }
-    final files = galleryDir.listSync()
+    final files = galleryDir
+        .listSync()
         .whereType<File>()
         .where((file) => file.path.endsWith('.png'))
         .toList();
@@ -70,48 +78,47 @@ class StorageUtils {
 
   /// Check if user is premium
   static bool get isPremium {
-    return prefs.getBool(AppConstants.keyIsPremium) ?? false;
+    return _prefs?.getBool(AppConstants.keyIsPremium) ?? false;
   }
 
   /// Set premium status
   static Future<void> setPremium(bool value) async {
-    await prefs.setBool(AppConstants.keyIsPremium, value);
+    await _prefs?.setBool(AppConstants.keyIsPremium, value);
   }
 
   /// Get save count
   static int get saveCount {
-    return prefs.getInt(AppConstants.keySaveCount) ?? 0;
+    return _prefs?.getInt(AppConstants.keySaveCount) ?? 0;
   }
 
   /// Increment save count
   static Future<void> incrementSaveCount() async {
     final count = saveCount;
-    await prefs.setInt(AppConstants.keySaveCount, count + 1);
+    await _prefs?.setInt(AppConstants.keySaveCount, count + 1);
   }
 
   /// Reset save count
   static Future<void> resetSaveCount() async {
-    await prefs.setInt(AppConstants.keySaveCount, 0);
+    await _prefs?.setInt(AppConstants.keySaveCount, 0);
   }
 
   /// Check if intro is seen
   static bool get introSeen {
-    return prefs.getBool(AppConstants.keyIntroSeen) ?? false;
+    return _prefs?.getBool(AppConstants.keyIntroSeen) ?? false;
   }
 
   /// Set intro seen status
   static Future<void> setIntroSeen(bool value) async {
-    await prefs.setBool(AppConstants.keyIntroSeen, value);
+    await _prefs?.setBool(AppConstants.keyIntroSeen, value);
   }
 
   /// Get language code
   static String? get languageCode {
-    return prefs.getString(AppConstants.keyLanguageCode);
+    return _prefs?.getString(AppConstants.keyLanguageCode);
   }
 
   /// Set language code
   static Future<void> setLanguageCode(String value) async {
-    await prefs.setString(AppConstants.keyLanguageCode, value);
+    await _prefs?.setString(AppConstants.keyLanguageCode, value);
   }
 }
-

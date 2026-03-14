@@ -128,4 +128,5 @@ const Map<String, String> vi = {
   'retry': 'Thử lại',
   'error': 'Lỗi',
   'save_failed': 'Lưu thất bại',
+  'please_select_language': 'Vui lòng chọn ngôn ngữ',
 };

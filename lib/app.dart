@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'core/theme/app_dimens.dart';
 import 'core/theme/app_theme.dart';
 import 'features/home/home_screen.dart';
@@ -20,7 +21,7 @@ class FillColorApp extends ConsumerWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
+        return GetMaterialApp(
           title: ref.tr('app_full_name'),
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
@@ -54,10 +55,7 @@ class _MainNavigatorState extends ConsumerState<MainNavigator> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Container(
         margin: EdgeInsets.all(AppDimens.space24),
         height: 70,

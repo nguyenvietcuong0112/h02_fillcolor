@@ -131,4 +131,5 @@ const Map<String, String> es = {
   'retry': 'Reintentar',
   'error': 'Error',
   'save_failed': 'Error al guardar',
+  'please_select_language': 'Por favor, seleccione un idioma',
 };

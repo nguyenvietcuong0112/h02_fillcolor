@@ -3,7 +3,8 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 /// Service for Firebase Remote Config
 class RemoteConfigService {
   static RemoteConfigService? _instance;
-  static RemoteConfigService get instance => _instance ??= RemoteConfigService._();
+  static RemoteConfigService get instance =>
+      _instance ??= RemoteConfigService._();
 
   RemoteConfigService._();
 
@@ -23,11 +24,11 @@ class RemoteConfigService {
     try {
       _remoteConfig ??= FirebaseRemoteConfig.instance;
       await _config.setConfigSettings(
-      RemoteConfigSettings(
-        fetchTimeout: const Duration(seconds: 10),
-        minimumFetchInterval: const Duration(hours: 1),
-      ),
-    );
+        RemoteConfigSettings(
+          fetchTimeout: const Duration(seconds: 10),
+          minimumFetchInterval: Duration.zero,
+        ),
+      );
 
       // Set default values
       await _config.setDefaults({
@@ -35,6 +36,7 @@ class RemoteConfigService {
         'ad_cooldown_minutes': 5,
         'enable_app_open_ads': true,
         'enable_interstitial_ads': true,
+        'show_native_coloring_ad': true,
       });
 
       // Fetch and activate
@@ -91,6 +93,16 @@ class RemoteConfigService {
     }
   }
 
+  /// Check if native coloring ad is enabled
+  bool get showNativeColoringAd {
+    if (!_isInitialized || _remoteConfig == null) return true;
+    try {
+      return _config.getBool('show_native_coloring_ad');
+    } catch (e) {
+      return true;
+    }
+  }
+
   /// Fetch and activate config
   Future<void> fetchAndActivate() async {
     if (!_isInitialized || _remoteConfig == null) return;
@@ -101,4 +113,3 @@ class RemoteConfigService {
     }
   }
 }
-

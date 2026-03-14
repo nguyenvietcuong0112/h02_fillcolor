@@ -85,31 +85,31 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
                   },
                 ),
                 // Skip Button (Positioned over images)
-                SafeArea(
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: EdgeInsets.all(16.w),
-                      child: TextButton(
-                        onPressed: _onFinish,
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.black.withValues(alpha: 0.3),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Text(
-                          ref.tr('skip'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13.sp,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // SafeArea(
+                //   child: Align(
+                //     alignment: Alignment.topRight,
+                //     child: Padding(
+                //       padding: EdgeInsets.all(16.w),
+                //       child: TextButton(
+                //         onPressed: _onFinish,
+                //         style: TextButton.styleFrom(
+                //           backgroundColor: Colors.black.withValues(alpha: 0.3),
+                //           shape: RoundedRectangleBorder(
+                //             borderRadius: BorderRadius.circular(20),
+                //           ),
+                //         ),
+                //         child: Text(
+                //           ref.tr('skip'),
+                //           style: TextStyle(
+                //             color: Colors.white,
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: 13.sp,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 // Bottom Gradient Shade to blend with content area
                 Align(
                   alignment: Alignment.bottomCenter,

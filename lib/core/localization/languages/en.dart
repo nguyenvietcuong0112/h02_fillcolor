@@ -129,4 +129,5 @@ const Map<String, String> en = {
   'retry': 'Retry',
   'error': 'Error',
   'save_failed': 'Save failed',
+  'please_select_language': 'Please select a language',
 };
