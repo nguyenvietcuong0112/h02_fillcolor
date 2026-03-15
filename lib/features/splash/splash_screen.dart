@@ -5,7 +5,6 @@ import '../language/language_screen.dart';
 import '../intro/intro_screen.dart';
 import '../../app.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/localization/app_localizations.dart';
 import 'package:ds_ads/ds_ads.dart';
 import '../../ads/ad_constants.dart';
 import '../../services/remote_config_service.dart';

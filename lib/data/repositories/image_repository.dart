@@ -101,7 +101,23 @@ class ImageRepository {
       category: 'Animals',
       svgPath: 'assets/images/animal_pig.png',
       thumbnailPath: 'assets/images/animal_pig.png',
-      difficulty: 6,
+      difficulty: 2,
+    ),
+    ColoringImageModel(
+      id: 'animal_tiger',
+      name: 'Majestic Tiger',
+      category: 'Animals',
+      svgPath: 'assets/images/animal_tiger.png',
+      thumbnailPath: 'assets/images/animal_tiger.png',
+      difficulty: 4,
+    ),
+    ColoringImageModel(
+      id: 'animal_panda',
+      name: 'Cute Panda',
+      category: 'Animals',
+      svgPath: 'assets/images/animal_panda.png',
+      thumbnailPath: 'assets/images/animal_panda.png',
+      difficulty: 3,
     ),
 
     // ========== SEA LIFE ==========
@@ -128,6 +144,22 @@ class ImageRepository {
       svgPath: 'assets/images/sealife_clownfish.png',
       thumbnailPath: 'assets/images/sealife_clownfish.png',
       difficulty: 3,
+    ),
+    ColoringImageModel(
+      id: 'sealife_dolphin',
+      name: 'Playful Dolphin',
+      category: 'Sea Life',
+      svgPath: 'assets/images/sealife_dolphin.png',
+      thumbnailPath: 'assets/images/sealife_dolphin.png',
+      difficulty: 3,
+    ),
+    ColoringImageModel(
+      id: 'sealife_whale',
+      name: 'Blue Whale',
+      category: 'Sea Life',
+      svgPath: 'assets/images/sealife_whale.png',
+      thumbnailPath: 'assets/images/sealife_whale.png',
+      difficulty: 4,
     ),
 
     // ========== FLOWERS ==========
@@ -170,6 +202,30 @@ class ImageRepository {
       svgPath: 'assets/images/flower_ly.png',
       thumbnailPath: 'assets/images/flower_ly.png',
       difficulty: 4,
+    ),
+    ColoringImageModel(
+      id: 'flower_orchid',
+      name: 'Orchid Flower',
+      category: 'Flowers',
+      svgPath: 'assets/images/flower_orchid.png',
+      thumbnailPath: 'assets/images/flower_orchid.png',
+      difficulty: 3,
+    ),
+    ColoringImageModel(
+      id: 'flower_lotus',
+      name: 'Lotus Blossom',
+      category: 'Flowers',
+      svgPath: 'assets/images/flower_lotus.png',
+      thumbnailPath: 'assets/images/flower_lotus.png',
+      difficulty: 4,
+    ),
+    ColoringImageModel(
+      id: 'flower_test',
+      name: 'Wild Flower',
+      category: 'Flowers',
+      svgPath: 'assets/images/test_flower.png',
+      thumbnailPath: 'assets/images/test_flower.png',
+      difficulty: 2,
     ),
 
     // ========== MANDALA ==========
