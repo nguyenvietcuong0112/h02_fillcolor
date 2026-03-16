@@ -11,7 +11,7 @@ import 'package:ds_ads/ds_ads.dart';
 
 import 'app.dart';
 
-const String env = Environment.prod;
+const String env = Environment.dev;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

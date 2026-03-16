@@ -32,6 +32,7 @@ const Map<String, String> es = {
   // Discovery Categories
   'discover': 'Descubrir',
   'discover_desc': 'Elige tu arte favorito para colorear',
+  'trending': 'Tendencias',
   'animals': 'Animales',
   'flowers': 'Flores',
   'mandala': 'Mandala',
