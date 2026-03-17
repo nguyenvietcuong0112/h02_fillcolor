@@ -2,7 +2,7 @@ name: h02_colorfill
 description: "ColorFlow - A relaxing coloring book app with beautiful images"
 publish_to: 'none'
 
-version: 1.0.1+101
+version: 1.0.2+102
 
 environment:
   sdk: ^3.9.2
@@ -74,6 +74,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icon/
+    - assets/anim/
 
 flutter_launcher_icons:
   android: true

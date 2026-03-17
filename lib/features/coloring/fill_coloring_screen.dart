@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/app_constants.dart';
 import '../../data/models/coloring_image_model.dart';
+import '../../core/widgets/coloring_widgets.dart';
 import '../../core/services/app_gallery_service.dart';
 import '../gallery/gallery_screen.dart';
 import 'widgets/pixel_coloring_canvas.dart';
@@ -36,7 +36,6 @@ class FillColoringScreen extends ConsumerStatefulWidget {
 
 class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
   Color _selectedColor = Color(AppConstants.defaultColors[0]);
-  final GlobalKey _canvasKey = GlobalKey();
   final GlobalKey<PixelColoringCanvasState> _canvasStateKey =
       GlobalKey<PixelColoringCanvasState>();
   bool _isSaving = false;
@@ -72,22 +71,20 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
   }
 
   Future<void> _saveToAppGallery() async {
+    if (_canvasStateKey.currentContext == null) return;
     setState(() => _isSaving = true);
 
     try {
-      final RenderRepaintBoundary boundary =
-          _canvasKey.currentContext!.findRenderObject()
-              as RenderRepaintBoundary;
-      final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      final ByteData? byteData = await image.toByteData(
-        format: ui.ImageByteFormat.png,
-      );
-
-      if (byteData == null) {
-        throw Exception('Failed to convert image to bytes');
+      final canvasState = _canvasStateKey.currentState;
+      if (canvasState == null) {
+        throw Exception('Canvas state is not ready');
       }
 
-      final Uint8List pngBytes = byteData.buffer.asUint8List();
+      final Uint8List? pngBytes = await canvasState.exportImageBytes();
+
+      if (pngBytes == null) {
+        throw Exception('Failed to export image bytes');
+      }
 
       // Save to app gallery
       await AppGalleryService.saveToAppGallery(
@@ -142,49 +139,13 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          '${widget.image.name}',
-          // '${widget.image.name} - ${ref.tr('tap_to_fill')}',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.undo),
-            onPressed: _canUndo ? _handleUndo : null,
-            tooltip: 'Undo',
-          ),
-          IconButton(
-            icon: const Icon(Icons.redo),
-            onPressed: _canRedo ? _handleRedo : null,
-            tooltip: 'Redo',
-          ),
-          if (_isSaving)
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: SizedBox(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
-            )
-          else
-            IconButton(
-              icon: const Icon(Icons.save_alt),
-              onPressed: _saveToAppGallery,
-              tooltip: ref.tr('save'),
-            ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(
-                child: RepaintBoundary(
-                  key: _canvasKey,
+      backgroundColor: Colors.grey[200],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Expanded(
                   child: PixelColoringCanvas(
                     key: _canvasStateKey,
                     imagePath: widget.image.svgPath,
@@ -211,29 +172,84 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
                     },
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24.0),
-                child: ColorPalette(
-                  key: _paletteKey,
-                  selectedColor: _selectedColor,
-                  onColorSelected: (color) {
-                    setState(() => _selectedColor = color);
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0.0),
+                  child: ColorPalette(
+                    key: _paletteKey,
+                    selectedColor: _selectedColor,
+                    onColorSelected: (color) {
+                      setState(() => _selectedColor = color);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              top: 8,
+              left: 12,
+              right: 12,
+              child: GlassControlBar(
+                child: Row(
+                  children: [
+                    RoundIconButton(
+                      icon: Icons.arrow_back_ios_new_rounded,
+                      onTap: () => Navigator.pop(context),
+                    ),
+                    const Spacer(),
+                    RoundIconButton(
+                      icon: Icons.undo_rounded,
+                      onTap: _canUndo ? _handleUndo : null,
+                      enabled: _canUndo,
+                    ),
+                    const SizedBox(width: 8),
+                    RoundIconButton(
+                      icon: Icons.redo_rounded,
+                      onTap: _canRedo ? _handleRedo : null,
+                      enabled: _canRedo,
+                    ),
+                    const SizedBox(width: 8),
+                    if (_isSaving)
+                      const _Loader()
+                    else
+                      RoundIconButton(
+                        icon: Icons.save_alt_rounded,
+                        onTap: _saveToAppGallery,
+                        isPrimary: true,
+                      ),
+                  ],
                 ),
               ),
-            ],
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: ClosableNativeAd(
-              adId: AppAdIds.nativeColoring,
-              height: 265.h,
             ),
-          ),
-        ],
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: ClosableNativeAd(
+                adId: AppAdIds.nativeColoring,
+                height: 265.h,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Loader extends StatelessWidget {
+  const _Loader();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+      ),
+      child: const SizedBox(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(strokeWidth: 2),
       ),
     );
   }

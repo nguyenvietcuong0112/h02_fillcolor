@@ -11,6 +11,8 @@ import '../../core/utils/thumbnail_helper.dart';
 import 'dart:io';
 import '../coloring/mode_selection_screen.dart';
 import '../../core/localization/app_localizations.dart';
+import 'package:ds_ads/ds_ads.dart';
+import '../../ads/ad_constants.dart';
 import 'home_controller.dart';
 
 /// Home screen displaying categories and coloring images
@@ -162,13 +164,36 @@ class HomeScreen extends ConsumerWidget {
                         return _ImageCard(
                           image: image,
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    ModeSelectionScreen(image: image),
-                              ),
+                            final currentClicks = ref.read(
+                              itemClickCounterProvider.notifier,
                             );
+                            currentClicks.state++;
+
+                            final clickCount = currentClicks.state;
+
+                            // Show ad on 1st click, then every 2 clicks (3rd, 5th, 7th...)
+                            if (clickCount % 2 != 0) {
+                              DSAdInterstitial.show(
+                                id: AppAdIds.interstitialItem,
+                                onAdClosed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          ModeSelectionScreen(image: image),
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      ModeSelectionScreen(image: image),
+                                ),
+                              );
+                            }
                           },
                         );
                       },

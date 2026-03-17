@@ -19,6 +19,7 @@ import '../../core/constants/app_constants.dart';
 import 'package:ds_ads/ds_ads.dart';
 import '../../ads/ad_constants.dart';
 import '../../ads/widgets/closable_native_ad.dart';
+import '../../core/widgets/coloring_widgets.dart';
 
 /// Brush mode coloring screen - simplified with local state
 class BrushColoringScreen extends ConsumerStatefulWidget {
@@ -37,7 +38,8 @@ class BrushColoringScreen extends ConsumerStatefulWidget {
 }
 
 class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
-  final GlobalKey _canvasKey = GlobalKey();
+  final GlobalKey<PixelColoringCanvasState> _canvasStateKey =
+      GlobalKey<PixelColoringCanvasState>();
   bool _isSaving = false;
 
   // Local state for brush
@@ -101,7 +103,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
     setState(() {
       _currentStroke = BrushStroke(
         points: [point],
-        color: _isEraserMode ? Colors.transparent : _selectedColor,
+        color: _isEraserMode ? Colors.white : _selectedColor,
         size: _brushSize,
         opacity: 1.0,
         isEraser: _isEraserMode,
@@ -148,7 +150,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
   }
 
   Future<void> _saveToAppGallery() async {
-    if (_canvasKey.currentContext == null) {
+    if (_canvasStateKey.currentContext == null) {
       debugPrint('Error: Canvas context is null');
       return;
     }
@@ -156,24 +158,16 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
     setState(() => _isSaving = true);
 
     try {
-      final RenderRepaintBoundary? boundary =
-          _canvasKey.currentContext?.findRenderObject()
-              as RenderRepaintBoundary?;
-
-      if (boundary == null) {
-        throw Exception('RenderObject is not a RenderRepaintBoundary');
+      final canvasState = _canvasStateKey.currentState;
+      if (canvasState == null) {
+        throw Exception('Canvas state is not ready');
       }
 
-      final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      final ByteData? byteData = await image.toByteData(
-        format: ui.ImageByteFormat.png,
-      );
+      final Uint8List? pngBytes = await canvasState.exportImageBytes();
 
-      if (byteData == null) {
-        throw Exception('Failed to convert image to bytes');
+      if (pngBytes == null) {
+        throw Exception('Failed to export image bytes');
       }
-
-      final Uint8List pngBytes = byteData.buffer.asUint8List();
 
       // Save to app gallery
       await AppGalleryService.saveToAppGallery(
@@ -231,26 +225,24 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[200],
       body: Stack(
         children: [
-          // 1. Full-screen Canvas
           Positioned.fill(
-            child: RepaintBoundary(
-              key: _canvasKey,
-              child: PixelColoringCanvas(
-                imagePath: widget.image.svgPath,
-                initialImageFile: widget.savedImageFile,
-                selectedColor: _selectedColor,
-                mode: ColoringMode.brush,
-                brushStrokes: _allStrokes,
-                isLockRegionMode: _isLockMode,
-                onPanStart: _handlePanStart,
-                onPanStartWithMask: _handlePanStartWithMask,
-                onPanUpdate: _handlePanUpdate,
-                onPanEnd: _handlePanEnd,
-                onLoading: (loading) {},
-              ),
+            child: PixelColoringCanvas(
+              key: _canvasStateKey,
+              imagePath: widget.image.svgPath,
+              initialImageFile: widget.savedImageFile,
+              selectedColor: _selectedColor,
+              mode: ColoringMode.brush,
+              brushStrokes: _allStrokes,
+              isEraserMode: _isEraserMode,
+              isLockRegionMode: _isLockMode,
+              onPanStart: _handlePanStart,
+              onPanStartWithMask: _handlePanStartWithMask,
+              onPanUpdate: _handlePanUpdate,
+              onPanEnd: _handlePanEnd,
+              onLoading: (loading) {},
             ),
           ),
 
@@ -261,21 +253,21 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
             right: 12,
             child: Column(
               children: [
-                _GlassControlBar(
+                GlassControlBar(
                   child: Row(
                     children: [
-                      _RoundIconButton(
+                      RoundIconButton(
                         icon: Icons.arrow_back_ios_new_rounded,
                         onTap: () => Navigator.pop(context),
                       ),
                       const Spacer(),
-                      _RoundIconButton(
+                      RoundIconButton(
                         icon: Icons.undo_rounded,
                         onTap: _undoStack.isNotEmpty ? _undo : null,
                         enabled: _undoStack.isNotEmpty,
                       ),
                       const SizedBox(width: 8),
-                      _RoundIconButton(
+                      RoundIconButton(
                         icon: Icons.redo_rounded,
                         onTap: _redoStack.isNotEmpty ? _redo : null,
                         enabled: _redoStack.isNotEmpty,
@@ -284,7 +276,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                       if (_isSaving)
                         const _Loader()
                       else
-                        _RoundIconButton(
+                        RoundIconButton(
                           icon: Icons.save_alt_rounded,
                           onTap: _saveToAppGallery,
                           isPrimary: true,
@@ -296,7 +288,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                 const SizedBox(height: 8),
 
                 // 3. SECONDARY TOP BAR (Brush Size Slider - Requested Position!)
-                _GlassControlBar(
+                GlassControlBar(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 4,
@@ -348,7 +340,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
             right: 12,
             child: Column(
               children: [
-                _GlassControlBar(
+                GlassControlBar(
                   padding: const EdgeInsets.all(6),
                   child: Column(
                     children: [
@@ -359,7 +351,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                       ),
                       const SizedBox(height: 8),
                       _ToolButton(
-                        icon: Icons.auto_fix_high_rounded,
+                        icon: Icons.cleaning_services_rounded,
                         isSelected: _isEraserMode,
                         activeColor: Colors.orange,
                         onTap: () => setState(() => _isEraserMode = true),
@@ -368,7 +360,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                _GlassControlBar(
+                GlassControlBar(
                   padding: const EdgeInsets.all(6),
                   child: _ToggleToolButton(
                     icon: _isLockMode
@@ -381,7 +373,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                _GlassControlBar(
+                GlassControlBar(
                   padding: const EdgeInsets.all(6),
                   child: _ToolButton(
                     icon: Icons.delete_outline_rounded,
@@ -482,90 +474,6 @@ class _ToggleToolButton extends StatelessWidget {
 }
 
 /// --- Premium UI Helper Widgets ---
-
-class _GlassControlBar extends StatelessWidget {
-  final Widget child;
-  final EdgeInsets padding;
-  const _GlassControlBar({
-    required this.child,
-    this.padding = const EdgeInsets.all(8),
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
-      child: BackdropFilter(
-        filter: ui.ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-        child: Container(
-          padding: padding,
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.7),
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.4),
-              width: 1.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
-          child: child,
-        ),
-      ),
-    );
-  }
-}
-
-class _RoundIconButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback? onTap;
-  final bool enabled;
-  final bool isPrimary;
-
-  const _RoundIconButton({
-    required this.icon,
-    this.onTap,
-    this.enabled = true,
-    this.isPrimary = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: enabled ? onTap : null,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: isPrimary
-              ? Colors.blueGrey[900]
-              : (enabled ? Colors.white : Colors.grey[200]),
-          shape: BoxShape.circle,
-          boxShadow: [
-            if (enabled)
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-          ],
-        ),
-        child: Icon(
-          icon,
-          size: 20,
-          color: isPrimary
-              ? Colors.white
-              : (enabled ? Colors.blueGrey[800] : Colors.grey[400]),
-        ),
-      ),
-    );
-  }
-}
 
 class _ToolButton extends StatelessWidget {
   final IconData icon;

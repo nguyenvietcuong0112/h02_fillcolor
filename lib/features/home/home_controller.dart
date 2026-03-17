@@ -8,14 +8,14 @@ class HomeController extends StateNotifier<HomeState> {
   final ImageRepository _imageRepository;
 
   HomeController(this._imageRepository)
-      : super(
-          HomeState(
-            categories: [],
-            selectedCategory: '',
-            images: [],
-            isLoading: true,
-          ),
-        ) {
+    : super(
+        HomeState(
+          categories: [],
+          selectedCategory: '',
+          images: [],
+          isLoading: true,
+        ),
+      ) {
     _loadData();
   }
 
@@ -35,20 +35,14 @@ class HomeController extends StateNotifier<HomeState> {
         isLoading: false,
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
   /// Select category
   void selectCategory(String category) {
     final images = _imageRepository.getImagesByCategory(category);
-    state = state.copyWith(
-      selectedCategory: category,
-      images: images,
-    );
+    state = state.copyWith(selectedCategory: category, images: images);
   }
 
   /// Check if image is locked (always false now - no premium)
@@ -63,7 +57,11 @@ class HomeController extends StateNotifier<HomeState> {
 }
 
 /// Provider for home controller
-final homeControllerProvider = StateNotifierProvider<HomeController, HomeState>((ref) {
-  return HomeController(ImageRepository());
-});
+final homeControllerProvider = StateNotifierProvider<HomeController, HomeState>(
+  (ref) {
+    return HomeController(ImageRepository());
+  },
+);
 
+/// Provider to track item clicks for interstitial ad frequency
+final itemClickCounterProvider = StateProvider<int>((ref) => 0);

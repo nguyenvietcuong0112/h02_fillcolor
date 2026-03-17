@@ -33,7 +33,7 @@ const Map<String, String> vi = {
   // Discovery Categories
   'discover': 'Khám phá',
   'discover_desc': 'Chọn tác phẩm bạn yêu thích để tô màu',
-  'trending': 'Xu hướng',
+  'featured art': 'Nghệ thuật Nổi bật',
   'animals': 'Động vật',
   'flowers': 'Hoa cỏ',
   'mandala': 'Mạn-đà-la',

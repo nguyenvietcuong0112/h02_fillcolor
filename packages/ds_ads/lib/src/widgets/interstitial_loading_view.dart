@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:lottie/lottie.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InterstitialLoadingView extends StatelessWidget {
   const InterstitialLoadingView({super.key});
@@ -17,8 +19,8 @@ class InterstitialLoadingView extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF6B8EFF),
-                  Color(0xFFAC8AFF),
+                  Color(0xFFAFBEFA),
+                  Color(0xFFC3AFEF),
                 ],
               ),
             ),
@@ -28,7 +30,7 @@ class InterstitialLoadingView extends StatelessWidget {
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
             ),
           ),
 
@@ -37,10 +39,12 @@ class InterstitialLoadingView extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const CircularProgressIndicator(
-                  color: Colors.white,
+                Lottie.asset(
+                  'assets/anim/loading_ads.json',
+                  width: 150.w,
+                  height: 150.w,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 20.h),
                 Text(
                   'Loading Ads...',
                   style: TextStyle(
@@ -49,7 +53,7 @@ class InterstitialLoadingView extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: Colors.black.withValues(alpha: 0.3),
                         offset: const Offset(0, 2),
                         blurRadius: 4,
                       ),

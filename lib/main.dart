@@ -8,10 +8,9 @@ import 'di/dependency_injection.dart';
 import 'services/remote_config_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ds_ads/ds_ads.dart';
-
 import 'app.dart';
 
-const String env = Environment.dev;
+const String env = Environment.prod;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

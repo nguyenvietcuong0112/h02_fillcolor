@@ -12,6 +12,7 @@ import '../coloring/brush_coloring_screen.dart';
 import '../../data/repositories/image_repository.dart';
 import '../../core/widgets/premium_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../core/widgets/coloring_widgets.dart';
 
 class GalleryViewerScreen extends ConsumerStatefulWidget {
   final File imageFile;
@@ -241,11 +242,10 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
             ),
           ),
 
-          // 3. Floating Close Button
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
             left: 20,
-            child: _GlassActionButton(
+            child: RoundIconButton(
               icon: Icons.arrow_back_ios_new_rounded,
               onTap: () => Navigator.pop(context),
             ),
@@ -308,7 +308,6 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
     );
   }
 }
-
 
 class _ModeListTile extends StatelessWidget {
   final Widget iconWidget;
@@ -378,36 +377,6 @@ class _ModeListTile extends StatelessWidget {
                 size: 20.sp,
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _GlassActionButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-
-  const _GlassActionButton({required this.icon, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: BackdropFilter(
-        filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: GestureDetector(
-          onTap: onTap,
-          child: Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-            ),
-            child: Icon(icon, color: Colors.white, size: 20),
           ),
         ),
       ),

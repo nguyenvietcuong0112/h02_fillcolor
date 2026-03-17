@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/utils/storage_utils.dart';
@@ -7,6 +8,7 @@ import '../../core/localization/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ds_ads/ds_ads.dart';
 import '../../ads/ad_constants.dart';
+import '../../core/widgets/coloring_widgets.dart';
 
 class LanguageScreen extends ConsumerStatefulWidget {
   final bool isFromSettings;
@@ -33,6 +35,15 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
   void initState() {
     super.initState();
     _tempSelectedCode = StorageUtils.languageCode;
+
+    // Timeout for ad process to avoid infinite loading
+    Timer(const Duration(milliseconds: 1500), () {
+      if (mounted && !_isAdProcessDecided) {
+        setState(() {
+          _isAdProcessDecided = true;
+        });
+      }
+    });
   }
 
   void _onConfirm() async {
@@ -81,12 +92,9 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
                     Row(
                       children: [
                         if (widget.isFromSettings)
-                          IconButton(
-                            icon: const Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              color: Colors.blueGrey,
-                            ),
-                            onPressed: () => Navigator.pop(context),
+                          RoundIconButton(
+                            icon: Icons.arrow_back_ios_new_rounded,
+                            onTap: () => Navigator.pop(context),
                           ),
                         SizedBox(width: AppDimens.space8),
                         Expanded(
@@ -101,15 +109,28 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
                                 ),
                           ),
                         ),
-                        IconButton(
-                          onPressed: _isAdProcessDecided ? _onConfirm : null,
-                          icon: Icon(
-                            Icons.arrow_forward_rounded,
-                            size: 32.sp,
-                            color: _isAdProcessDecided
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey,
-                          ),
+                        SizedBox(
+                          width: 48.w,
+                          height: 48.w,
+                          child: !_isAdProcessDecided
+                              ? Center(
+                                  child: SizedBox(
+                                    width: 24.w,
+                                    height: 24.w,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3.w,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                )
+                              : IconButton(
+                                  onPressed: _onConfirm,
+                                  icon: Icon(
+                                    Icons.arrow_forward_rounded,
+                                    size: 32.sp,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
                         ),
                       ],
                     ),

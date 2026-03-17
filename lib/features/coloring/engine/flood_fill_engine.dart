@@ -11,6 +11,7 @@ class FloodFillEngine {
   Uint8List? _pixels;
   int _width = 0;
   int _height = 0;
+  List<bool>? _edgeMask; // Immutable mask of original black lines
 
   // History management for undo/redo
   final List<Uint8List> _history = [];
@@ -50,6 +51,17 @@ class FloodFillEngine {
     );
     _pixels = byteData!.buffer.asUint8List();
 
+    // Generate immutable edge mask based on original lines
+    _edgeMask = List.generate(_width * _height, (index) {
+      final i = index * 4;
+      final r = _pixels![i];
+      final g = _pixels![i + 1];
+      final b = _pixels![i + 2];
+      // Threshold 40 to pick up only the very dark lines of the original drawing
+      const int threshold = 40;
+      return r < threshold && g < threshold && b < threshold;
+    });
+
     // Initialize history with the initial state
     _history.clear();
     _history.add(Uint8List.fromList(_pixels!));
@@ -59,21 +71,9 @@ class FloodFillEngine {
   /// Check if a pixel is a dark edge (black or very dark color)
   /// This prevents filling into the outline/border of the image
   bool _isDarkEdge(int px, int py) {
-    if (px < 0 || px >= _width || py < 0 || py >= _height) return true;
-
-    final int i = (py * _width + px) * 4;
-    final int r = _pixels![i];
-    final int g = _pixels![i + 1];
-    final int b = _pixels![i + 2];
-
-    // Consider a pixel as "dark edge" if it's very dark
-    // Threshold of 50 means RGB values below 50 are considered edges
-    // Adjust this value based on your image (lower = more strict)
-    // Consider a pixel as "dark edge" if it's very dark
-    // Threshold of 60 is optimized for our standardized 1024x1024 assets
-    const int edgeThreshold = 60;
-
-    return r < edgeThreshold && g < edgeThreshold && b < edgeThreshold;
+    if (px < 0 || px >= _width || py < 0 || py >= _height || _edgeMask == null)
+      return true;
+    return _edgeMask![py * _width + px];
   }
 
   /// Perform optimized flood fill with edge protection
@@ -118,14 +118,15 @@ class FloodFillEngine {
     queue.add(x);
     queue.add(y);
 
-    const int tolerance = 10;
-    const int maxPixels = 500000; // Limit to prevent infinite loops
+    const int tolerance =
+        60; // Increased tolerance for better anti-aliasing coverage
+    const int maxPixels = 1000000; // Increased for high-res images
     int pixelsFilled = 0;
 
     bool isMatch(int px, int py) {
       if (px < 0 || px >= _width || py < 0 || py >= _height) return false;
 
-      // DON'T fill dark edges
+      // DON'T fill pure black edges, but allow "bleeding" into dark gray anti-aliasing pixels
       if (_isDarkEdge(px, py)) return false;
 
       final int i = (py * _width + px) * 4;
@@ -134,6 +135,7 @@ class FloodFillEngine {
       final int b = _pixels![i + 2];
       final int a = _pixels![i + 3];
 
+      // Match target color or white (for unfilled regions)
       return (r - targetR).abs() <= tolerance &&
           (g - targetG).abs() <= tolerance &&
           (b - targetB).abs() <= tolerance &&
@@ -197,7 +199,74 @@ class FloodFillEngine {
 
     _image = frameInfo.image;
     _pixels = newPixels; // Update pixels cache
+    await _updateImageFromPixels();
     return _image;
+  }
+
+  /// Erase pixels in a circular area with edge protection.
+  /// Modifies raw pixel buffer synchronously for high performance.
+  bool erasePixels(int cx, int cy, double radius) {
+    if (!isReady) return false;
+
+    bool changed = false;
+    final int rInt = radius.round();
+    final int rSq = (radius * radius).round();
+
+    for (int dy = -rInt; dy <= rInt; dy++) {
+      for (int dx = -rInt; dx <= rInt; dx++) {
+        if (dx * dx + dy * dy <= rSq) {
+          final int px = cx + dx;
+          final int py = cy + dy;
+
+          if (px >= 0 && px < _width && py >= 0 && py < _height) {
+            if (!_isDarkEdge(px, py)) {
+              final int i = (py * _width + px) * 4;
+              // Reset to White (255, 255, 255, 255)
+              _pixels![i] = 255;
+              _pixels![i + 1] = 255;
+              _pixels![i + 2] = 255;
+              _pixels![i + 3] = 255;
+              changed = true;
+            }
+          }
+        }
+      }
+    }
+    return changed;
+  }
+
+  /// Manually save state to history (call at start of erase stroke)
+  void saveHistoryState() {
+    if (isReady) _saveToHistory();
+  }
+
+  /// Update the current ui.Image from the current _pixels buffer
+  Future<ui.Image?> updateDisplayImage() async {
+    if (_pixels == null) return null;
+    await _updateImageFromPixels();
+    return _image;
+  }
+
+  /// Update the current image and pixels from external bytes (e.g., after committing strokes)
+  Future<void> updateFromBytes(Uint8List bytes) async {
+    await _loadFromBytes(bytes);
+  }
+
+  /// Internal helper to update ui.Image from the current _pixels buffer
+  Future<void> _updateImageFromPixels() async {
+    final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(
+      _pixels!,
+    );
+    final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
+      buffer,
+      width: _width,
+      height: _height,
+      pixelFormat: ui.PixelFormat.rgba8888,
+    );
+
+    final ui.Codec codec = await descriptor.instantiateCodec();
+    final ui.FrameInfo frameInfo = await codec.getNextFrame();
+    _image = frameInfo.image;
   }
 
   /// Get region mask for brush clipping with edge protection
@@ -224,14 +293,14 @@ class FloodFillEngine {
     queue.add(y);
     mask[y * _width + x] = 1;
 
-    const int tolerance = 15;
-    const int maxPixels = 500000;
+    const int tolerance = 60;
+    const int maxPixels = 1000000;
     int pixelsProcessed = 0;
 
     bool isMatch(int px, int py) {
       if (px < 0 || px >= _width || py < 0 || py >= _height) return false;
 
-      // DON'T include dark edges in the mask
+      // DON'T include pure black edges in the mask
       if (_isDarkEdge(px, py)) return false;
 
       final int i = (py * _width + px) * 4;

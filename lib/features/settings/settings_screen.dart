@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/localization/app_localizations.dart';
 import '../language/language_screen.dart';
+import '../../core/widgets/coloring_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -14,44 +15,60 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          ref.tr('settings'),
-          style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black87),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(24.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: SafeArea(
+        child: Stack(
           children: [
-            _buildSectionHeader(ref.tr('language')),
-            SizedBox(height: 16.h),
-            _buildLanguageButton(context, ref),
-            
-            SizedBox(height: 40.h),
-            _buildSectionHeader(ref.tr('info')),
-            SizedBox(height: 16.h),
-            _buildActionCard(
-              context, 
-              ref.tr('privacy_policy'), 
-              Icons.privacy_tip_rounded,
-              () => _launchUrl('https://pheejstudio.vercel.app/policy'), // Replace with actual URL
+            SingleChildScrollView(
+              padding: EdgeInsets.all(24.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 60.h), // Space for floating header
+                  _buildSectionHeader(ref.tr('language')),
+                  SizedBox(height: 16.h),
+                  _buildLanguageButton(context, ref),
+
+                  SizedBox(height: 40.h),
+                  _buildSectionHeader(ref.tr('info')),
+                  SizedBox(height: 16.h),
+                  _buildActionCard(
+                    context,
+                    ref.tr('privacy_policy'),
+                    Icons.privacy_tip_rounded,
+                    () => _launchUrl('https://pheejstudio.vercel.app/policy'),
+                  ),
+                  _buildActionCard(
+                    context,
+                    ref.tr('share_app'),
+                    Icons.share_rounded,
+                    () => _shareApp(),
+                  ),
+                  _buildActionCard(
+                    context,
+                    ref.tr('rate_app'),
+                    Icons.star_rounded,
+                    () => _rateApp(),
+                  ),
+                ],
+              ),
             ),
-            _buildActionCard(
-              context, 
-              ref.tr('share_app'), 
-              Icons.share_rounded,
-              () => _shareApp(),
-            ),
-            _buildActionCard(
-              context, 
-              ref.tr('rate_app'), 
-              Icons.star_rounded,
-              () => _rateApp(),
+            Positioned(
+              top: 20.h,
+              left: 0,
+              right: 0,
+              child: IgnorePointer(
+                child: Center(
+                  child: Text(
+                    ref.tr('settings'),
+                    style: TextStyle(
+                      color: Colors.blueGrey[900],
+                      fontWeight: FontWeight.w900,
+                      fontSize: 22.sp,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -69,14 +86,16 @@ class SettingsScreen extends ConsumerWidget {
       'ja': {'name': '日本語', 'flag': '🇯🇵'},
       'ko': {'name': '한국어', 'flag': '🇰🇷'},
     };
-    
+
     final langInfo = languages[currentLang] ?? languages['en']!;
 
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const LanguageScreen(isFromSettings: true)),
+          MaterialPageRoute(
+            builder: (context) => const LanguageScreen(isFromSettings: true),
+          ),
         );
       },
       child: Container(
@@ -98,14 +117,23 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             const Spacer(),
-            Icon(Icons.arrow_forward_ios_rounded, color: Colors.blueGrey[300], size: 16.sp),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Colors.blueGrey[300],
+              size: 16.sp,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildActionCard(BuildContext context, String title, IconData icon, VoidCallback onTap) {
+  Widget _buildActionCard(
+    BuildContext context,
+    String title,
+    IconData icon,
+    VoidCallback onTap,
+  ) {
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       child: Material(
@@ -129,7 +157,11 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                 ),
                 const Spacer(),
-                Icon(Icons.chevron_right_rounded, color: Colors.blueGrey[300], size: 20.sp),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: Colors.blueGrey[300],
+                  size: 20.sp,
+                ),
               ],
             ),
           ),
@@ -147,7 +179,8 @@ class SettingsScreen extends ConsumerWidget {
 
   Future<void> _shareApp() async {
     // Replace with actual app store links
-    const String appLink = 'Check out this amazing coloring app: https://example.com/colorflow';
+    const String appLink =
+        'Check out this amazing coloring app: https://example.com/colorflow';
     await Share.share(appLink);
   }
 
@@ -172,6 +205,4 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
-
 }
-

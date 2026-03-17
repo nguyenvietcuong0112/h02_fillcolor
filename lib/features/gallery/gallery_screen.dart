@@ -171,17 +171,17 @@ class _GalleryGridItem extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: AppDimens.space12),
-            Text(
-              file.path.split('/').last,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-            ),
+            // SizedBox(height: AppDimens.space12),
+            // Text(
+            //   file.path.split('/').last,
+            //   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            //     fontWeight: FontWeight.w600,
+            //     color: Colors.black87,
+            //   ),
+            //   maxLines: 1,
+            //   overflow: TextOverflow.ellipsis,
+            //   textAlign: TextAlign.center,
+            // ),
           ],
         ),
       ),

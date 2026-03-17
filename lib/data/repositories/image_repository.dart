@@ -5,7 +5,7 @@ class ImageRepository {
   /// Get all categories
   List<String> getCategories() {
     return [
-      'Trending',
+      'Featured Art',
       'Animals',
       'Sea Life',
       'Flowers',
@@ -47,11 +47,11 @@ class ImageRepository {
   /// 3. Đảm bảo id là unique
   /// 4. svgPath giờ chứa đường dẫn đến PNG file
   static final List<ColoringImageModel> _sampleImages = [
-    // ========== TRENDING ==========
+    // ========== FEATURED ART ==========
     ColoringImageModel(
       id: 'trending_1',
       name: 'Mouse Garden',
-      category: 'Trending',
+      category: 'Featured Art',
       svgPath: 'assets/images/trending1.png',
       thumbnailPath: 'assets/images/trending1.png',
       difficulty: 3,
@@ -59,7 +59,7 @@ class ImageRepository {
     ColoringImageModel(
       id: 'trending_2',
       name: 'Hedgehog Berries',
-      category: 'Trending',
+      category: 'Featured Art',
       svgPath: 'assets/images/trending2.png',
       thumbnailPath: 'assets/images/trending2.png',
       difficulty: 3,
@@ -67,7 +67,7 @@ class ImageRepository {
     ColoringImageModel(
       id: 'trending_3',
       name: 'Hedgehog Flowers',
-      category: 'Trending',
+      category: 'Featured Art',
       svgPath: 'assets/images/trending3.png',
       thumbnailPath: 'assets/images/trending3.png',
       difficulty: 4,
@@ -75,7 +75,7 @@ class ImageRepository {
     ColoringImageModel(
       id: 'trending_4',
       name: 'Rainy Fox',
-      category: 'Trending',
+      category: 'Featured Art',
       svgPath: 'assets/images/trending4.png',
       thumbnailPath: 'assets/images/trending4.png',
       difficulty: 4,
@@ -83,7 +83,7 @@ class ImageRepository {
     ColoringImageModel(
       id: 'trending_5',
       name: 'Bath Cat',
-      category: 'Trending',
+      category: 'Featured Art',
       svgPath: 'assets/images/trending5.png',
       thumbnailPath: 'assets/images/trending5.png',
       difficulty: 3,
@@ -91,7 +91,7 @@ class ImageRepository {
     ColoringImageModel(
       id: 'trending_6',
       name: 'Flower Turtle',
-      category: 'Trending',
+      category: 'Featured Art',
       svgPath: 'assets/images/trending6.png',
       thumbnailPath: 'assets/images/trending6.png',
       difficulty: 5,
@@ -99,7 +99,7 @@ class ImageRepository {
     ColoringImageModel(
       id: 'trending_7',
       name: 'Tea Bear',
-      category: 'Trending',
+      category: 'Featured Art',
       svgPath: 'assets/images/trending7.png',
       thumbnailPath: 'assets/images/trending7.png',
       difficulty: 4,
@@ -107,7 +107,7 @@ class ImageRepository {
     ColoringImageModel(
       id: 'trending_8',
       name: 'Butterfly Mushrooms',
-      category: 'Trending',
+      category: 'Featured Art',
       svgPath: 'assets/images/trending8.png',
       thumbnailPath: 'assets/images/trending8.png',
       difficulty: 4,
@@ -115,7 +115,7 @@ class ImageRepository {
     ColoringImageModel(
       id: 'trending_9',
       name: 'Star Sheep',
-      category: 'Trending',
+      category: 'Featured Art',
       svgPath: 'assets/images/trending9.png',
       thumbnailPath: 'assets/images/trending9.png',
       difficulty: 5,
@@ -123,7 +123,7 @@ class ImageRepository {
     ColoringImageModel(
       id: 'trending_10',
       name: 'Rain Walk',
-      category: 'Trending',
+      category: 'Featured Art',
       svgPath: 'assets/images/trending10.png',
       thumbnailPath: 'assets/images/trending10.png',
       difficulty: 5,
@@ -490,6 +490,46 @@ class ImageRepository {
       svgPath: 'assets/images/food_cupcake.png',
       thumbnailPath: 'assets/images/food_cupcake.png',
       difficulty: 2,
+    ),
+    ColoringImageModel(
+      id: 'food_1',
+      name: 'Ice Cream',
+      category: 'Food',
+      svgPath: 'assets/images/food1.png',
+      thumbnailPath: 'assets/images/food1.png',
+      difficulty: 3,
+    ),
+    ColoringImageModel(
+      id: 'food_2',
+      name: 'Donut',
+      category: 'Food',
+      svgPath: 'assets/images/food2.png',
+      thumbnailPath: 'assets/images/food2.png',
+      difficulty: 3,
+    ),
+    ColoringImageModel(
+      id: 'food_3',
+      name: 'Hamburger',
+      category: 'Food',
+      svgPath: 'assets/images/food3.png',
+      thumbnailPath: 'assets/images/food3.png',
+      difficulty: 4,
+    ),
+    ColoringImageModel(
+      id: 'food_4',
+      name: 'Pizza',
+      category: 'Food',
+      svgPath: 'assets/images/food4.png',
+      thumbnailPath: 'assets/images/food4.png',
+      difficulty: 4,
+    ),
+    ColoringImageModel(
+      id: 'food_5',
+      name: 'Bubble Tea',
+      category: 'Food',
+      svgPath: 'assets/images/food5.png',
+      thumbnailPath: 'assets/images/food5.png',
+      difficulty: 3,
     ),
   ];
 }
