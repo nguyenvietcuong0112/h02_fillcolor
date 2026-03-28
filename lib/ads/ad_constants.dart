@@ -63,7 +63,7 @@ class AdConstants {
   //   appUnitId: 'ca-app-pub-3940256099942544~3347511713',
   //   interstitial: '',
   //   nativeLanguage: '',
-  //   nativeIntro1: '', 
+  //   nativeIntro1: '',
   //   nativeIntro3: '',
   //   nativeColoring: '',
   //   interstitialSplash: '',
@@ -74,7 +74,7 @@ class AdConstants {
 
   static const AdIds androidProd = AdIds(
     appUnitId: 'ca-app-pub-5535645532626180~2776234620',
-    interstitial: '',
+    interstitial: 'ca-app-pub-5535645532626180/9563082361',
     nativeLanguage: 'ca-app-pub-5535645532626180/6054114591',
     nativeIntro1: '',
     nativeIntro3: '',

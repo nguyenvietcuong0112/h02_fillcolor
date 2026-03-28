@@ -46,7 +46,7 @@ class InterstitialLoadingView extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 Text(
-                  'Loading Ads...',
+                  'Loading...',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
