@@ -1,6 +1,7 @@
 import 'package:ds_ads/ds_ads.dart';
 import 'package:injectable/injectable.dart';
 import '../../ads/ad_constants.dart';
+import '../../services/analytics_service.dart';
 
 @module
 abstract class AdsModule {
@@ -20,5 +21,9 @@ abstract class AdsModule {
   );
 
   @lazySingleton
-  AdManager adManager(AdConfig config) => AdManager(config);
+  AdManager adManager(AdConfig config) => AdManager(
+        config,
+        onAdEvent: (name, params) =>
+            AnalyticsService.instance.logEvent(name, params),
+      );
 }

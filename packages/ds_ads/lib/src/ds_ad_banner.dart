@@ -37,6 +37,8 @@ class _DSAdBannerState extends State<DSAdBanner> {
 
     if (adId.isEmpty) return;
 
+    adManager.onAdEvent?.call('ad_banner_request', {'ad_unit_id': adId, 'size': widget.size.toString()});
+
     _bannerAd = BannerAd(
       adUnitId: adId,
       size: widget.size,
@@ -47,12 +49,19 @@ class _DSAdBannerState extends State<DSAdBanner> {
             ad.dispose();
             return;
           }
+          adManager.onAdEvent?.call('ad_banner_loaded', {'ad_unit_id': adId, 'size': widget.size.toString()});
           setState(() {
             _isLoaded = true;
           });
         },
         onAdFailedToLoad: (Ad ad, LoadAdError error) {
           debugPrint('DSAdBanner failed to load: $error');
+          adManager.onAdEvent?.call('ad_banner_failed_to_load', {
+            'ad_unit_id': adId,
+            'size': widget.size.toString(),
+            'error_code': error.code,
+            'error_message': error.message,
+          });
           ad.dispose();
         },
       ),

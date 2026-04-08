@@ -100,14 +100,18 @@ class AdConstants {
   );
 
   static const AdIds iosProd = AdIds(
-    appUnitId: 'ca-app-pub-3940256099942544~1458002511',
-    interstitial: 'ca-app-pub-3940256099942544/4411468910',
+    // TODO: Replace with your REAL iOS AdMob App ID
+    appUnitId: 'ca-app-pub-5535645532626180~2776234620', // Use your REAL App ID here
+    // TODO: Replace with your REAL iOS Interstitial Ad Unit ID
+    interstitial: 'ca-app-pub-3940256099942544/4411468910', 
+    // TODO: Replace with your REAL iOS Native Ad Unit ID
     nativeLanguage: 'ca-app-pub-3940256099942544/3986624511',
     nativeIntro1: 'ca-app-pub-3940256099942544/3986624511',
     nativeIntro3: 'ca-app-pub-3940256099942544/3986624511',
     nativeColoring: 'ca-app-pub-3940256099942544/3986624511',
     interstitialSplash: 'ca-app-pub-3940256099942544/4411468910',
     interstitialItem: 'ca-app-pub-3940256099942544/4411468910',
+    // TODO: Replace with your REAL iOS Banner Ad Unit ID
     banner: 'ca-app-pub-3940256099942544/2934735716',
   );
 }

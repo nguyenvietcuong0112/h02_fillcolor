@@ -8,12 +8,13 @@ import 'src/widgets/interstitial_loading_view.dart';
 @lazySingleton
 class AdManager {
   final AdConfig _config;
+  final Function(String name, Map<String, dynamic>? params)? onAdEvent;
   final Map<String, InterstitialAd?> _interstitialAds = {};
 
   final Map<String, RxBool> _isInterstitialAdLoadingMap = {};
   final Map<String, DateTime> _lastShowTimeMap = {};
 
-  AdManager(this._config);
+  AdManager(this._config, {this.onAdEvent});
 
   AdConfig get config => _config;
 
@@ -51,11 +52,14 @@ class AdManager {
     if (isLoading.value || _interstitialAds[adId] != null) return;
     isLoading.value = true;
 
+    onAdEvent?.call('ad_interstitial_request', {'ad_unit_id': adId});
+
     // Safety timeout: if ad doesn't load/fail in 10s, reset loading state
     Future.delayed(const Duration(seconds: 10), () {
       if (isLoading.value) {
         isLoading.value = false;
         debugPrint('InterstitialAd load timed out for $adId');
+        onAdEvent?.call('ad_interstitial_timeout', {'ad_unit_id': adId});
       }
     });
 
@@ -67,6 +71,7 @@ class AdManager {
           _interstitialAds[adId] = ad;
           isLoading.value = false;
           debugPrint('InterstitialAd loaded for $adId');
+          onAdEvent?.call('ad_interstitial_loaded', {'ad_unit_id': adId});
           _setInterstitialAdCallbacks(ad, adId);
         },
         onAdFailedToLoad: (LoadAdError err) {
@@ -74,6 +79,11 @@ class AdManager {
               'Failed to load an interstitial ad for $adId: ${err.message}');
           isLoading.value = false;
           _interstitialAds[adId] = null;
+          onAdEvent?.call('ad_interstitial_failed_to_load', {
+            'ad_unit_id': adId,
+            'error_code': err.code,
+            'error_message': err.message,
+          });
         },
       ),
     );
@@ -85,11 +95,17 @@ class AdManager {
       onAdDismissedFullScreenContent: (InterstitialAd ad) {
         ad.dispose();
         _interstitialAds[adId] = null;
+        onAdEvent?.call('ad_interstitial_dismissed', {'ad_unit_id': adId});
         loadInterstitialAd(id: adId); // Pre-load same unit
       },
       onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError err) {
         ad.dispose();
         _interstitialAds[adId] = null;
+        onAdEvent?.call('ad_interstitial_failed_to_show', {
+          'ad_unit_id': adId,
+          'error_code': err.code,
+          'error_message': err.message,
+        });
         loadInterstitialAd(id: adId);
       },
     );
@@ -168,6 +184,7 @@ class AdManager {
       },
     );
 
+    onAdEvent?.call('ad_interstitial_show', {'ad_unit_id': adId});
     ad.show();
   }
 
@@ -179,7 +196,7 @@ class AdManager {
     Function(LoadAdError)? onAdFailed,
   }) {
     final adId = id ?? '';
-    if (adId.isEmpty) return;
+    onAdEvent?.call('ad_native_request', {'ad_unit_id': adId, 'factory_id': factoryId});
 
     NativeAd(
       adUnitId: adId,
@@ -188,10 +205,17 @@ class AdManager {
       listener: NativeAdListener(
         onAdLoaded: (Ad ad) {
           debugPrint('NativeAd loaded with factory: $factoryId');
+          onAdEvent?.call('ad_native_loaded', {'ad_unit_id': adId, 'factory_id': factoryId});
           onAdLoaded(ad as NativeAd);
         },
         onAdFailedToLoad: (Ad ad, LoadAdError error) {
           debugPrint('NativeAd failed to load: $error');
+          onAdEvent?.call('ad_native_failed_to_load', {
+            'ad_unit_id': adId,
+            'factory_id': factoryId,
+            'error_code': error.code,
+            'error_message': error.message,
+          });
           ad.dispose();
           onAdFailed?.call(error);
         },
@@ -208,6 +232,7 @@ class AdManager {
     final adId = id ?? ''; // Fallback, usually App Open has its own unit
     if (adId.isEmpty || _isAppOpenAdLoading || _appOpenAd != null) return;
 
+    onAdEvent?.call('ad_app_open_request', {'ad_unit_id': adId});
     _isAppOpenAdLoading = true;
     AppOpenAd.load(
       adUnitId: adId,
@@ -218,11 +243,17 @@ class AdManager {
           _isAppOpenAdLoading = false;
           _appOpenAdLoadTime = DateTime.now();
           debugPrint('AppOpenAd loaded');
+          onAdEvent?.call('ad_app_open_loaded', {'ad_unit_id': adId});
         },
         onAdFailedToLoad: (error) {
           debugPrint('AppOpenAd failed to load: $error');
           _isAppOpenAdLoading = false;
           _appOpenAd = null;
+          onAdEvent?.call('ad_app_open_failed_to_load', {
+            'ad_unit_id': adId,
+            'error_code': error.code,
+            'error_message': error.message,
+          });
         },
       ),
     );
@@ -248,20 +279,27 @@ class AdManager {
     }
 
     _appOpenAd!.fullScreenContentCallback = FullScreenContentCallback(
-      onAdDismissedFullScreenContent: (ad) {
-        ad.dispose();
-        _appOpenAd = null;
-        onAdClosed?.call();
-        loadAppOpenAd(id: adId);
-      },
-      onAdFailedToShowFullScreenContent: (ad, error) {
-        ad.dispose();
-        _appOpenAd = null;
-        onAdClosed?.call();
-        loadAppOpenAd(id: adId);
-      },
+        onAdDismissedFullScreenContent: (ad) {
+          ad.dispose();
+          _appOpenAd = null;
+          onAdEvent?.call('ad_app_open_dismissed', {'ad_unit_id': adId});
+          onAdClosed?.call();
+          loadAppOpenAd(id: adId);
+        },
+        onAdFailedToShowFullScreenContent: (ad, error) {
+          ad.dispose();
+          _appOpenAd = null;
+          onAdEvent?.call('ad_app_open_failed_to_show', {
+            'ad_unit_id': adId,
+            'error_code': error.code,
+            'error_message': error.message,
+          });
+          onAdClosed?.call();
+          loadAppOpenAd(id: adId);
+        },
     );
 
+    onAdEvent?.call('ad_app_open_show', {'ad_unit_id': adId});
     _appOpenAd!.show();
   }
 }
