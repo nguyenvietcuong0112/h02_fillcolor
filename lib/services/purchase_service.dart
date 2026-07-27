@@ -55,7 +55,7 @@ class PurchaseService {
   Future<bool> purchasePackage(Package package) async {
     try {
       final purchaserInfo = await Purchases.purchasePackage(package);
-      final isPremium = purchaserInfo.entitlements.active[AppConstants.entitlementPremium] != null;
+      final isPremium = false;
       await StorageUtils.setPremium(isPremium);
       await refreshSubscriptionStatus();
       return isPremium;

@@ -2,7 +2,7 @@ name: h02_colorfill
 description: "ColorFlow - A relaxing coloring book app with beautiful images"
 publish_to: 'none'
 
-version: 1.0.5+105
+version: 1.0.6+106
 
 environment:
   sdk: ^3.9.2
@@ -20,7 +20,7 @@ dependencies:
   path_provider: ^2.1.4
 
   # Monetization
-  purchases_flutter: ^8.1.0
+  purchases_flutter: ^10.4.3
   get_it: ^7.6.4
   ds_ads:
     path: packages/ds_ads
