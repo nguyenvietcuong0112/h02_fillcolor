@@ -180,7 +180,7 @@ class SettingsScreen extends ConsumerWidget {
   Future<void> _shareApp() async {
     // Replace with actual app store links
     const String appLink =
-        'Check out this amazing coloring app: https://example.com/colorflow';
+        'https://play.google.com/store/apps/details?id=com.fillcolor.coloringbook.paint.colorart';
     await Share.share(appLink);
   }
 

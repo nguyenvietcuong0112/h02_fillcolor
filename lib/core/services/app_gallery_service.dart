@@ -10,18 +10,22 @@ class AppGalleryService {
   static Future<Directory> getGalleryDirectory() async {
     final appDir = await getApplicationDocumentsDirectory();
     final galleryDir = Directory(path.join(appDir.path, 'gallery'));
-    
+
     if (!await galleryDir.exists()) {
       await galleryDir.create(recursive: true);
     }
-    
+
     return galleryDir;
   }
 
   /// Save image to app gallery
-  static Future<File> saveToAppGallery(Uint8List imageBytes, String imageName, {String? overwritePath}) async {
+  static Future<File> saveToAppGallery(
+    Uint8List imageBytes,
+    String imageName, {
+    String? overwritePath,
+  }) async {
     final String filePath;
-    
+
     if (overwritePath != null) {
       filePath = overwritePath;
     } else {
@@ -30,29 +34,32 @@ class AppGalleryService {
       final fileName = '${imageName}_$timestamp.png';
       filePath = path.join(galleryDir.path, fileName);
     }
-    
+
     final file = File(filePath);
     await file.writeAsBytes(imageBytes);
-    
+
     return file;
   }
 
   /// Get all images from app gallery
   static Future<List<File>> getAllImages() async {
     final galleryDir = await getGalleryDirectory();
-    
+
     if (!await galleryDir.exists()) {
       return [];
     }
-    
-    final files = galleryDir.listSync()
+
+    final files = galleryDir
+        .listSync()
         .whereType<File>()
         .where((file) => file.path.endsWith('.png'))
         .toList();
-    
+
     // Sort by modification time (newest first)
-    files.sort((a, b) => b.statSync().modified.compareTo(a.statSync().modified));
-    
+    files.sort(
+      (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
+    );
+
     return files;
   }
 

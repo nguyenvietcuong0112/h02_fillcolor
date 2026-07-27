@@ -2,7 +2,7 @@ name: h02_colorfill
 description: "ColorFlow - A relaxing coloring book app with beautiful images"
 publish_to: 'none'
 
-version: 1.0.3+103
+version: 1.0.5+105
 
 environment:
   sdk: ^3.9.2
@@ -38,7 +38,8 @@ dependencies:
 
 
   # Image & Share
-  image_gallery_saver: ^2.0.3
+  image_gallery_saver:
+    path: ./packages/image_gallery_saver
   share_plus: ^10.1.2
   path: ^1.9.0
 
