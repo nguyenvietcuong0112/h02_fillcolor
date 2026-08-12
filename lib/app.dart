@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'core/theme/app_dimens.dart';
 import 'core/theme/app_theme.dart';
 import 'features/home/home_screen.dart';
+import 'features/photo_sketch/photo_sketch_screen.dart';
 import 'features/gallery/gallery_screen.dart';
 import 'features/splash/splash_screen.dart';
 import 'features/settings/settings_screen.dart';
@@ -47,6 +48,7 @@ class _MainNavigatorState extends ConsumerState<MainNavigator> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
+    const PhotoSketchScreen(),
     const GalleryScreen(),
     const SettingsScreen(),
   ];
@@ -84,18 +86,25 @@ class _MainNavigatorState extends ConsumerState<MainNavigator> {
                 onTap: () => setState(() => _currentIndex = 0),
               ),
               _NavItem(
+                icon: Icons.auto_fix_high_outlined,
+                activeIcon: Icons.auto_fix_high_rounded,
+                label: ref.tr('photo_sketch'),
+                isActive: _currentIndex == 1,
+                onTap: () => setState(() => _currentIndex = 1),
+              ),
+              _NavItem(
                 icon: Icons.photo_library_outlined,
                 activeIcon: Icons.photo_library_rounded,
                 label: ref.tr('gallery'),
-                isActive: _currentIndex == 1,
-                onTap: () => setState(() => _currentIndex = 1),
+                isActive: _currentIndex == 2,
+                onTap: () => setState(() => _currentIndex = 2),
               ),
               _NavItem(
                 icon: Icons.settings_outlined,
                 activeIcon: Icons.settings_rounded,
                 label: ref.tr('settings'),
-                isActive: _currentIndex == 2,
-                onTap: () => setState(() => _currentIndex = 2),
+                isActive: _currentIndex == 3,
+                onTap: () => setState(() => _currentIndex = 3),
               ),
             ],
           ),

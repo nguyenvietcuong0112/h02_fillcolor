@@ -1,11 +1,23 @@
 const Map<String, String> en = {
   // Navigation
   'home': 'Home',
+  'photo_sketch': 'Photo Sketch',
   'gallery': 'Gallery',
   'settings': 'Settings',
   'language': 'Language',
   'coloring_book': 'Coloring Book',
   'app_full_name': 'ColorFlow - Coloring Book',
+
+  // Photo Sketch
+  'photo_sketch_desc': 'Turn your photos into coloring line art',
+  'take_photo': 'Take Photo',
+  'choose_gallery': 'Choose from Gallery',
+  'sample_photo': 'Sample Photo',
+  'line_detail': 'Line Detail',
+  'line_contrast': 'Contrast',
+  'start_coloring': 'Start Coloring',
+  'reselect_photo': 'Change Photo',
+  'processing_image': 'Processing image...',
 
   // Language Selection
   'select_language': 'Select Language',

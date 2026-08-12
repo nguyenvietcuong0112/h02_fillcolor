@@ -37,6 +37,8 @@ class RemoteConfigService {
         'enable_app_open_ads': true,
         'enable_interstitial_ads': true,
         'show_native_coloring_ad': true,
+        'gemini_api_key': '',
+        'gemini_model_name': 'gemini-3.5-flash',
       });
 
       // Fetch and activate
@@ -100,6 +102,30 @@ class RemoteConfigService {
       return _config.getBool('show_native_coloring_ad');
     } catch (e) {
       return true;
+    }
+  }
+
+  /// Get Gemini API key
+  String get geminiApiKey {
+    const String defaultKey = '';
+    if (!_isInitialized || _remoteConfig == null) return defaultKey;
+    try {
+      final String val = _config.getString('gemini_api_key');
+      return val.isNotEmpty ? val : defaultKey;
+    } catch (e) {
+      return defaultKey;
+    }
+  }
+
+  /// Get Gemini Model Name
+  String get geminiModelName {
+    const String defaultModel = 'gemini-3.5-flash';
+    if (!_isInitialized || _remoteConfig == null) return defaultModel;
+    try {
+      final String val = _config.getString('gemini_model_name');
+      return val.isNotEmpty ? val : defaultModel;
+    } catch (e) {
+      return defaultModel;
     }
   }
 

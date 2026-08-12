@@ -1,11 +1,23 @@
 const Map<String, String> vi = {
   // Navigation
   'home': 'Trang chủ',
+  'photo_sketch': 'Tô từ ảnh',
   'gallery': 'Thư viện',
   'settings': 'Cài đặt',
   'language': 'Ngôn ngữ',
   'coloring_book': 'Sách tô màu',
   'app_full_name': 'ColorFlow - Sách tô màu',
+
+  // Photo Sketch
+  'photo_sketch_desc': 'Biến ảnh chụp thành tranh phác thảo để tô màu',
+  'take_photo': 'Chụp ảnh mới',
+  'choose_gallery': 'Chọn từ thư viện',
+  'sample_photo': 'Ảnh mẫu',
+  'line_detail': 'Độ nét nét vẽ',
+  'line_contrast': 'Độ tương phản',
+  'start_coloring': 'Bắt đầu tô màu',
+  'reselect_photo': 'Chọn ảnh khác',
+  'processing_image': 'Đang xử lý ảnh...',
 
   // Language Selection
   'select_language': 'Chọn ngôn ngữ',

@@ -73,16 +73,16 @@ class AdConstants {
   // );
 
   static const AdIds androidProd = AdIds(
-    appUnitId: 'ca-app-pub-5535645532626180~2776234620',
-    interstitial: 'ca-app-pub-5535645532626180/9563082361',
-    nativeLanguage: 'ca-app-pub-5535645532626180/6054114591',
+    appUnitId: 'ca-app-pub-3753821601142094~2183908220',
+    interstitial: 'ca-app-pub-3753821601142094/2772683703',
+    nativeLanguage: 'ca-app-pub-3753821601142094/5148982914',
     nativeIntro1: '',
     nativeIntro3: '',
-    nativeColoring: 'ca-app-pub-5535645532626180/8488706242',
-    interstitialSplash: 'ca-app-pub-5535645532626180/9563082361',
-    interstitialSave: 'ca-app-pub-5535645532626180/7367196260',
-    interstitialItem: 'ca-app-pub-5535645532626180/2717175241',
-    banner: 'ca-app-pub-5535645532626180/4741032928',
+    nativeColoring: 'ca-app-pub-3753821601142094/5148982914',
+    interstitialSplash: 'ca-app-pub-3753821601142094/2772683703',
+    interstitialSave: 'ca-app-pub-3753821601142094/2772683703',
+    interstitialItem: 'ca-app-pub-3753821601142094/2772683703',
+    banner: 'ca-app-pub-3753821601142094/5398847043',
   );
 
   // ================= IOS IDs =================
@@ -101,7 +101,7 @@ class AdConstants {
 
   static const AdIds iosProd = AdIds(
     // TODO: Replace with your REAL iOS AdMob App ID
-    appUnitId: 'ca-app-pub-5535645532626180~2776234620', // Use your REAL App ID here
+    appUnitId: 'ca-app-pub-3753821601142094~2183908220', // Use your REAL App ID here
     // TODO: Replace with your REAL iOS Interstitial Ad Unit ID
     interstitial: 'ca-app-pub-3940256099942544/4411468910', 
     // TODO: Replace with your REAL iOS Native Ad Unit ID
