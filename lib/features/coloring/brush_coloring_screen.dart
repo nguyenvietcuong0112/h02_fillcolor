@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../ads/const/ad_id_extension.dart';
 import '../../ads/const/ad_id_factory.dart';
 import '../../ads/const/ad_id_name.dart';
-import '../../ads/dimens/ad_dimen.dart';
 import '../../ads/widgets/banner_ad_with_close.dart';
 import '../../data/models/coloring_image_model.dart';
 import '../../data/models/brush_stroke.dart';
@@ -21,6 +19,7 @@ import 'png_coloring_state.dart';
 import '../../core/localization/app_localizations.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/widgets/coloring_widgets.dart';
+import '../../core/widgets/save_success_dialog.dart';
 import '../../services/firebase_remote_config_service.dart';
 
 /// Brush mode coloring screen
@@ -194,37 +193,8 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
           imageProvider.evict();
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(ref.tr('saved_to_gallery')),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-
         if (mounted) {
-          final isInterEnabled = FirebaseRemoteConfigService.getBoolConfigByKey(
-            FirebaseRemoteConfigService.inter_all,
-          );
-          if (isInterEnabled && !EasyAds.instance.isPremiumUser) {
-            EasyAds.instance.showInterstitialAd(
-              context,
-              adId: MyAdIdName.interAll.getId,
-              adIdName: MyAdIdName.interAll,
-              adDissmissed: () {
-                if (mounted) {
-                  Navigator.pop(context, true);
-                }
-              },
-              onFailed: () {
-                if (mounted) {
-                  Navigator.pop(context, true);
-                }
-              },
-            );
-          } else {
-            Navigator.pop(context, true);
-          }
+          SaveSuccessDialog.show(context);
         }
       }
     } catch (e, stackTrace) {
@@ -441,8 +411,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
             child: NativeAdWithClose(
               factoryId: NativeFactoryId.nativeMedia,
               adId: MyAdIdName.nativeAll.getId,
-              adIdName: MyAdIdName.nativeAll,
-              height: AdDimen.mediumNativeHeight,
+              adIdName: FirebaseRemoteConfigService.native_fill_brush,
             ),
           ),
         ],

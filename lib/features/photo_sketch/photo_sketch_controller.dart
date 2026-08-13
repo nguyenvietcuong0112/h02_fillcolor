@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:uuid/uuid.dart';
-
+import 'dart:ui' as ui;
 import '../../core/constants/app_constants.dart';
+import '../../core/services/app_gallery_service.dart';
 import '../../core/utils/storage_utils.dart';
 import '../../services/gemini_sketch_service.dart';
 import '../../services/sketch_converter_service.dart';
@@ -53,15 +53,26 @@ class PhotoSketchController extends StateNotifier<PhotoSketchState> {
     }
   }
 
-  /// Set original image bytes and generate initial sketch preview
+  /// Set original image bytes and immediately open coloring view (no AI / no processing delay)
   Future<void> setImageBytes(Uint8List bytes) async {
     state = state.copyWith(
       originalBytes: bytes,
+      sketchBytes: bytes,
       isProcessing: true,
-      step: PhotoSketchStep.adjust,
     );
 
-    await _generateSketch();
+    final Directory tempDir = await getTemporaryDirectory();
+    final File tempFile = File('${tempDir.path}/photo_temp_${DateTime.now().millisecondsSinceEpoch}.png');
+    await tempFile.writeAsBytes(bytes);
+
+    await floodFillEngine.loadFromFile(tempFile);
+
+    state = state.copyWith(
+      step: PhotoSketchStep.color,
+      isProcessing: false,
+      canUndo: floodFillEngine.canUndo,
+      canRedo: floodFillEngine.canRedo,
+    );
   }
 
   /// Update adjustment parameters (detail & contrast)
@@ -110,6 +121,26 @@ class PhotoSketchController extends StateNotifier<PhotoSketchState> {
     final Directory tempDir = await getTemporaryDirectory();
     final File tempFile = File('${tempDir.path}/sketch_temp_${DateTime.now().millisecondsSinceEpoch}.png');
     await tempFile.writeAsBytes(state.sketchBytes!);
+
+    await floodFillEngine.loadFromFile(tempFile);
+
+    state = state.copyWith(
+      step: PhotoSketchStep.color,
+      isProcessing: false,
+      canUndo: floodFillEngine.canUndo,
+      canRedo: floodFillEngine.canRedo,
+    );
+  }
+
+  /// Transition to coloring step using the raw original photo directly
+  Future<void> startColoringWithOriginal() async {
+    if (state.originalBytes == null) return;
+
+    state = state.copyWith(isProcessing: true);
+
+    final Directory tempDir = await getTemporaryDirectory();
+    final File tempFile = File('${tempDir.path}/raw_temp_${DateTime.now().millisecondsSinceEpoch}.png');
+    await tempFile.writeAsBytes(state.originalBytes!);
 
     await floodFillEngine.loadFromFile(tempFile);
 
@@ -244,12 +275,62 @@ class PhotoSketchController extends StateNotifier<PhotoSketchState> {
     );
   }
 
-  /// Save completed artwork to local storage & GalleryRepository
+  /// Save completed artwork to local storage & Device Gallery
   Future<bool> saveArtwork() async {
     try {
-      if (state.sketchBytes == null) return false;
-      final String fileName = 'sketch_${const Uuid().v4()}.png';
-      await StorageUtils.saveToGallery(fileName, state.sketchBytes!);
+      final ui.Image? img = floodFillEngine.image;
+      if (img == null) {
+        if (state.originalBytes != null) {
+          await AppGalleryService.saveToAppGallery(
+            state.originalBytes!,
+            'photo_sketch',
+          );
+          await StorageUtils.incrementSaveCount();
+          return true;
+        }
+        return false;
+      }
+
+      final recorder = ui.PictureRecorder();
+      final canvas = ui.Canvas(
+        recorder,
+        ui.Rect.fromLTWH(0, 0, img.width.toDouble(), img.height.toDouble()),
+      );
+
+      final paint = Paint();
+      canvas.drawImage(img, Offset.zero, paint);
+
+      for (final stroke in brushEngine.getStrokes()) {
+        if (stroke.points.isEmpty) continue;
+        final strokePaint = Paint()
+          ..color = stroke.color.withValues(alpha: stroke.opacity)
+          ..strokeWidth = stroke.size
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round
+          ..style = PaintingStyle.stroke;
+
+        if (stroke.points.length == 1) {
+          canvas.drawCircle(stroke.points.first, stroke.size / 2, strokePaint);
+        } else {
+          final path = Path();
+          path.moveTo(stroke.points.first.dx, stroke.points.first.dy);
+          for (int i = 1; i < stroke.points.length; i++) {
+            path.lineTo(stroke.points[i].dx, stroke.points[i].dy);
+          }
+          canvas.drawPath(path, strokePaint);
+        }
+      }
+
+      final picture = recorder.endRecording();
+      final renderedImg = await picture.toImage(img.width, img.height);
+      final byteData =
+          await renderedImg.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData == null) return false;
+
+      final bytes = byteData.buffer.asUint8List();
+
+      // Save to App Gallery (shows up in Gallery tab)
+      await AppGalleryService.saveToAppGallery(bytes, 'photo_sketch');
       await StorageUtils.incrementSaveCount();
       return true;
     } catch (e) {

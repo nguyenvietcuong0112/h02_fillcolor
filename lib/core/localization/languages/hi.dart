@@ -140,4 +140,19 @@ const Map<String, String> hi = {
   'error': 'त्रुटि',
   'save_failed': 'सहेजना विफल रहा',
   'please_select_language': 'कृपया एक भाषा चुनें',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'कलाकृति सफलतापूर्वक सहेजी गई!',
+  'save_success_desc': 'आपकी पेंटिंग ऐप गैलरी में सहेज दी गई है।',
+  'stay_on_page': 'यहीं रहें',
+  'back_to_home': 'होम पर वापस जाएं',
+  'take_photo_desc': 'तुरंत रंग भरने के लिए कैमरे से फोटो लें',
+  'choose_gallery_desc': 'रंग भरने के लिए अपनी गैलरी से कोई भी फोटो लोड करें',
+  'fill_mode': 'फिल मोड',
+  'brush_mode': 'ब्रश मोड',
+  'share_artwork_text': 'मेरी रंगीन कलाकृति!',
+  // Exit Dialog
+  'exit': 'निकलें',
+  'exit_dialog_title': 'ऐप से बाहर निकलें?',
+  'exit_dialog_desc': 'क्या आप निश्चित रूप से ऐप से बाहर निकलना चाहते हैं?',
 };

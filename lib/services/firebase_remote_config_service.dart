@@ -18,9 +18,13 @@ class FirebaseRemoteConfigService {
   static const String native_onboarding_3 = "native_onboarding_3";
 
   static const String inter_all = "inter_all";
+  static const String inter_save = "inter_save";
   static const String interval_inter_ad = "interval_inter_ad";
   static const String native_all = "native_all";
+  static const String native_sketch = "native_sketch";
+  static const String native_fill_brush = "native_fill_brush";
 
+  static const String app_open_resume = "app_open_resume";
   static const String reward_all = "reward_all";
 
   static const String time_delay_close_premium = "time_delay_close_premium";
@@ -51,7 +55,12 @@ class FirebaseRemoteConfigService {
         "native_permission": true,
         "inter_onboard": true,
         "inter_all": true,
+        "inter_save": true,
         "native_all": true,
+        "native_sketch": true,
+        "native_fill_brush": true,
+        "app_open_resume": true,
+        "appOpenResume": true,
         "native_themes": true,
         "native_piano": true,
         "interval_inter_ad": 30,
@@ -86,8 +95,14 @@ class FirebaseRemoteConfigService {
     switch (key) {
       case "nativeAll":
         return native_all;
+      case "native_sketch":
+        return native_sketch;
+      case "native_fill_brush":
+        return native_fill_brush;
       case "interAll":
         return inter_all;
+      case "inter_save":
+        return inter_save;
       case "nativeBanner":
         return native_banner;
       case "interSplash":
@@ -105,7 +120,6 @@ class FirebaseRemoteConfigService {
       case "nativeOnboardFull2Ad":
         return native_onboarding_full_2;
       case "nativeOnboard3Ad":
-      case "nativeOnboard4Ad":
         return native_onboarding_3;
       case "nativeFull":
         return native_onboarding_full_1;

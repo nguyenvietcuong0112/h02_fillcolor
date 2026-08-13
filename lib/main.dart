@@ -15,7 +15,7 @@ import 'firebase_options.dart';
 import 'package:injectable/injectable.dart';
 import 'app/app.dart';
 
-const String env = Environment.dev;
+const String env = Environment.prod;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -80,6 +80,9 @@ Future<void> _initializeAds() async {
       appOpenAdIdName: MyAdIdName.appOpenResume,
     );
 
+    // Preload App Open Ad so it's ready immediately when app is resumed
+    EasyAds.instance.loadAppOpenAd();
+
     EasyAds.instance.onEvent.listen((event) {
       debugPrint('🔥 EasyAds event: type=${event.type}, adUnitId=${event.adUnitId}, data=${event.data}');
 
@@ -102,9 +105,18 @@ Future<void> _initializeAds() async {
           );
         }
       }
+
+      // Auto preload next App Open Ad after current one is dismissed or failed
+      if (event.adUnitType == AdUnitType.appOpen) {
+        if (event.type == AdEventType.adDismissed ||
+            event.type == AdEventType.adFailedToLoad ||
+            event.type == AdEventType.adFailedToShow) {
+          EasyAds.instance.loadAppOpenAd();
+        }
+      }
     });
 
-    debugPrint('✅ AdMob initialized with App Open Ad');
+    debugPrint('✅ AdMob initialized with App Open Ad (preloading started)');
     debugPrint('✅ All ads initialization completed successfully');
 
   } catch (e) {

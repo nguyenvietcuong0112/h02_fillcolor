@@ -143,4 +143,19 @@ const Map<String, String> en = {
   'error': 'Error',
   'save_failed': 'Save failed',
   'please_select_language': 'Please select a language',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'Artwork Saved Successfully!',
+  'save_success_desc': 'Your artwork has been saved to the App Gallery.',
+  'stay_on_page': 'Stay Here',
+  'back_to_home': 'Back to Home',
+  'take_photo_desc': 'Take a photo from camera to color immediately',
+  'choose_gallery_desc': 'Upload any photo from your device gallery to color',
+  'fill_mode': 'Fill Mode',
+  'brush_mode': 'Brush Mode',
+  'share_artwork_text': 'My colored artwork!',
+  // Exit Dialog
+  'exit': 'Exit',
+  'exit_dialog_title': 'Exit App?',
+  'exit_dialog_desc': 'Are you sure you want to exit the app?',
 };

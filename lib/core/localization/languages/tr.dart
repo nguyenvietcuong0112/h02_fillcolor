@@ -140,4 +140,19 @@ const Map<String, String> tr = {
   'error': 'Hata',
   'save_failed': 'Kaydetme başarısız',
   'please_select_language': 'Lütfen bir dil seçin',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'Eser Başarıyla Kaydedildi!',
+  'save_success_desc': 'Resminiz Uygulama Galerisine kaydedildi.',
+  'stay_on_page': 'Burada Kal',
+  'back_to_home': 'Ana Sayfaya Dön',
+  'take_photo_desc': 'Hemen boyamak için kameradan bir fotoğraf çekin',
+  'choose_gallery_desc': 'Boyamak için cihazınızın galerisinden herhangi bir fotoğraf yükleyin',
+  'fill_mode': 'Doldurma Modu',
+  'brush_mode': 'Fırça Modu',
+  'share_artwork_text': 'Boyadığım sanat eserim!',
+  // Exit Dialog
+  'exit': 'Çıkış',
+  'exit_dialog_title': 'Uygulamadan Çıkılsın mı?',
+  'exit_dialog_desc': 'Uygulamadan çıkmak istediğinizden emin misiniz?',
 };

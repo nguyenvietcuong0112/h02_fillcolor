@@ -142,4 +142,19 @@ const Map<String, String> vi = {
   'error': 'Lỗi',
   'save_failed': 'Lưu thất bại',
   'please_select_language': 'Vui lòng chọn ngôn ngữ',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'Lưu tác phẩm thành công!',
+  'save_success_desc': 'Bức tranh của bạn đã được lưu vào Thư viện của ứng dụng.',
+  'stay_on_page': 'Ở lại trang',
+  'back_to_home': 'Trở về trang chủ',
+  'take_photo_desc': 'Chụp ảnh trực tiếp từ máy ảnh thiết bị để tô màu ngay',
+  'choose_gallery_desc': 'Tải ảnh bất kỳ từ thư viện thiết bị của bạn lên tô màu',
+  'fill_mode': 'Chạm đổ màu',
+  'brush_mode': 'Cọ vẽ tự do',
+  'share_artwork_text': 'Tác phẩm tô màu của tôi!',
+  // Exit Dialog
+  'exit': 'Thoát',
+  'exit_dialog_title': 'Thoát ứng dụng?',
+  'exit_dialog_desc': 'Bạn có chắc chắn muốn thoát khỏi ứng dụng không?',
 };

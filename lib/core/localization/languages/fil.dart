@@ -140,4 +140,19 @@ const Map<String, String> fil = {
   'error': 'Error',
   'save_failed': 'Bumagsak ang pag-save',
   'please_select_language': 'Pumili ng wika',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'Matagumpay na na-save ang artwork!',
+  'save_success_desc': 'Ang iyong sining ay na-save sa Gallery ng app.',
+  'stay_on_page': 'Manatili dito',
+  'back_to_home': 'Bumalik sa Home',
+  'take_photo_desc': 'Kumuha ng larawan mula sa camera para kulayan agad',
+  'choose_gallery_desc': 'Mag-load ng anumang larawan mula sa gallery upang kulayan',
+  'fill_mode': 'Mode ng Puno',
+  'brush_mode': 'Mode ng Brush',
+  'share_artwork_text': 'Ang aking kulay na obra maestra!',
+  // Exit Dialog
+  'exit': 'Lumabas',
+  'exit_dialog_title': 'Lumabas sa app?',
+  'exit_dialog_desc': 'Sigurado ka bang gusto mong lumabas sa app?',
 };

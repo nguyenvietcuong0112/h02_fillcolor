@@ -140,4 +140,19 @@ const Map<String, String> bn = {
   'error': 'ত্রুটি',
   'save_failed': 'সংরক্ষণ ব্যর্থ হয়েছে',
   'please_select_language': 'অনুগ্রহ করে একটি ভাষা নির্বাচন করুন',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'শিল্পকর্মটি সফলভাবে সংরক্ষিত হয়েছে!',
+  'save_success_desc': 'আপনার ছবিটি অ্যাপ গ্যালারিতে সংরক্ষিত হয়েছে।',
+  'stay_on_page': 'এখানে থাকুন',
+  'back_to_home': 'হোমে ফিরে যান',
+  'take_photo_desc': 'সরাসরি ক্যামেরা থেকে ছবি তুলে রঙ করুন',
+  'choose_gallery_desc': 'রঙ করতে আপনার ডিভাইস গ্যালারি থেকে যেকোনো ছবি লোড করুন',
+  'fill_mode': 'ফিল মোড',
+  'brush_mode': 'ব্রাশ মোড',
+  'share_artwork_text': 'আমার রঙিন শিল্পকর্ম!',
+  // Exit Dialog
+  'exit': 'প্রস্থান',
+  'exit_dialog_title': 'অ্যাপ থেকে বের হবেন?',
+  'exit_dialog_desc': 'আপনি কি নিশ্চিত যে আপনি অ্যাপ থেকে বের হতে চান?',
 };

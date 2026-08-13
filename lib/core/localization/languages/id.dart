@@ -140,4 +140,19 @@ const Map<String, String> id = {
   'error': 'Kesalahan',
   'save_failed': 'Gagal menyimpan',
   'please_select_language': 'Silakan pilih bahasa',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'Karya Seni Berhasil Disimpan!',
+  'save_success_desc': 'Lukisan Anda telah disimpan ke Galeri Aplikasi.',
+  'stay_on_page': 'Tetap Di Sini',
+  'back_to_home': 'Kembali ke Beranda',
+  'take_photo_desc': 'Ambil foto langsung dari kamera untuk segera diwarnai',
+  'choose_gallery_desc': 'Muat foto apa saja dari galeri perangkat Anda untuk diwarnai',
+  'fill_mode': 'Mode Isi',
+  'brush_mode': 'Mode Kuas',
+  'share_artwork_text': 'Karya seni mewarnai saya!',
+  // Exit Dialog
+  'exit': 'Keluar',
+  'exit_dialog_title': 'Keluar dari Aplikasi?',
+  'exit_dialog_desc': 'Apakah Anda yakin ingin keluar dari aplikasi?',
 };

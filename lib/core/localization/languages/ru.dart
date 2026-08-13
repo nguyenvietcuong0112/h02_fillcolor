@@ -140,4 +140,19 @@ const Map<String, String> ru = {
   'error': 'Ошибка',
   'save_failed': 'Ошибка сохранения',
   'please_select_language': 'Пожалуйста, выберите язык',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'Работа успешно сохранена!',
+  'save_success_desc': 'Ваша картина сохранена в Галерее приложения.',
+  'stay_on_page': 'Остаться',
+  'back_to_home': 'На главную',
+  'take_photo_desc': 'Сделайте фото с камеры, чтобы сразу раскрасить',
+  'choose_gallery_desc': 'Загрузите любое фото из галереи устройства для раскрашивания',
+  'fill_mode': 'Режим заливки',
+  'brush_mode': 'Режим кисти',
+  'share_artwork_text': 'Моя раскрашенная картина!',
+  // Exit Dialog
+  'exit': 'Выйти',
+  'exit_dialog_title': 'Выйти из приложения?',
+  'exit_dialog_desc': 'Вы уверены, что хотите выйти из приложения?',
 };

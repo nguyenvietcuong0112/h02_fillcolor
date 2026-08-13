@@ -1,14 +1,16 @@
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../core/theme/app_dimens.dart';
 import '../core/theme/app_theme.dart';
 import '../features/home/home_screen.dart';
-// import '../features/photo_sketch/photo_sketch_screen.dart';
+import '../features/photo_sketch/photo_sketch_screen.dart';
 import '../features/gallery/gallery_screen.dart';
 import '../features/splash/splash_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../core/localization/app_localizations.dart';
+import '../core/widgets/exit_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app_initializer.dart';
@@ -58,7 +60,7 @@ class _FillColorAppState extends ConsumerState<FillColorApp> {
         );
       },
     );
-  }
+}
 }
 
 /// Main navigator with bottom navigation
@@ -72,17 +74,36 @@ class MainNavigator extends ConsumerStatefulWidget {
 class _MainNavigatorState extends ConsumerState<MainNavigator> {
   int _currentIndex = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
+      EasyAds.instance.appLifecycleReactor?.setAllowAppOpenAd(true);
+    });
+  }
+
+  void _onTabSelect(int index) {
+    setState(() => _currentIndex = index);
+  }
+
   final List<Widget> _screens = [
     const HomeScreen(),
-    // const PhotoSketchScreen(),
+    const PhotoSketchScreen(),
     const GalleryScreen(),
     const SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        ExitDialog.show(context);
+      },
+      child: Scaffold(
+        extendBody: true,
       body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Container(
         margin: EdgeInsets.all(AppDimens.space24),
@@ -109,35 +130,36 @@ class _MainNavigatorState extends ConsumerState<MainNavigator> {
                 activeIcon: Icons.home_rounded,
                 label: ref.tr('home'),
                 isActive: _currentIndex == 0,
-                onTap: () => setState(() => _currentIndex = 0),
+                onTap: () => _onTabSelect(0),
               ),
-              // _NavItem(
-              //   icon: Icons.auto_fix_high_outlined,
-              //   activeIcon: Icons.auto_fix_high_rounded,
-              //   label: ref.tr('photo_sketch'),
-              //   isActive: _currentIndex == 1,
-              //   onTap: () => setState(() => _currentIndex = 1),
-              // ),
+              _NavItem(
+                icon: Icons.auto_fix_high_outlined,
+                activeIcon: Icons.auto_fix_high_rounded,
+                label: ref.tr('photo_sketch'),
+                isActive: _currentIndex == 1,
+                onTap: () => _onTabSelect(1),
+              ),
               _NavItem(
                 icon: Icons.photo_library_outlined,
                 activeIcon: Icons.photo_library_rounded,
                 label: ref.tr('gallery'),
-                isActive: _currentIndex == 1,
-                onTap: () => setState(() => _currentIndex = 1),
+                isActive: _currentIndex == 2,
+                onTap: () => _onTabSelect(2),
               ),
               _NavItem(
                 icon: Icons.settings_outlined,
                 activeIcon: Icons.settings_rounded,
                 label: ref.tr('settings'),
-                isActive: _currentIndex == 2,
-                onTap: () => setState(() => _currentIndex = 2),
+                isActive: _currentIndex == 3,
+                onTap: () => _onTabSelect(3),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
 
 class _NavItem extends StatelessWidget {

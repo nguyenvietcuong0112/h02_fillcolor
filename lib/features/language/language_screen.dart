@@ -59,9 +59,7 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
     _selectedIndex = languages.indexWhere((l) => l['code'] == _tempSelectedCode);
     if (_selectedIndex < 0) _selectedIndex = 0;
 
-    if (!widget.isFromSettings) {
-      EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(true);
-    }
+    EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(true);
 
     _isLoading = true;
     _canClick = false;
@@ -168,10 +166,12 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
     if (!mounted) return;
 
     if (widget.isFromSettings) {
+      EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
       Navigator.of(context).pop();
       return;
     }
 
+    EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
     Navigator.of(
       context,
     ).pushReplacement(MaterialPageRoute(builder: (_) => const IntroScreen()));

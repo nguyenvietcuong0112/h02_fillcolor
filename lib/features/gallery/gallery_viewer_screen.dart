@@ -56,7 +56,7 @@ class _GalleryViewerScreenState extends ConsumerState<GalleryViewerScreen> {
     try {
       await Share.shareXFiles([
         XFile(widget.imageFile.path),
-      ], text: 'My colored artwork!');
+      ], text: ref.tr('share_artwork_text'));
     } catch (e) {
       debugPrint('Share error: $e');
     }

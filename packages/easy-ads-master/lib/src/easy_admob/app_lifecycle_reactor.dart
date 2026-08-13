@@ -136,9 +136,9 @@ class AppLifecycleReactor with WidgetsBindingObserver {
         _inactiveTime = null;
         _inactiveOrientation = null;
 
-        // If orientation changed or time spent inactive is very short (< 1500ms),
+        // If orientation changed or time spent inactive is very short (< 500ms),
         // or if it changed orientation within a reasonable timeframe (< 4000ms), suppress ad.
-        if (timeDiff.inMilliseconds < 1500 || (orientationChanged && timeDiff.inMilliseconds < 4000)) {
+        if (timeDiff.inMilliseconds < 500 || (orientationChanged && timeDiff.inMilliseconds < 4000)) {
           debugPrint("AppLifecycleReactor: Suppressing app open ad (orientationChanged: $orientationChanged, duration: ${timeDiff.inMilliseconds}ms)");
           return;
         }

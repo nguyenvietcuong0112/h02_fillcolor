@@ -7,6 +7,8 @@ import '../intro/intro_screen.dart';
 import '../../app/app.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/remote_config_service.dart';
+import '../../services/firebase_remote_config_service.dart';
+import '../../ads/const/ad_id_name.dart';
 import '../../di/dependency_injection.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../../core/utils/thumbnail_helper.dart';
@@ -28,6 +30,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   @override
   void initState() {
     super.initState();
+    EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(true);
 
     // Initialize animations
     _animationController = AnimationController(
@@ -111,6 +114,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   }
 
   Future<void> _checkNavigator() async {
+    EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
     // Ensure splash is visible for at least 2 seconds total
     await Future.delayed(const Duration(milliseconds: 1000));
 
@@ -118,9 +122,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
     void navigate() {
       if (!mounted) return;
-
-      // Mark splash screen as completed so EasyAds knows app is no longer in splash mode
-      EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
 
       final languageCode = StorageUtils.languageCode;
       final introSeen = StorageUtils.introSeen;
@@ -140,7 +141,21 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       }
     }
 
-    navigate();
+    final isInterSplashEnabled = FirebaseRemoteConfigService.getBoolConfigByKey(
+      FirebaseRemoteConfigService.inter_splash,
+    );
+
+    if (isInterSplashEnabled && !EasyAds.instance.isPremiumUser) {
+      EasyAds.instance.showInterstitialAd(
+        context,
+        adId: MyAdIdName.interSplash,
+        adIdName: MyAdIdName.interSplash,
+        adDissmissed: navigate,
+        onFailed: navigate,
+      );
+    } else {
+      navigate();
+    }
   }
 
   @override

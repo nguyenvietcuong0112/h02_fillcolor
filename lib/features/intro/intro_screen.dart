@@ -32,6 +32,7 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
   @override
   void initState() {
     super.initState();
+    EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(true);
     _checkAndStartAdLogic(_currentPage);
   }
 
@@ -111,6 +112,7 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
   void _onFinish() async {
     await StorageUtils.setIntroSeen(true);
     if (!mounted) return;
+    EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
     Navigator.of(
       context,
     ).pushReplacement(MaterialPageRoute(builder: (_) => const MainNavigator()));

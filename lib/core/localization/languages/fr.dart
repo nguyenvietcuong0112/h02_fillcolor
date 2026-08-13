@@ -140,4 +140,19 @@ const Map<String, String> fr = {
   'error': 'Erreur',
   'save_failed': 'Échec de la sauvegarde',
   'please_select_language': 'Veuillez sélectionner une langue',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'Œuvre d\'art enregistrée avec succès !',
+  'save_success_desc': 'Votre œuvre a été enregistrée dans la Galerie de l\'application.',
+  'stay_on_page': 'Rester ici',
+  'back_to_home': 'Retour à l\'accueil',
+  'take_photo_desc': 'Prenez une photo depuis l\'appareil photo pour la colorier immédiatement',
+  'choose_gallery_desc': 'Chargez n\'importe quelle photo depuis la galerie de votre appareil',
+  'fill_mode': 'Mode Remplissage',
+  'brush_mode': 'Mode Pinceau',
+  'share_artwork_text': 'Mon œuvre d\'art colorée !',
+  // Exit Dialog
+  'exit': 'Quitter',
+  'exit_dialog_title': 'Quitter l\'application ?',
+  'exit_dialog_desc': 'Voulez-vous vraiment quitter l\'application ?',
 };

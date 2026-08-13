@@ -48,7 +48,7 @@
 	<!-- AdMob App ID - Replace with your actual AdMob App ID -->
 	<!-- TODO: Replace with your REAL iOS AdMob App ID -->
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3753821601142094~2183908220</string>
+	<string>ca-app-pub-1189834344037075~7530902971</string>
 	<!-- Photo Library Access for Gallery -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to save your coloring artworks.</string>

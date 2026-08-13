@@ -4,8 +4,6 @@ import 'dart:ui';
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../ads/const/ad_id.dart';
@@ -241,8 +239,8 @@ class FirebaseHelper {
   }
 
   static logEventPurchaseSuccessWeekly(
-      {required PurchaseDetails purchase,
-      required ProductDetails productDetail,
+      {required dynamic purchase,
+      required dynamic productDetail,
       required bool isGoogle}) async {
     String languageCode = '';
     String countryCode = '';
@@ -268,8 +266,8 @@ class FirebaseHelper {
   }
 
   static logEventPurchaseSuccessMonthly(
-      {required PurchaseDetails purchase,
-      required ProductDetails productDetail,
+      {required dynamic purchase,
+      required dynamic productDetail,
       required bool isGoogle}) async {
     String languageCode = '';
     String countryCode = '';
@@ -295,8 +293,8 @@ class FirebaseHelper {
   }
 
   static logEventPurchaseSuccessYearly(
-      {required PurchaseDetails purchase,
-      required ProductDetails productDetail,
+      {required dynamic purchase,
+      required dynamic productDetail,
       required bool isGoogle}) async {
     String languageCode = '';
     String countryCode = '';
@@ -322,8 +320,8 @@ class FirebaseHelper {
   }
 
   static logEventPurchaseSuccessYearlySale(
-      {required PurchaseDetails purchase,
-      required ProductDetails productDetail,
+      {required dynamic purchase,
+      required dynamic productDetail,
       required bool isGoogle}) async {
     String languageCode = '';
     String countryCode = '';
@@ -349,8 +347,8 @@ class FirebaseHelper {
   }
 
   static logEventPurchaseSuccessLifetime(
-      {required PurchaseDetails purchase,
-      required ProductDetails productDetail,
+      {required dynamic purchase,
+      required dynamic productDetail,
       required bool isGoogle}) async {
     String languageCode = '';
     String countryCode = '';
@@ -376,8 +374,8 @@ class FirebaseHelper {
   }
 
   static logEventPurchaseSuccess3Months(
-      {required PurchaseDetails purchase,
-      required ProductDetails productDetail,
+      {required dynamic purchase,
+      required dynamic productDetail,
       required bool isGoogle}) async {
     String languageCode = '';
     String countryCode = '';
@@ -403,8 +401,8 @@ class FirebaseHelper {
   }
 
   static logEventPurchaseSuccessRemoveAds(
-      {required PurchaseDetails purchase,
-      required ProductDetails productDetail,
+      {required dynamic purchase,
+      required dynamic productDetail,
       required bool isGoogle}) async {
     String languageCode = '';
     String countryCode = '';
@@ -430,7 +428,7 @@ class FirebaseHelper {
   }
 
   static logEventPurchaseError(
-      {required PurchaseDetails purchase, required bool isGoogle}) async {
+      {required dynamic purchase, required bool isGoogle}) async {
     await FirebaseAnalytics.instance.logEvent(
       name: EVENT_PURCHASE_ERROR,
       parameters: {
@@ -443,8 +441,8 @@ class FirebaseHelper {
   }
 
   static logInAppPurchaseCustom(
-      {required PurchaseDetails purchase,
-      required ProductDetails productDetail,
+      {required dynamic purchase,
+      required dynamic productDetail,
       required bool isGoogle}) async {
     await analytics.logEvent(
       name: 'in_app_purchase_custom',

@@ -15,10 +15,15 @@ class AdLoadingPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Lottie.asset(
-              'assets/json/loading.json',
+              'assets/json/loading_ads.json',
               width: 150,
               height: 150,
               fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return const CircularProgressIndicator(
+                  color: Colors.white,
+                );
+              },
             ),
           ],
         ),

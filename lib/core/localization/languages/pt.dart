@@ -140,4 +140,19 @@ const Map<String, String> pt = {
   'error': 'Erro',
   'save_failed': 'Falha ao salvar',
   'please_select_language': 'Por favor, selecione um idioma',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'Obra de arte salva com sucesso!',
+  'save_success_desc': 'Sua pintura foi salva na Galeria do aplicativo.',
+  'stay_on_page': 'Ficar aqui',
+  'back_to_home': 'Voltar ao Início',
+  'take_photo_desc': 'Tire uma foto da câmera para colorir imediatamente',
+  'choose_gallery_desc': 'Carregue qualquer foto da galeria do seu dispositivo para colorir',
+  'fill_mode': 'Modo Preenchimento',
+  'brush_mode': 'Modo Pincel',
+  'share_artwork_text': 'Minha obra de arte colorida!',
+  // Exit Dialog
+  'exit': 'Sair',
+  'exit_dialog_title': 'Sair do aplicativo?',
+  'exit_dialog_desc': 'Tem certeza de que deseja sair do aplicativo?',
 };

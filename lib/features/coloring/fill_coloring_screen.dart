@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +13,7 @@ import '../../core/constants/app_constants.dart';
 import '../../core/localization/app_localizations.dart';
 import '../../data/models/coloring_image_model.dart';
 import '../../core/widgets/coloring_widgets.dart';
+import '../../core/widgets/save_success_dialog.dart';
 import '../../core/services/app_gallery_service.dart';
 import '../gallery/gallery_screen.dart';
 import 'widgets/pixel_coloring_canvas.dart';
@@ -114,37 +114,8 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
           imageProvider.evict();
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(ref.tr('saved_to_gallery')),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-
         if (mounted) {
-          final isInterEnabled = FirebaseRemoteConfigService.getBoolConfigByKey(
-            FirebaseRemoteConfigService.inter_all,
-          );
-          if (isInterEnabled && !EasyAds.instance.isPremiumUser) {
-            EasyAds.instance.showInterstitialAd(
-              context,
-              adId: MyAdIdName.interAll.getId,
-              adIdName: MyAdIdName.interAll,
-              adDissmissed: () {
-                if (mounted) {
-                  Navigator.pop(context, true);
-                }
-              },
-              onFailed: () {
-                if (mounted) {
-                  Navigator.pop(context, true);
-                }
-              },
-            );
-          } else {
-            Navigator.pop(context, true);
-          }
+          SaveSuccessDialog.show(context);
         }
       }
     } catch (e) {
@@ -215,7 +186,7 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
               child: NativeAdWithClose(
                 factoryId: NativeFactoryId.nativeMedia,
                 adId: MyAdIdName.nativeAll.getId,
-                adIdName: MyAdIdName.nativeAll,
+                adIdName: FirebaseRemoteConfigService.native_fill_brush,
                 height: AdDimen.mediumNativeHeight,
               ),
             ),
@@ -264,7 +235,6 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
         ),
       ),
     );
-
   }
 }
 

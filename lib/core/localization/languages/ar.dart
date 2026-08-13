@@ -140,4 +140,19 @@ const Map<String, String> ar = {
   'error': 'خطأ',
   'save_failed': 'فشل الحفظ',
   'please_select_language': 'يرجى اختيار لغة',
+
+  // Save Dialog & Photo Sketch
+  'save_success_title': 'تم حفظ العمل الفني بنجاح!',
+  'save_success_desc': 'تم حفظ لوحتك في معرض التطبيق.',
+  'stay_on_page': 'البقاء هنا',
+  'back_to_home': 'العودة للرئيسية',
+  'take_photo_desc': 'التقط صورة من الكاميرا للتلوين فوراً',
+  'choose_gallery_desc': 'حمل أي صورة من معرض جهازك للبدء بالتلوين',
+  'fill_mode': 'وضع التعبئة',
+  'brush_mode': 'وضع الفرشاة',
+  'share_artwork_text': 'لوحتي الملونة!',
+  // Exit Dialog
+  'exit': 'خروج',
+  'exit_dialog_title': 'الخروج من التطبيق؟',
+  'exit_dialog_desc': 'هل أنت تأكد من أنك تريد الخروج من التطبيق؟',
 };
