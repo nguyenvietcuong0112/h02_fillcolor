@@ -74,7 +74,7 @@ class _MainNavigatorState extends ConsumerState<MainNavigator> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const PhotoSketchScreen(),
+    // const PhotoSketchScreen(),
     const GalleryScreen(),
     const SettingsScreen(),
   ];
@@ -111,13 +111,13 @@ class _MainNavigatorState extends ConsumerState<MainNavigator> {
                 isActive: _currentIndex == 0,
                 onTap: () => setState(() => _currentIndex = 0),
               ),
-              _NavItem(
-                icon: Icons.auto_fix_high_outlined,
-                activeIcon: Icons.auto_fix_high_rounded,
-                label: ref.tr('photo_sketch'),
-                isActive: _currentIndex == 1,
-                onTap: () => setState(() => _currentIndex = 1),
-              ),
+              // _NavItem(
+              //   icon: Icons.auto_fix_high_outlined,
+              //   activeIcon: Icons.auto_fix_high_rounded,
+              //   label: ref.tr('photo_sketch'),
+              //   isActive: _currentIndex == 1,
+              //   onTap: () => setState(() => _currentIndex = 1),
+              // ),
               _NavItem(
                 icon: Icons.photo_library_outlined,
                 activeIcon: Icons.photo_library_rounded,

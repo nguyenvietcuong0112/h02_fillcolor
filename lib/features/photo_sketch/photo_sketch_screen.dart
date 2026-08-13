@@ -4,12 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/constants/app_constants.dart';
 import '../../core/localization/app_localizations.dart';
-import '../../core/theme/app_dimens.dart';
 import '../../core/widgets/coloring_widgets.dart';
 import '../../data/models/brush_stroke.dart';
 import '../coloring/png_coloring_state.dart';
+import '../coloring/widgets/color_palette.dart';
 import '../../services/sketch_converter_service.dart';
 import 'photo_sketch_controller.dart';
 import 'photo_sketch_state.dart';
@@ -22,7 +21,10 @@ class PhotoSketchScreen extends ConsumerStatefulWidget {
 }
 
 class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
-  final TransformationController _transformationController = TransformationController();
+  final TransformationController _transformationController =
+      TransformationController();
+  final GlobalKey<ColorPaletteState> _paletteKey =
+      GlobalKey<ColorPaletteState>();
 
   final List<String> _sampleAssets = [
     'assets/images/animal_cat.png',
@@ -37,14 +39,17 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
     final controller = ref.read(photoSketchControllerProvider.notifier);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
           child: switch (state.step) {
-            PhotoSketchStep.select => _buildSelectView(context, ref, state, controller),
-            PhotoSketchStep.adjust => _buildAdjustView(context, ref, state, controller),
-            PhotoSketchStep.color => _buildColoringView(context, ref, state, controller),
+            PhotoSketchStep.select =>
+              _buildSelectView(context, ref, state, controller),
+            PhotoSketchStep.adjust =>
+              _buildAdjustView(context, ref, state, controller),
+            PhotoSketchStep.color =>
+              _buildColoringView(context, ref, state, controller),
           },
         ),
       ),
@@ -59,28 +64,46 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
     PhotoSketchController controller,
   ) {
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(AppDimens.space24, AppDimens.space16, AppDimens.space24, AppDimens.space24),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            ref.tr('photo_sketch'),
-            style: TextStyle(
-              fontSize: 28.sp,
-              fontWeight: FontWeight.w800,
-              color: Colors.black87,
-              letterSpacing: -0.5,
-            ),
+          // Top Navigation Bar
+          Row(
+            children: [
+              if (Navigator.of(context).canPop())
+                RoundIconButton(
+                  icon: Icons.arrow_back_ios_new_rounded,
+                  onTap: () => Navigator.pop(context),
+                ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ref.tr('photo_sketch'),
+                      style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.blueGrey[900],
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                    Text(
+                      ref.tr('photo_sketch_desc'),
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 4.h),
-          Text(
-            ref.tr('photo_sketch_desc'),
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey[600],
-            ),
-          ),
-          SizedBox(height: AppDimens.space24),
+
+          SizedBox(height: 20.h),
 
           // Primary Actions: Camera & Gallery
           Row(
@@ -93,7 +116,7 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
                   onTap: () => controller.pickPhoto(ImageSource.camera),
                 ),
               ),
-              SizedBox(width: AppDimens.space16),
+              SizedBox(width: 14.w),
               Expanded(
                 child: _buildActionCard(
                   icon: Icons.photo_library_rounded,
@@ -105,16 +128,28 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
             ],
           ),
 
-          SizedBox(height: AppDimens.space32),
-          Text(
-            ref.tr('sample_photo'),
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w700,
-              color: Colors.blueGrey[900],
-            ),
+          SizedBox(height: 28.h),
+
+          // Sample Photos Section
+          Row(
+            children: [
+              Icon(
+                Icons.auto_awesome_rounded,
+                size: 20.sp,
+                color: const Color(0xFFFF6B6B),
+              ),
+              SizedBox(width: 8.w),
+              Text(
+                ref.tr('sample_photo'),
+                style: TextStyle(
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.blueGrey[900],
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: AppDimens.space16),
+          SizedBox(height: 14.h),
 
           // Sample images grid
           GridView.builder(
@@ -122,8 +157,8 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              crossAxisSpacing: AppDimens.space16,
-              mainAxisSpacing: AppDimens.space16,
+              crossAxisSpacing: 14.w,
+              mainAxisSpacing: 14.h,
               childAspectRatio: 1.0,
             ),
             itemCount: _sampleAssets.length,
@@ -136,16 +171,20 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2,
+                    ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
-                        blurRadius: 10,
+                        color: Colors.black.withValues(alpha: 0.06),
+                        blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
                     ],
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.r),
+                    borderRadius: BorderRadius.circular(18.r),
                     child: Image.asset(
                       asset,
                       fit: BoxFit.cover,
@@ -168,13 +207,12 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(24.r),
+      borderRadius: BorderRadius.circular(22.r),
       child: Container(
-        height: 130.h,
-        padding: EdgeInsets.all(AppDimens.space16),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(24.r),
+          borderRadius: BorderRadius.circular(22.r),
           boxShadow: [
             BoxShadow(
               color: color.withValues(alpha: 0.12),
@@ -186,21 +224,24 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12.r),
               decoration: BoxDecoration(
                 color: color.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: color, size: 28.sp),
+              child: Icon(icon, color: color, size: 26.sp),
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 10.h),
             Text(
               title,
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: 14.sp,
+                fontSize: 13.sp,
                 fontWeight: FontWeight.w700,
                 color: Colors.blueGrey[900],
               ),
@@ -222,34 +263,37 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
       children: [
         // App Bar matching ModeSelectionScreen
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppDimens.space16, vertical: AppDimens.space12),
-          child: Row(
-            children: [
-              RoundIconButton(
-                icon: Icons.arrow_back_ios_new_rounded,
-                onTap: () => controller.resetToSelect(),
-              ),
-              Expanded(
-                child: Text(
-                  ref.tr('photo_sketch'),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.blueGrey[900],
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20.sp,
-                    letterSpacing: 0.5,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+          child: GlassControlBar(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            child: Row(
+              children: [
+                RoundIconButton(
+                  icon: Icons.arrow_back_ios_new_rounded,
+                  onTap: () => controller.resetToSelect(),
+                ),
+                Expanded(
+                  child: Text(
+                    ref.tr('photo_sketch'),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.blueGrey[900],
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18.sp,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 44), // Symmetry balance for back button
-            ],
+                const SizedBox(width: 44),
+              ],
+            ),
           ),
         ),
 
         // Sketch Preview Container
         Expanded(
           child: Container(
-            margin: EdgeInsets.all(AppDimens.space16),
+            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(24.r),
@@ -268,11 +312,16 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const CircularProgressIndicator(color: Color(0xFFFF6B6B)),
+                          const CircularProgressIndicator(
+                              color: Color(0xFFFF6B6B)),
                           SizedBox(height: 16.h),
                           Text(
                             ref.tr('processing_image'),
-                            style: TextStyle(color: Colors.grey[600], fontSize: 14.sp),
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ],
                       )
@@ -289,10 +338,10 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
 
         // Sliders & Controls
         Container(
-          padding: EdgeInsets.all(AppDimens.space24),
+          padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 20.h),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(32.r)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.08),
@@ -303,45 +352,16 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Style Selector (Segmented / Cartoon / Ink / Pencil)
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SegmentedButton<SketchStyle>(
-                  segments: [
-                    ButtonSegment<SketchStyle>(
-                      value: SketchStyle.pureOutline,
-                      icon: const Icon(Icons.auto_awesome_rounded),
-                      label: Text('Gemini AI Outline', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey[900])),
-                    ),
-                    ButtonSegment<SketchStyle>(
-                      value: SketchStyle.coloringOutline,
-                      icon: const Icon(Icons.draw_rounded),
-                      label: Text('Coloring Outline', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey[900])),
-                    ),
-                    ButtonSegment<SketchStyle>(
-                      value: SketchStyle.cartoonVector,
-                      icon: const Icon(Icons.auto_fix_high_rounded),
-                      label: Text('Nét mượt Hoạt hình', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey[900])),
-                    ),
-                  ],
-                  selected: {state.style},
-                  onSelectionChanged: (Set<SketchStyle> selected) {
-                    controller.setStyle(selected.first);
-                  },
-                ),
-              ),
-              SizedBox(height: AppDimens.space16),
+              // Style Selector Pills
+              _buildStyleSelector(state, controller),
+              SizedBox(height: 16.h),
 
               // Line Detail Slider
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(ref.tr('line_detail'), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14.sp, color: Colors.blueGrey[900])),
-                  Text('${(state.detailLevel * 100).round()}%', style: TextStyle(color: Colors.grey[600], fontSize: 13.sp)),
-                ],
-              ),
-              Slider(
+              _buildSliderRow(
+                label: ref.tr('line_detail'),
+                valueText: '${(state.detailLevel * 100).round()}%',
                 value: state.detailLevel,
                 activeColor: const Color(0xFFFF6B6B),
                 onChanged: (val) {
@@ -350,15 +370,12 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
                 onChangeEnd: (_) => controller.applyAdjustments(),
               ),
 
+              SizedBox(height: 8.h),
+
               // Contrast Slider
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(ref.tr('line_contrast'), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14.sp, color: Colors.blueGrey[900])),
-                  Text('${(state.contrast * 100).round()}%', style: TextStyle(color: Colors.grey[600], fontSize: 13.sp)),
-                ],
-              ),
-              Slider(
+              _buildSliderRow(
+                label: ref.tr('line_contrast'),
+                valueText: '${(state.contrast * 100).round()}%',
                 value: state.contrast,
                 activeColor: const Color(0xFF4ECDC4),
                 onChanged: (val) {
@@ -367,29 +384,169 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
                 onChangeEnd: (_) => controller.applyAdjustments(),
               ),
 
-              SizedBox(height: AppDimens.space12),
+              SizedBox(height: 14.h),
 
               // Start Coloring Button
-              SizedBox(
+              Container(
                 width: double.infinity,
-                height: 52.h,
-                child: ElevatedButton(
-                  onPressed: state.isProcessing ? null : () => controller.startColoring(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFF6B6B),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28.r),
+                height: 48.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24.r),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFF6B6B), Color(0xFFFF8E8E)],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFFF6B6B).withValues(alpha: 0.35),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
                     ),
-                    elevation: 4,
+                  ],
+                ),
+                child: ElevatedButton(
+                  onPressed: state.isProcessing
+                      ? null
+                      : () => controller.startColoring(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24.r),
+                    ),
                   ),
                   child: Text(
                     ref.tr('start_coloring'),
-                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ),
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStyleSelector(
+    PhotoSketchState state,
+    PhotoSketchController controller,
+  ) {
+    final styles = [
+      (SketchStyle.pureOutline, 'Gemini AI', Icons.auto_awesome_rounded),
+      (SketchStyle.coloringOutline, 'Coloring', Icons.draw_rounded),
+      (SketchStyle.cartoonVector, 'Cartoon', Icons.auto_fix_high_rounded),
+    ];
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: styles.map((item) {
+          final isSelected = state.style == item.$1;
+          return Padding(
+            padding: EdgeInsets.only(right: 8.w),
+            child: InkWell(
+              onTap: () => controller.setStyle(item.$1),
+              borderRadius: BorderRadius.circular(20.r),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: isSelected ? Colors.blueGrey[900] : Colors.grey[100],
+                  borderRadius: BorderRadius.circular(20.r),
+                  boxShadow: isSelected
+                      ? [
+                          BoxShadow(
+                            color: Colors.blueGrey.withValues(alpha: 0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      item.$3,
+                      size: 16.sp,
+                      color: isSelected ? Colors.white : Colors.grey[700],
+                    ),
+                    SizedBox(width: 6.w),
+                    Text(
+                      item.$2,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.w600,
+                        color: isSelected ? Colors.white : Colors.grey[800],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildSliderRow({
+    required String label,
+    required String valueText,
+    required double value,
+    required Color activeColor,
+    required ValueChanged<double> onChanged,
+    required ValueChanged<double> onChangeEnd,
+  }) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 13.sp,
+                color: Colors.blueGrey[900],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+              decoration: BoxDecoration(
+                color: activeColor.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              child: Text(
+                valueText,
+                style: TextStyle(
+                  color: activeColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.sp,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SliderTheme(
+          data: SliderThemeData(
+            trackHeight: 4.h,
+            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 7.r),
+            overlayShape: RoundSliderOverlayShape(overlayRadius: 14.r),
+            activeTrackColor: activeColor,
+            inactiveTrackColor: activeColor.withValues(alpha: 0.15),
+            thumbColor: activeColor,
+          ),
+          child: Slider(
+            value: value,
+            onChanged: onChanged,
+            onChangeEnd: onChangeEnd,
           ),
         ),
       ],
@@ -407,57 +564,23 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
 
     return Column(
       children: [
-        // Top Toolbar with RoundIconButton
+        // Floating Glass Top Bar
         Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimens.space16,
-            vertical: AppDimens.space8,
-          ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+          child: GlassControlBar(
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
               children: [
                 RoundIconButton(
                   icon: Icons.arrow_back_ios_new_rounded,
                   onTap: () => controller.resetToSelect(),
                 ),
+                const Spacer(),
 
-                SizedBox(width: AppDimens.space8),
+                // Mode toggle pill
+                _buildModeToggle(state, controller, ref),
 
-                // Mode toggle
-                SegmentedButton<ColoringMode>(
-                  segments: [
-                    ButtonSegment<ColoringMode>(
-                      value: ColoringMode.fill,
-                      icon: const Icon(Icons.format_paint_outlined),
-                      label: Text(
-                        ref.tr('tap_to_fill'),
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.blueGrey[900],
-                        ),
-                      ),
-                    ),
-                    ButtonSegment<ColoringMode>(
-                      value: ColoringMode.brush,
-                      icon: const Icon(Icons.brush_outlined),
-                      label: Text(
-                        ref.tr('freehand_brush'),
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.blueGrey[900],
-                        ),
-                      ),
-                    ),
-                  ],
-                  selected: {state.mode},
-                  onSelectionChanged: (Set<ColoringMode> selected) {
-                    controller.setMode(selected.first);
-                  },
-                ),
-
-                SizedBox(width: AppDimens.space16),
+                const Spacer(),
 
                 // Undo
                 RoundIconButton(
@@ -465,8 +588,7 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
                   enabled: state.canUndo,
                   onTap: () => controller.undo(),
                 ),
-
-                SizedBox(width: 8.w),
+                SizedBox(width: 6.w),
 
                 // Redo
                 RoundIconButton(
@@ -474,8 +596,7 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
                   enabled: state.canRedo,
                   onTap: () => controller.redo(),
                 ),
-
-                SizedBox(width: 8.w),
+                SizedBox(width: 6.w),
 
                 // Save
                 RoundIconButton(
@@ -483,7 +604,6 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
                   isPrimary: true,
                   onTap: () async {
                     final ok = await controller.saveArtwork();
-
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -493,6 +613,8 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
                                 : ref.tr('save_failed'),
                             style: const TextStyle(color: Colors.white),
                           ),
+                          backgroundColor:
+                              ok ? Colors.green : Colors.redAccent,
                         ),
                       );
                     }
@@ -502,10 +624,11 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
             ),
           ),
         ),
+
         // Interactive Canvas Container
         Expanded(
           child: Container(
-            margin: EdgeInsets.all(AppDimens.space12),
+            margin: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(24.r),
@@ -527,14 +650,21 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
                   builder: (context, constraints) {
                     return GestureDetector(
                       onTapUp: (details) {
-                        if (state.mode == ColoringMode.fill && displayImage != null) {
-                          final dx = (details.localPosition.dx / constraints.maxWidth) * displayImage.width;
-                          final dy = (details.localPosition.dy / constraints.maxHeight) * displayImage.height;
+                        if (state.mode == ColoringMode.fill &&
+                            displayImage != null) {
+                          final dx = (details.localPosition.dx /
+                                  constraints.maxWidth) *
+                              displayImage.width;
+                          final dy = (details.localPosition.dy /
+                                  constraints.maxHeight) *
+                              displayImage.height;
                           controller.handleTapFill(dx.round(), dy.round());
                         }
                       },
-                      onPanStart: (details) => controller.handlePanStart(details.localPosition),
-                      onPanUpdate: (details) => controller.handlePanUpdate(details.localPosition),
+                      onPanStart: (details) =>
+                          controller.handlePanStart(details.localPosition),
+                      onPanUpdate: (details) =>
+                          controller.handlePanUpdate(details.localPosition),
                       onPanEnd: (_) => controller.handlePanEnd(),
                       child: Stack(
                         fit: StackFit.expand,
@@ -559,59 +689,78 @@ class _PhotoSketchScreenState extends ConsumerState<PhotoSketchScreen> {
           ),
         ),
 
-        // Bottom Color Palette Bar
-        Container(
-          height: 76.h,
-          padding: EdgeInsets.symmetric(horizontal: AppDimens.space16, vertical: AppDimens.space12),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10,
-                offset: Offset(0, -2),
-              ),
-            ],
-          ),
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: AppConstants.defaultColors.length,
-            itemBuilder: (context, index) {
-              final colorValue = AppConstants.defaultColors[index];
-              final color = Color(colorValue);
-              final isSelected = state.selectedColor == color;
-
-              return GestureDetector(
-                onTap: () => controller.setColor(color),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  margin: const EdgeInsets.symmetric(horizontal: 6),
-                  width: isSelected ? 48.w : 40.w,
-                  height: isSelected ? 48.w : 40.w,
-                  decoration: BoxDecoration(
-                    color: color,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected ? Colors.black87 : Colors.white,
-                      width: isSelected ? 3 : 2,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: color.withValues(alpha: 0.4),
-                        blurRadius: isSelected ? 8 : 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: isSelected
-                      ? const Icon(Icons.check, color: Colors.white, size: 20)
-                      : null,
-                ),
-              );
-            },
-          ),
+        // Bottom Color Palette Component (Same as main coloring screens)
+        ColorPalette(
+          key: _paletteKey,
+          selectedColor: state.selectedColor,
+          onColorSelected: (color) => controller.setColor(color),
         ),
       ],
+    );
+  }
+
+  Widget _buildModeToggle(
+    PhotoSketchState state,
+    PhotoSketchController controller,
+    WidgetRef ref,
+  ) {
+    final modes = [
+      (ColoringMode.fill, ref.tr('tap_to_fill'), Icons.format_paint_rounded),
+      (ColoringMode.brush, ref.tr('freehand_brush'), Icons.brush_rounded),
+    ];
+
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: modes.map((m) {
+          final isSelected = state.mode == m.$1;
+          return GestureDetector(
+            onTap: () => controller.setMode(m.$1),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                color: isSelected ? Colors.white : Colors.transparent,
+                borderRadius: BorderRadius.circular(16.r),
+                boxShadow: isSelected
+                    ? [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.08),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ]
+                    : null,
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    m.$3,
+                    size: 15.sp,
+                    color: isSelected ? Colors.blueGrey[900] : Colors.grey[600],
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    m.$2,
+                    style: TextStyle(
+                      fontSize: 11.sp,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.w500,
+                      color:
+                          isSelected ? Colors.blueGrey[900] : Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 }
