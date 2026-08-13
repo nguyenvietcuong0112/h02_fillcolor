@@ -167,13 +167,6 @@ class HomeScreen extends ConsumerWidget {
                         return _ImageCard(
                           image: image,
                           onTap: () {
-                            final currentClicks = ref.read(
-                              itemClickCounterProvider.notifier,
-                            );
-                            currentClicks.state++;
-
-                            final clickCount = currentClicks.state;
-
                             final isInterEnabled = FirebaseRemoteConfigService.getBoolConfigByKey(
                               FirebaseRemoteConfigService.inter_all,
                             );
@@ -188,8 +181,8 @@ class HomeScreen extends ConsumerWidget {
                               );
                             }
 
-                            // Show ad on 1st click, then every 2 clicks (3rd, 5th, 7th...)
-                            if (clickCount % 2 != 0 && isInterEnabled && !EasyAds.instance.isPremiumUser) {
+                            // Show ad on every item click (if enabled and user is not premium)
+                            if (isInterEnabled && !EasyAds.instance.isPremiumUser) {
                               EasyAds.instance.showInterstitialAd(
                                 context,
                                 adId: MyAdIdName.interAll.getId,

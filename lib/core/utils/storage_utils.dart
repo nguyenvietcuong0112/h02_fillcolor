@@ -56,7 +56,7 @@ class StorageUtils {
     final files = galleryDir
         .listSync()
         .whereType<File>()
-        .where((file) => file.path.endsWith('.png'))
+        .where((file) => file.path.endsWith('.png') || file.path.endsWith('.webp'))
         .toList();
     files.sort((a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()));
     return files;

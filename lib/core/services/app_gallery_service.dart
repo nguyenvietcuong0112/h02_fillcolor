@@ -52,7 +52,7 @@ class AppGalleryService {
     final files = galleryDir
         .listSync()
         .whereType<File>()
-        .where((file) => file.path.endsWith('.png'))
+        .where((file) => file.path.endsWith('.png') || file.path.endsWith('.webp'))
         .toList();
 
     // Sort by modification time (newest first)

@@ -11,8 +11,8 @@ class GalleryRepository {
       final fileName = file.path.split('/').last;
       return SavedArtworkModel.fromFile(
         file.path,
-        fileName.replaceAll('.png', ''),
-        fileName.replaceAll('.png', ''),
+        fileName.replaceAll(RegExp(r'\.(png|webp)$'), ''),
+        fileName.replaceAll(RegExp(r'\.(png|webp)$'), ''),
       );
     }).toList();
   }

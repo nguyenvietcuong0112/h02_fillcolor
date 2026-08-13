@@ -22,7 +22,7 @@ class SavedArtworkModel {
   factory SavedArtworkModel.fromFile(String filePath, String imageId, String imageName) {
     final file = File(filePath);
     return SavedArtworkModel(
-      id: filePath.split('/').last.replaceAll('.png', ''),
+      id: filePath.split('/').last.replaceAll(RegExp(r'\.(png|webp)$'), ''),
       filePath: filePath,
       imageId: imageId,
       imageName: imageName,

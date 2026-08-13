@@ -130,17 +130,17 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
       {
         'title': ref.tr('intro_1_title'),
         'desc': ref.tr('intro_1_desc'),
-        'image': 'assets/images/intro_1.png',
+        'image': 'assets/images/intro_1.webp',
       },
       {
         'title': ref.tr('intro_2_title'),
         'desc': ref.tr('intro_2_desc'),
-        'image': 'assets/images/intro_2.png',
+        'image': 'assets/images/intro_2.webp',
       },
       {
         'title': ref.tr('intro_3_title'),
         'desc': ref.tr('intro_3_desc'),
-        'image': 'assets/images/intro_3.png',
+        'image': 'assets/images/intro_3.webp',
       },
     ];
 

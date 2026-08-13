@@ -125,19 +125,19 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       final languageCode = StorageUtils.languageCode;
       final introSeen = StorageUtils.introSeen;
 
-      // if (languageCode == null) {
+      if (languageCode == null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const LanguageScreen()),
         );
-      // } else if (!introSeen) {
-      //   Navigator.of(context).pushReplacement(
-      //     MaterialPageRoute(builder: (_) => const IntroScreen()),
-      //   );
-      // } else {
-      //   Navigator.of(context).pushReplacement(
-      //     MaterialPageRoute(builder: (_) => const MainNavigator()),
-      //   );
-      // }
+      } else if (!introSeen) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const IntroScreen()),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const MainNavigator()),
+        );
+      }
     }
 
     navigate();

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../core/theme/app_dimens.dart';
 import '../core/theme/app_theme.dart';
 import '../features/home/home_screen.dart';
-import '../features/photo_sketch/photo_sketch_screen.dart';
+// import '../features/photo_sketch/photo_sketch_screen.dart';
 import '../features/gallery/gallery_screen.dart';
 import '../features/splash/splash_screen.dart';
 import '../features/settings/settings_screen.dart';
@@ -122,15 +122,15 @@ class _MainNavigatorState extends ConsumerState<MainNavigator> {
                 icon: Icons.photo_library_outlined,
                 activeIcon: Icons.photo_library_rounded,
                 label: ref.tr('gallery'),
-                isActive: _currentIndex == 2,
-                onTap: () => setState(() => _currentIndex = 2),
+                isActive: _currentIndex == 1,
+                onTap: () => setState(() => _currentIndex = 1),
               ),
               _NavItem(
                 icon: Icons.settings_outlined,
                 activeIcon: Icons.settings_rounded,
                 label: ref.tr('settings'),
-                isActive: _currentIndex == 3,
-                onTap: () => setState(() => _currentIndex = 3),
+                isActive: _currentIndex == 2,
+                onTap: () => setState(() => _currentIndex = 2),
               ),
             ],
           ),
