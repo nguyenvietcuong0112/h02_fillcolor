@@ -1,12 +1,17 @@
 import 'dart:io';
 
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../ads/const/ad_id_extension.dart';
+import '../../ads/const/ad_id_factory.dart';
+import '../../ads/const/ad_id_name.dart';
+import '../../ads/dimens/ad_dimen.dart';
+import '../../ads/widgets/banner_ad_with_close.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/localization/app_localizations.dart';
 import '../../data/models/coloring_image_model.dart';
 import '../../core/widgets/coloring_widgets.dart';
 import '../../core/services/app_gallery_service.dart';
@@ -14,10 +19,7 @@ import '../gallery/gallery_screen.dart';
 import 'widgets/pixel_coloring_canvas.dart';
 import 'widgets/color_palette.dart';
 import 'png_coloring_state.dart';
-import '../../core/localization/app_localizations.dart';
-import 'package:ds_ads/ds_ads.dart';
-import '../../ads/ad_constants.dart';
-import '../../ads/widgets/closable_native_ad.dart';
+import '../../services/firebase_remote_config_service.dart';
 
 /// Fill mode coloring screen
 class FillColoringScreen extends ConsumerStatefulWidget {
@@ -44,6 +46,7 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
   final GlobalKey<ColorPaletteState> _paletteKey =
       GlobalKey<ColorPaletteState>();
 
+
   void _updateUndoRedoState() {
     final canvasState = _canvasStateKey.currentState;
     if (canvasState != null) {
@@ -53,6 +56,14 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
       });
     }
   }
+
+  void _handleHint() {
+    final canvasState = _canvasStateKey.currentState;
+    if (canvasState != null) {
+      canvasState.showHint();
+    }
+  }
+
 
   Future<void> _handleUndo() async {
     final canvasState = _canvasStateKey.currentState;
@@ -112,14 +123,28 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
         );
 
         if (mounted) {
-          DSAdInterstitial.show(
-            id: AppAdIds.interstitialSave,
-            onAdClosed: () {
-              if (mounted) {
-                Navigator.pop(context, true);
-              }
-            },
+          final isInterEnabled = FirebaseRemoteConfigService.getBoolConfigByKey(
+            FirebaseRemoteConfigService.inter_all,
           );
+          if (isInterEnabled && !EasyAds.instance.isPremiumUser) {
+            EasyAds.instance.showInterstitialAd(
+              context,
+              adId: MyAdIdName.interAll.getId,
+              adIdName: MyAdIdName.interAll,
+              adDissmissed: () {
+                if (mounted) {
+                  Navigator.pop(context, true);
+                }
+              },
+              onFailed: () {
+                if (mounted) {
+                  Navigator.pop(context, true);
+                }
+              },
+            );
+          } else {
+            Navigator.pop(context, true);
+          }
         }
       }
     } catch (e) {
@@ -155,7 +180,6 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
                     brushStrokes: const [],
                     onLoading: (loading) {
                       if (!loading) {
-                        // Update undo/redo state after image loads
                         Future.delayed(
                           const Duration(milliseconds: 100),
                           _updateUndoRedoState,
@@ -164,12 +188,12 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
                     },
                     onFillComplete: () {
                       _updateUndoRedoState();
-                      // Add selected color to recent colors when a fill is completed
                       final paletteState = _paletteKey.currentState;
                       if (paletteState != null) {
                         paletteState.addColorToHistory(_selectedColor);
                       }
                     },
+
                   ),
                 ),
                 Padding(
@@ -185,6 +209,17 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
               ],
             ),
             Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: NativeAdWithClose(
+                factoryId: NativeFactoryId.nativeMedia,
+                adId: MyAdIdName.nativeAll.getId,
+                adIdName: MyAdIdName.nativeAll,
+                height: AdDimen.mediumNativeHeight,
+              ),
+            ),
+            Positioned(
               top: 8,
               left: 12,
               right: 12,
@@ -196,6 +231,12 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
                       onTap: () => Navigator.pop(context),
                     ),
                     const Spacer(),
+                    RoundIconButton(
+                      icon: Icons.lightbulb_outline_rounded,
+                      onTap: _handleHint,
+                      isPrimary: true,
+                    ),
+                    const SizedBox(width: 8),
                     RoundIconButton(
                       icon: Icons.undo_rounded,
                       onTap: _canUndo ? _handleUndo : null,
@@ -214,25 +255,16 @@ class _FillColoringScreenState extends ConsumerState<FillColoringScreen> {
                       RoundIconButton(
                         icon: Icons.save_alt_rounded,
                         onTap: _saveToAppGallery,
-                        isPrimary: true,
                       ),
                   ],
                 ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: ClosableNativeAd(
-                adId: AppAdIds.nativeColoring,
-                height: 265.h,
               ),
             ),
           ],
         ),
       ),
     );
+
   }
 }
 

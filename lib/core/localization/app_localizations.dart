@@ -1,7 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'languages/ar.dart';
+import 'languages/bn.dart';
 import 'languages/en.dart';
-import 'languages/vi.dart';
 import 'languages/es.dart';
+import 'languages/fil.dart';
+import 'languages/fr.dart';
+import 'languages/hi.dart';
+import 'languages/id.dart';
+import 'languages/pt.dart';
+import 'languages/ru.dart';
+import 'languages/tr.dart';
+import 'languages/vi.dart';
 
 import '../utils/storage_utils.dart';
 
@@ -25,9 +34,18 @@ class AppLocalizations {
   AppLocalizations(this.currentLanguage);
 
   static const Map<String, Map<String, String>> _translationsArr = {
+    'ar': ar,
+    'bn': bn,
     'en': en,
-    'vi': vi,
     'es': es,
+    'fil': fil,
+    'fr': fr,
+    'hi': hi,
+    'id': id,
+    'pt': pt,
+    'ru': ru,
+    'tr': tr,
+    'vi': vi,
   };
 
   String translate(String key) {

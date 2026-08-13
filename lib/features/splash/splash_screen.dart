@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import '../../core/utils/storage_utils.dart';
 import '../language/language_screen.dart';
 import '../intro/intro_screen.dart';
-import '../../app.dart';
+import '../../app/app.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ds_ads/ds_ads.dart';
-import '../../ads/ad_constants.dart';
 import '../../services/remote_config_service.dart';
 import '../../di/dependency_injection.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -74,10 +73,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       debugPrint('SplashScreen: Storage Timeout/Error: $e');
     }
 
-    // 2. DI (Essential for AdManager)
+    // 2. DI
     try {
       debugPrint('SplashScreen: Init DI...');
-      await configureDependencies('dev').timeout(const Duration(seconds: 7));
+      await configureDependencies().timeout(const Duration(seconds: 7));
       debugPrint('SplashScreen: DI Done');
     } catch (e) {
       debugPrint('SplashScreen: DI Timeout/Error: $e');
@@ -96,17 +95,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       debugPrint('SplashScreen: Remote Config Done');
     } catch (e) {
       debugPrint('SplashScreen: Firebase/RC error: $e');
-    }
-
-    // 4. Ads
-    try {
-      debugPrint('SplashScreen: Init Ads...');
-      final ads = getIt<AdManager>();
-      await ads.init().timeout(const Duration(seconds: 5));
-      ads.loadInterstitialAd();
-      debugPrint('SplashScreen: Ads Done');
-    } catch (e) {
-      debugPrint('SplashScreen: Ads error: $e');
     }
 
     // Background task
@@ -131,33 +119,28 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     void navigate() {
       if (!mounted) return;
 
+      // Mark splash screen as completed so EasyAds knows app is no longer in splash mode
+      EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
+
       final languageCode = StorageUtils.languageCode;
       final introSeen = StorageUtils.introSeen;
 
-      if (languageCode == null) {
+      // if (languageCode == null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const LanguageScreen()),
         );
-      } else if (!introSeen) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const IntroScreen()),
-        );
-      } else {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const MainNavigator()),
-        );
-      }
+      // } else if (!introSeen) {
+      //   Navigator.of(context).pushReplacement(
+      //     MaterialPageRoute(builder: (_) => const IntroScreen()),
+      //   );
+      // } else {
+      //   Navigator.of(context).pushReplacement(
+      //     MaterialPageRoute(builder: (_) => const MainNavigator()),
+      //   );
+      // }
     }
 
-    // Try showing splash ad if ready, otherwise navigate direct
-    try {
-      DSAdInterstitial.show(
-        id: AppAdIds.interstitialSplash,
-        onAdClosed: navigate,
-      );
-    } catch (e) {
-      navigate();
-    }
+    navigate();
   }
 
   @override

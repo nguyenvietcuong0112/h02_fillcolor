@@ -1,9 +1,12 @@
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
+import '../../ads/const/ad_id_extension.dart';
+import '../../ads/const/ad_id_name.dart';
 import '../../core/widgets/loading_widget.dart';
 import '../../core/widgets/error_widget.dart';
 import '../../core/theme/app_dimens.dart';
@@ -11,8 +14,8 @@ import '../../core/utils/thumbnail_helper.dart';
 import 'dart:io';
 import '../coloring/mode_selection_screen.dart';
 import '../../core/localization/app_localizations.dart';
-import 'package:ds_ads/ds_ads.dart';
-import '../../ads/ad_constants.dart';
+
+import '../../services/firebase_remote_config_service.dart';
 import 'home_controller.dart';
 
 /// Home screen displaying categories and coloring images
@@ -171,21 +174,11 @@ class HomeScreen extends ConsumerWidget {
 
                             final clickCount = currentClicks.state;
 
-                            // Show ad on 1st click, then every 2 clicks (3rd, 5th, 7th...)
-                            if (clickCount % 2 != 0) {
-                              DSAdInterstitial.show(
-                                id: AppAdIds.interstitialItem,
-                                onAdClosed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                          ModeSelectionScreen(image: image),
-                                    ),
-                                  );
-                                },
-                              );
-                            } else {
+                            final isInterEnabled = FirebaseRemoteConfigService.getBoolConfigByKey(
+                              FirebaseRemoteConfigService.inter_all,
+                            );
+
+                            void openModeSelection() {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -193,6 +186,19 @@ class HomeScreen extends ConsumerWidget {
                                       ModeSelectionScreen(image: image),
                                 ),
                               );
+                            }
+
+                            // Show ad on 1st click, then every 2 clicks (3rd, 5th, 7th...)
+                            if (clickCount % 2 != 0 && isInterEnabled && !EasyAds.instance.isPremiumUser) {
+                              EasyAds.instance.showInterstitialAd(
+                                context,
+                                adId: MyAdIdName.interAll.getId,
+                                adIdName: MyAdIdName.interAll,
+                                adDissmissed: openModeSelection,
+                                onFailed: openModeSelection,
+                              );
+                            } else {
+                              openModeSelection();
                             }
                           },
                         );

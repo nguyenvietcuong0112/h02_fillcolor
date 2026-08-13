@@ -47,7 +47,8 @@ class PixelColoringCanvas extends StatefulWidget {
   State<PixelColoringCanvas> createState() => PixelColoringCanvasState();
 }
 
-class PixelColoringCanvasState extends State<PixelColoringCanvas> {
+class PixelColoringCanvasState extends State<PixelColoringCanvas>
+    with TickerProviderStateMixin {
   final FloodFillEngine _engine = FloodFillEngine();
   final TransformationController _transformationController =
       TransformationController();
@@ -59,6 +60,8 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
   bool _ignoreCurrentInteraction =
       false; // Flag to skip drawing if multi-touch detected
   int _lastBackgroundUpdateTime = 0; // Throttle background UI updates
+  Offset? _hintPoint;
+  Timer? _hintTimer;
 
   @override
   void initState() {
@@ -68,6 +71,7 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
 
   @override
   void dispose() {
+    _hintTimer?.cancel();
     _transformationController.dispose();
     super.dispose();
   }
@@ -75,6 +79,67 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
   // Public methods to access engine functionality
   bool get canUndo => _engine.canUndo;
   bool get canRedo => _engine.canRedo;
+
+  double getCompletionPercentage() {
+    return _engine.calculateCompletionPercentage();
+  }
+
+  bool showHint() {
+    if (!_engineReady || _displayImage == null) return false;
+
+    final targetOffset = _engine.findUnfilledPixel();
+    if (targetOffset == null) {
+      return false;
+    }
+
+    final RenderBox? box = context.findRenderObject() as RenderBox?;
+    if (box != null && box.hasSize) {
+      final Size screenSize = box.size;
+      const double targetScale = 3.2;
+
+      final double dx = (screenSize.width / 2) - (targetOffset.dx * targetScale);
+      final double dy = (screenSize.height / 2) - (targetOffset.dy * targetScale);
+
+      final Matrix4 targetMatrix = Matrix4.identity()
+        ..translate(dx, dy)
+        ..scale(targetScale);
+
+      final Matrix4 startMatrix = _transformationController.value;
+      final AnimationController animController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 600),
+      );
+
+      final Animation<Matrix4> animation = Matrix4Tween(
+        begin: startMatrix,
+        end: targetMatrix,
+      ).animate(CurvedAnimation(parent: animController, curve: Curves.easeInOutCubic));
+
+      animation.addListener(() {
+        _transformationController.value = animation.value;
+      });
+
+      animController.forward().then((_) => animController.dispose());
+    }
+
+    _hintTimer?.cancel();
+    setState(() {
+      _hintPoint = targetOffset;
+    });
+
+    HapticFeedback.mediumImpact();
+
+    _hintTimer = Timer(const Duration(milliseconds: 3200), () {
+      if (mounted) {
+        setState(() {
+          _hintPoint = null;
+        });
+      }
+    });
+
+    return true;
+  }
+
 
   Future<void> undo() async {
     if (_engine.canUndo) {
@@ -399,6 +464,7 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
                   painter: _CombinedPainter(
                     image: _displayImage!,
                     brushStrokes: widget.brushStrokes,
+                    hintPoint: _hintPoint,
                   ),
                 ),
               ),
@@ -413,8 +479,13 @@ class PixelColoringCanvasState extends State<PixelColoringCanvas> {
 class _CombinedPainter extends CustomPainter {
   final ui.Image image;
   final List<BrushStroke> brushStrokes;
+  final Offset? hintPoint;
 
-  _CombinedPainter({required this.image, required this.brushStrokes}) {
+  _CombinedPainter({
+    required this.image,
+    required this.brushStrokes,
+    this.hintPoint,
+  }) {
     debugPrint('Painter created with ${brushStrokes.length} strokes');
   }
 
@@ -467,11 +538,34 @@ class _CombinedPainter extends CustomPainter {
     }
 
     canvas.restore();
+
+    // Draw glowing hint marker if hintPoint is present
+    if (hintPoint != null) {
+      final Paint pulseOuter = Paint()
+        ..color = Colors.amber.withValues(alpha: 0.6)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 6.0;
+
+      final Paint pulseGlow = Paint()
+        ..color = Colors.purpleAccent.withValues(alpha: 0.3)
+        ..style = PaintingStyle.fill;
+
+      final Paint centerDot = Paint()
+        ..color = Colors.redAccent
+        ..style = PaintingStyle.fill;
+
+      canvas.drawCircle(hintPoint!, 32.0, pulseGlow);
+      canvas.drawCircle(hintPoint!, 22.0, pulseOuter);
+      canvas.drawCircle(hintPoint!, 8.0, centerDot);
+      canvas.drawCircle(hintPoint!, 3.0, Paint()..color = Colors.white);
+    }
   }
 
   @override
   bool shouldRepaint(covariant _CombinedPainter oldDelegate) {
     return image != oldDelegate.image ||
-        brushStrokes != oldDelegate.brushStrokes;
+        brushStrokes != oldDelegate.brushStrokes ||
+        hintPoint != oldDelegate.hintPoint;
   }
 }
+

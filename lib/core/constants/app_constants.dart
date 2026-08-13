@@ -1,3 +1,6 @@
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
+import 'package:flutter/cupertino.dart';
+
 /// Application-wide constants
 class AppConstants {
   AppConstants._();
@@ -6,6 +9,7 @@ class AppConstants {
   static const String appName = 'ColorFlow';
   static const String appFullName = 'ColorFlow - Coloring Book';
   static const String appVersion = '1.0.0';
+  static bool appInBackground = false;
 
   // Storage Keys
   static const String keyIsPremium = 'is_premium';
@@ -15,13 +19,12 @@ class AppConstants {
   static const String keyLanguageCode = 'language_code';
   static const String keyIntroSeen = 'intro_seen';
 
-  // Ad IDs (Replace with your actual AdMob IDs)
-  static const String adAppOpenId =
-      'ca-app-pub-3940256099942544/3419835294'; // Test ID
-  static const String adInterstitialId =
-      'ca-app-pub-3940256099942544/1033173712'; // Test ID
-  static const String adNativeId =
-      'ca-app-pub-3940256099942544/2247696110'; // Test ID
+
+
+  static final ValueNotifier<bool> isPremiumUser = ValueNotifier<bool>(false)
+    ..addListener(() {
+      EasyAds.instance.setPremiumUser(isPremiumUser.value);
+    });
 
   // RevenueCat
   static const String revenueCatApiKey = 'YOUR_REVENUECAT_API_KEY';

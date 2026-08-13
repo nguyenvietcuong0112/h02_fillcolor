@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="applicationName">ColorFlow - Coloring Book</string>
+    <string name="facebook_app_id">1764595981336051</string>
+    <string name="facebook_client_token">c61da804a9860ef51c453261f29348b8</string>
+</resources>

@@ -449,4 +449,73 @@ class FloodFillEngine {
     _history.clear();
     _historyIndex = -1;
   }
+
+  /// Find a pixel in an unfilled (white/transparent) region.
+  /// Returns Offset(x, y) in image coordinates, or null if 100% completed.
+  Offset? findUnfilledPixel() {
+    if (!isReady || _pixels == null || _edgeMask == null) return null;
+
+    final List<int> unfilledIndices = [];
+
+    // Sample pixels with a step for fast performance
+    const int step = 4;
+    for (int y = 0; y < _height; y += step) {
+      for (int x = 0; x < _width; x += step) {
+        final int idx = y * _width + x;
+        if (!_edgeMask![idx]) {
+          final int pi = idx * 4;
+          final int r = _pixels![pi];
+          final int g = _pixels![pi + 1];
+          final int b = _pixels![pi + 2];
+          final int a = _pixels![pi + 3];
+
+          // Unfilled pixel check (white/near-white or transparent)
+          if ((r > 235 && g > 235 && b > 235) || a < 30) {
+            unfilledIndices.add(idx);
+          }
+        }
+      }
+    }
+
+    if (unfilledIndices.isEmpty) return null;
+
+    // Pick a random index from unfilled regions
+    unfilledIndices.shuffle();
+    final int chosenIdx = unfilledIndices.first;
+    final int cx = chosenIdx % _width;
+    final int cy = chosenIdx ~/ _width;
+    return Offset(cx.toDouble(), cy.toDouble());
+  }
+
+  /// Calculate completion percentage (0.0 to 1.0)
+  double calculateCompletionPercentage() {
+    if (!isReady || _pixels == null || _edgeMask == null) return 0.0;
+
+    int totalFillable = 0;
+    int filledCount = 0;
+
+    const int step = 4;
+    for (int y = 0; y < _height; y += step) {
+      for (int x = 0; x < _width; x += step) {
+        final int idx = y * _width + x;
+        if (!_edgeMask![idx]) {
+          totalFillable++;
+          final int pi = idx * 4;
+          final int r = _pixels![pi];
+          final int g = _pixels![pi + 1];
+          final int b = _pixels![pi + 2];
+          final int a = _pixels![pi + 3];
+
+          final bool isUnfilled = (r > 235 && g > 235 && b > 235) || a < 30;
+          if (!isUnfilled) {
+            filledCount++;
+          }
+        }
+      }
+    }
+
+    if (totalFillable == 0) return 1.0;
+    return (filledCount / totalFillable).clamp(0.0, 1.0);
+  }
 }
+

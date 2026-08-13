@@ -1,12 +1,16 @@
 import 'dart:io';
 
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../ads/const/ad_id_extension.dart';
+import '../../ads/const/ad_id_factory.dart';
+import '../../ads/const/ad_id_name.dart';
+import '../../ads/dimens/ad_dimen.dart';
+import '../../ads/widgets/banner_ad_with_close.dart';
 import '../../data/models/coloring_image_model.dart';
 import '../../data/models/brush_stroke.dart';
 import '../../core/services/app_gallery_service.dart';
@@ -16,12 +20,10 @@ import 'widgets/color_palette.dart';
 import 'png_coloring_state.dart';
 import '../../core/localization/app_localizations.dart';
 import '../../core/constants/app_constants.dart';
-import 'package:ds_ads/ds_ads.dart';
-import '../../ads/ad_constants.dart';
-import '../../ads/widgets/closable_native_ad.dart';
 import '../../core/widgets/coloring_widgets.dart';
+import '../../services/firebase_remote_config_service.dart';
 
-/// Brush mode coloring screen - simplified with local state
+/// Brush mode coloring screen
 class BrushColoringScreen extends ConsumerStatefulWidget {
   final ColoringImageModel image;
   final File? savedImageFile;
@@ -88,9 +90,8 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
     setState(() {
       _currentStroke = BrushStroke(
         points: [point],
-        color: _isEraserMode
-            ? Colors.transparent
-            : _selectedColor, // Eraser uses transparent if mask is handled by painter
+        color: _isEraserMode ? Colors.transparent : _selectedColor,
+        // Eraser uses transparent if mask is handled by painter
         size: _brushSize,
         opacity: 1.0,
         isEraser: _isEraserMode,
@@ -118,6 +119,13 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
           points: [..._currentStroke!.points, point],
         );
       });
+    }
+  }
+
+  void _handleHint() {
+    final canvasState = _canvasStateKey.currentState;
+    if (canvasState != null) {
+      canvasState.showHint();
     }
   }
 
@@ -195,14 +203,28 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
         );
 
         if (mounted) {
-          DSAdInterstitial.show(
-            id: AppAdIds.interstitialSave,
-            onAdClosed: () {
-              if (mounted) {
-                Navigator.pop(context, true);
-              }
-            },
+          final isInterEnabled = FirebaseRemoteConfigService.getBoolConfigByKey(
+            FirebaseRemoteConfigService.inter_all,
           );
+          if (isInterEnabled && !EasyAds.instance.isPremiumUser) {
+            EasyAds.instance.showInterstitialAd(
+              context,
+              adId: MyAdIdName.interAll.getId,
+              adIdName: MyAdIdName.interAll,
+              adDissmissed: () {
+                if (mounted) {
+                  Navigator.pop(context, true);
+                }
+              },
+              onFailed: () {
+                if (mounted) {
+                  Navigator.pop(context, true);
+                }
+              },
+            );
+          } else {
+            Navigator.pop(context, true);
+          }
         }
       }
     } catch (e, stackTrace) {
@@ -262,6 +284,12 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                       ),
                       const Spacer(),
                       RoundIconButton(
+                        icon: Icons.lightbulb_outline_rounded,
+                        onTap: _handleHint,
+                        isPrimary: true,
+                      ),
+                      const SizedBox(width: 8),
+                      RoundIconButton(
                         icon: Icons.undo_rounded,
                         onTap: _undoStack.isNotEmpty ? _undo : null,
                         enabled: _undoStack.isNotEmpty,
@@ -279,7 +307,6 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
                         RoundIconButton(
                           icon: Icons.save_alt_rounded,
                           onTap: _saveToAppGallery,
-                          isPrimary: true,
                         ),
                     ],
                   ),
@@ -391,7 +418,7 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
             ),
           ),
 
-          // 5. BOTTOM PALETTE TRAY (Integrated!)
+          // 5. BOTTOM PALETTE TRAY & BANNER AD OVERLAY WITH CLOSE BUTTON
           Positioned(
             bottom: 0,
             left: 0,
@@ -411,9 +438,11 @@ class _BrushColoringScreenState extends ConsumerState<BrushColoringScreen> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: ClosableNativeAd(
-              adId: AppAdIds.nativeColoring,
-              height: 265.h,
+            child: NativeAdWithClose(
+              factoryId: NativeFactoryId.nativeMedia,
+              adId: MyAdIdName.nativeAll.getId,
+              adIdName: MyAdIdName.nativeAll,
+              height: AdDimen.mediumNativeHeight,
             ),
           ),
         ],
@@ -520,6 +549,7 @@ class _ToolButton extends StatelessWidget {
 
 class _Loader extends StatelessWidget {
   const _Loader();
+
   @override
   Widget build(BuildContext context) {
     return Container(

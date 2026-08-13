@@ -1,14 +1,18 @@
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../ads/const/ad_id_extension.dart';
+import '../../ads/const/ad_id_factory.dart';
+import '../../ads/const/ad_id_name.dart';
+import '../../ads/dimens/ad_dimen.dart';
+import '../../core/widgets/coloring_widgets.dart';
 import '../../data/models/coloring_image_model.dart';
 import 'fill_coloring_screen.dart';
 import 'brush_coloring_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/localization/app_localizations.dart';
 import '../../core/widgets/premium_icons.dart';
-import 'package:ds_ads/ds_ads.dart';
-import '../../ads/ad_constants.dart';
-import '../../core/widgets/coloring_widgets.dart';
+import '../../services/firebase_remote_config_service.dart';
 
 class ModeSelectionScreen extends ConsumerWidget {
   final ColoringImageModel image;
@@ -192,7 +196,24 @@ class ModeSelectionScreen extends ConsumerWidget {
           ],
         ),
       ),
-      bottomNavigationBar: SafeArea(child: DSAdBanner(id: AppAdIds.banner)),
+      bottomNavigationBar: _buildBottomAd(),
+    );
+  }
+
+  Widget? _buildBottomAd() {
+    final isEnabled = FirebaseRemoteConfigService.getBoolConfigByKey(
+      FirebaseRemoteConfigService.native_all,
+    );
+    if (EasyAds.instance.isPremiumUser || !isEnabled) {
+      return null;
+    }
+    return SafeArea(
+      child: EasyNativeAd(
+        factoryId: NativeFactoryId.nativeMediaSmall,
+        adId: MyAdIdName.nativeAll.getId,
+        adIdName: MyAdIdName.nativeAll,
+        height: AdDimen.smallNativeAdHeight,
+      ),
     );
   }
 }
